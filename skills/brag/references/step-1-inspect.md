@@ -2,6 +2,15 @@
 
 Read the project directory to understand what you're bragging about.
 
+Two complementary approaches work together:
+
+1. **Static file analysis** (below) — read the source code, HTML, CSS, routes
+2. **Browser inspection** via `playwright-cli` (see [playwright-inspect.md](playwright-inspect.md)) — open the project in a real browser, navigate pages, interact with UI, capture screenshots
+
+The browser pass is preferred when the project has a runnable frontend. It reveals the actual rendered UI, computed styles, interactive flows, and gives you screenshots that serve as visual references for the Hyperframes composition. The static pass ensures you don't miss copy, structure, or details behind dynamic rendering.
+
+Start by checking if a dev server is running or can be started. If `--no-browser` is not passed, run the browser inspection first (it's faster to understand a visual product visually), then read the source for exact copy and structure.
+
 ## What to look for
 
 Read these in priority order:
@@ -83,6 +92,21 @@ After reading, answer all nine. Write these down before moving to Step 2.
    If the project is a landing-page-only static site with no app, write
    "none — landing-page only" and rely on the strongest visual (Q3) instead.
 ```
+
+## Voiceover script draft
+
+After answering the 9 questions, draft a short voiceover script. This is a spoken summary of the project — concise, specific, and tone-matched. It will be passed to ElevenLabs TTS in Step 3.
+
+Guidelines:
+- **Length:** 40–70 words (~15-25 seconds spoken).
+- **Structure:** What the project is → the hook → 2-3 highlights → tagline/outro.
+- **Voice:** Match the tone preset. `default` is warm and direct; `yc-parody` is deadpan serious; `chaotic` is punchy.
+- **Read aloud test:** Say it out loud. If it feels natural, it's ready. If it stumbles, trim it.
+
+Example (`default` tone for Horse Tinder):
+> Dating apps were built for humans. Obvious mistake. Horse Tinder connects riders with their perfect match — swipe through eligible horses near your pasture. Real profiles. Real neighs. Find your stablemate today.
+
+Write this draft alongside the rubric answers. It will be refined and finalized in Step 2.
 
 ## Color extraction
 

@@ -12,6 +12,7 @@ __pycache__/
 
 # Local tooling / machine config
 .playwright-mcp/
+.playwright-cli/
 .agents/
 skills-lock.json
 .claude/

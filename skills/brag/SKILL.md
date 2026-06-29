@@ -13,9 +13,10 @@ You built it. Now let's brag about it.
 
 1. Reads the current project code to understand the app.
 2. Plans a short brag concept specific to this project.
-3. Scripts and storyboards the video.
-4. Hands a focused composition brief to Hyperframes.
-5. Validates, renders, and writes share copy.
+3. Scripts and storyboards the video, including a voiceover script.
+4. Generates voiceover audio via ElevenLabs API (or prompts for API key).
+5. Hands a focused composition brief to Hyperframes.
+6. Validates, renders, and writes share copy.
 
 ## Parsing the invocation
 
@@ -37,11 +38,28 @@ Parse these options:
 | `--duration` | seconds | auto (15-25s) |
 | `--no-music` | flag | music on |
 | `--no-sfx` | flag | sfx on |
+| `--no-voiceover` | flag | voiceover on |
 | `--title` | string | inferred from project |
+| `--voice` | ElevenLabs voice ID | `21m00Tcm4TlvDq8ikWAM` (Rachel) |
+| `--url` | project URL for browser inspection | auto-detected from project |
+| `--no-browser` | flag | browser inspection on |
 
 Tone can be a preset (`default`, `polished`, `yc-parody`, `chaotic`, `deadpan`, `cinematic`, `app-store`) or a creative direction such as "fake Series A launch from 2016", "museum exhibit", or "overproduced mobile game ad".
 
 When the user gives freeform tone direction, map it to the nearest preset for pacing and structure, but preserve the user's direction in the plan and composition brief.
+
+---
+
+## ElevenLabs key check and voice selection
+
+Voiceover is generated via the ElevenLabs TTS API when available. Before starting the workflow:
+
+1. **Check for `ELEVENLABS_API_KEY`** in the environment.
+2. If not set, ask the user: *"Voiceover uses ElevenLabs. Do you have an ElevenLabs API key? (leave blank to skip voiceover, or provide one)"*
+3. If provided, set it as `ELEVENLABS_API_KEY` for the session. **Note:** ElevenLabs requires a paid plan (Starter $5/mo or above) to use library voices via the API. The free tier can only use custom cloned voices. If the API returns a `402` error during generation, fall back to `npx hyperframes tts` (offline, no key needed).
+4. If no key is available, skip ElevenLabs and use `npx hyperframes tts` for voiceover (offline Kokoro-82M model), or skip voiceover entirely if the user passed `--no-voiceover`.
+
+Voice ID defaults to the `--voice` option or `21m00Tcm4TlvDq8ikWAM` (Rachel). Users can pass `--voice <id>` to select a different ElevenLabs voice.
 
 ---
 
@@ -67,7 +85,13 @@ Generate the timestamp at the start of the run (`YYYY-MM-DD-HHmmss`) and use it 
 
 Scan the project directory and extract the information needed to plan the brag video.
 
-**Gate:** You can answer all 9 questions in the brag planning rubric.
+**Read:** [references/playwright-inspect.md](references/playwright-inspect.md)
+
+If `--no-browser` was not passed, use `playwright-cli` to open the project in a real browser. Navigate through pages, interact with UI, take screenshots, and capture snapshots of key pages. This gives you a richer understanding of the product than static files alone, and the screenshots serve as visual references for the Hyperframes composition.
+
+Use `--url` to specify the project URL (e.g. `http://localhost:3000`). If not provided, auto-detect by checking for a local dev server or starting one from the project.
+
+**Gate:** You can answer all 9 questions in the brag planning rubric. Playwright screenshots exist for key pages.
 
 ---
 
@@ -79,11 +103,28 @@ Write `<output-dir>/brag-plan.md` (where `<output-dir>` is `brag-output/` or the
 
 When music is selected, include a compact `Music cue guidance` section: read the bundled track's cue preset from `assets/music/cues/` if present, otherwise note cues will be detected at composition time (any track now supports beat sync — see `references/audio.md`). Cue metadata is optional timing guidance only: story, readability, pacing, and product clarity stay primary.
 
-**Gate:** `<output-dir>/brag-plan.md` exists with a full storyboard. Scene durations sum to 15–25 seconds.
+**Write the voiceover script.** If `ELEVENLABS_API_KEY` is set and `--no-voiceover` was not passed, write a `## Voiceover script` section in the plan. The script is a concise spoken summary (~15-25 seconds, 40-70 words) covering: what the project is, the hook, 2-3 key highlights, and the tagline. The voiceover script drives scene timing — each scene's duration must accommodate both its on-screen text and the matching narration segment.
+
+**Gate:** `<output-dir>/brag-plan.md` exists with a full storyboard. Scene durations sum to 15–25 seconds. Voiceover script is included when applicable.
 
 ---
 
-## Step 3: Hand off to Hyperframes
+## Step 3: Generate voiceover audio
+
+If `ELEVENLABS_API_KEY` is set and `--no-voiceover` not passed, generate the voiceover audio from the script in `brag-plan.md`:
+
+1. **Read:** [references/step-3-compose.md](references/step-3-compose.md) → "Voiceover (ElevenLabs)" section for the full generation workflow.
+2. **Read:** [references/audio.md](references/audio.md) → "ElevenLabs API reference" section for API details and voice IDs.
+3. Call the ElevenLabs TTS API with the voiceover script text.
+4. Save the output to `<output-dir>/composition/assets/voiceover.mp3`.
+4. Check the audio duration with `ffprobe` — adjust scene timings in the plan if needed.
+5. If ElevenLabs API call fails or the key is unavailable, fall back to `npx hyperframes tts` or skip voiceover.
+
+**Gate:** `<output-dir>/composition/assets/voiceover.mp3` exists, or voiceover is explicitly skipped and noted in the plan.
+
+---
+
+## Step 4: Hand off to Hyperframes
 
 **Read:** The `hyperframes` skill (all rules apply)
 **Read:** [references/step-3-compose.md](references/step-3-compose.md)
@@ -91,17 +132,19 @@ When music is selected, include a compact `Music cue guidance` section: read the
 
 Write the composition brief and use Hyperframes to create the video implementation in `<output-dir>/composition/`.
 
-`/brag` owns the product angle, source material, storyboard, tone, format, audio selection, music cue guidance, and delivery expectations. Hyperframes owns the concrete composition structure, exact animation timing, animation mechanics, runtime choices, linting rules, and render workflow.
+`/brag` owns the product angle, source material, storyboard, tone, format, audio selection, music cue guidance, voiceover script, and delivery expectations. Hyperframes owns the concrete composition structure, exact animation timing, animation mechanics, runtime choices, linting rules, and render workflow.
 
 **Gate:** `npx hyperframes lint` passes with zero errors inside `<output-dir>/composition/`.
 
 ---
 
-## Step 4: Validate, render, and deliver
+## Step 5: Validate, render, and deliver
 
 **Read:** [references/step-4-deliver.md](references/step-4-deliver.md)
 
 Validate, preview, render to `<output-dir>/brag.mp4`, and write `<output-dir>/share-copy.txt`.
+
+If voiceover is included, verify the rendered video's audio mix: voiceover should be clear over the music bed. Adjust music ducking or voiceover volume and re-render if needed.
 
 **Gate:** `<output-dir>/brag.mp4` exists. Share copy is written.
 

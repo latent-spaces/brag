@@ -310,3 +310,76 @@ Put the music bed on a low track and give each overlapping SFX its own ascending
 ```
 
 Wire each `<audio>` clip per the current hyperframes Data Attributes + Video/Audio contract (`data-track-index`, `data-volume`, `data-start`, `data-duration`). `/brag` owns only the volume policy above and the track-allocation convention; Hyperframes owns the clip schema.
+
+---
+
+## ElevenLabs API reference
+
+Voiceover generation uses the ElevenLabs Text-to-Speech API. Reference for use in Step 3.
+
+### Endpoint
+
+```
+POST https://api.elevenlabs.io/v1/text-to-speech/{voice_id}
+```
+
+### Authentication
+
+Pass the API key in the `xi-api-key` header:
+
+```bash
+xi-api-key: ${ELEVENLABS_API_KEY}
+```
+
+### Request body
+
+```json
+{
+  "text": "The text to speak...",
+  "model_id": "eleven_multilingual_v2",
+  "voice_settings": {
+    "stability": 0.35,
+    "similarity_boost": 0.75,
+    "style": 0.15,
+    "use_speaker_boost": true
+  }
+}
+```
+
+### Key parameters
+
+| Parameter | Default | Notes |
+|---|---|---|
+| `voice_id` | `21m00Tcm4TlvDq8ikWAM` (Rachel) | Use `--voice` to override. Available voices: Rachel, Adam (`EXAVITQu4vrVn66Der6B`), Bill (`pqHfZKP75CvOlQylNhV4`), etc. |
+| `model_id` | `eleven_multilingual_v2` | Best quality multilingual model. Also supports `eleven_turbo_v2_5` for faster generation. |
+| `stability` | `0.35` | Lower = more expressive/emotional variation. 0.25-0.45 for energetic brag tone. 0.5-0.7 for deadpan/stable. |
+| `similarity_boost` | `0.75` | Higher = closer to original voice. 0.5-0.85 range. |
+| `style` | `0.15` | Exaggeration. 0.0-0.3 range. Keep low for natural delivery. |
+
+### Response
+
+Returns `audio/mpeg` binary stream. Save directly to a `.mp3` file:
+
+```bash
+curl -s -X POST "https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}" \
+  -H "xi-api-key: ${ELEVENLABS_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{ ... }' \
+  --output <output-dir>/composition/assets/voiceover.mp3
+```
+
+### Getting an API key
+
+Users can sign up at https://elevenlabs.io and find their API key under Profile → API Keys.
+
+**Plan requirement:** The free tier cannot use library voices via the API. A paid plan (Starter at $5/mo or above) is required for API access to pre-made voices. Free tier users can still use custom/cloned voices via the API, or skip ElevenLabs and use `npx hyperframes tts` (offline Kokoro-82M model) instead.
+
+### Common voice IDs
+
+| Name | Voice ID | Character |
+|---|---|---|
+| Rachel | `21m00Tcm4TlvDq8ikWAM` | Warm, clear, energetic — best default for brag |
+| Adam | `EXAVITQu4vrVn66Der6B` | Deep, confident, authoritative |
+| Bill | `pqHfZKP75CvOlQylNhV4` | Deep, serious, storytelling |
+| Antoni | `ErXwobaYiN019PkySvjV` | Friendly, warm, approachable |
+| Sarah | `ODIxUW2JmhRQrl2I3pwp` | Bright, articulate, professional |

@@ -59,6 +59,13 @@ landing-page-only, write "none — landing-page only" and rely on Key moments in
 ## Share copy (draft)
 [One sentence for Twitter/X/LinkedIn/Discord. Punchy. Not corporate.]
 
+## Voiceover script (if ElevenLabs API key is available)
+[Spoken summary of the project, ~40-70 words, 15-25 seconds.
+Structure: what the project is → hook → 2-3 highlights → tagline.
+Written to be spoken aloud — conversational, not read-from-page.]
+- Duration (estimated from read-aloud test): [seconds]
+- Voice ID: [ElevenLabs voice ID, default 21m00Tcm4TlvDq8ikWAM (Rachel)]
+
 ## Audio direction
 - Role: [warm bed / sparse professional accents / cinematic support / dense rhythmic layer / intentional silence]
 - Music: [candidate track / mood / none only if disabled, missing, or intentionally silent]
@@ -118,6 +125,19 @@ Scene durations must sum to 15-25 seconds. Count them.
 - Under 15 seconds: too thin, add a scene or lengthen holds.
 - Over 25 seconds: cut a scene or tighten timing.
 - 18-22 seconds is the sweet spot for most brag videos.
+
+## Voiceover timing
+
+When voiceover is included, scene durations must flex to match the spoken script. The narrator's pace overrides the default text-reading floor:
+
+1. **Write the script first.** Get the 40-70 word voiceover script locked before setting exact scene durations.
+2. **Read it aloud.** Time yourself. Adjust for natural pauses. The spoken duration is the video's anchor.
+3. **Distribute across scenes.** Each scene gets a ~3-6 second segment of the voiceover. A scene's visual duration must accommodate both its narration segment and its on-screen text read time.
+4. **Total adjusts.** If the voiceover runs 18s, the video's total duration targets 18-22s (voiceover + 2-4s of non-narrated intro/outro). Adjust scene counts accordingly — fewer scenes when narration is dense.
+
+Voiceover scenes follow a different read-time rule: the narrator delivers the line, and the on-screen text can be shorter/supporting (a keyword, a number, a punchline) rather than repeating the full narration verbatim. This lets visual pace stay high without flashing text.
+
+---
 
 ## Reading time (keep the pace, not at text's expense)
 
