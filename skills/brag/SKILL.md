@@ -7,6 +7,25 @@ description: Turn the current project website into a short, polished, shareable 
 
 You built it. Now let's brag about it.
 
+## Invocation dispatch (must happen first)
+
+Before inspecting the project, parse the complete `/brag` invocation. If the
+invocation contains `--voice`, set `voice.enabled = true`. If it contains
+`--voice-provider <value>`, record that exact provider. Do not silently drop
+either flag and do not fall back to the normal no-voice workflow.
+
+When `voice.enabled` is true, validate the provider immediately:
+
+- missing provider: use `kokoro`;
+- `kokoro`: continue without credentials;
+- `elevenlabs`: require `ELEVENLABS_API_KEY`, then use the ElevenLabs adapter;
+- any other value: stop and list `kokoro` and `elevenlabs`.
+
+If an enabled provider cannot be used, report the provider-specific error and
+stop. Never complete a video while claiming that the requested voice provider
+was used when narration was skipped. Include the resolved voice state and
+provider in the plan and final handoff.
+
 `/brag` turns the current project website or app into a short, polished, shareable launch video using Hyperframes. It is narrow, opinionated, and fun.
 
 ## What this skill does
@@ -38,6 +57,17 @@ Parse these options:
 | `--no-music` | flag | music on |
 | `--no-sfx` | flag | sfx on |
 | `--title` | string | inferred from project |
+| `--voice` | flag | narration off |
+| `--voice-provider` | `kokoro`, `elevenlabs` | `kokoro` (only with `--voice`) |
+
+Voice is opt-in. Selecting a provider does not enable narration by itself.
+Read [references/voice.md](references/voice.md) before planning any run that
+contains `--voice` or `--voice-provider`.
+
+Reject an unsupported `--voice-provider` immediately and list `kokoro` and
+`elevenlabs` as the supported values. If `elevenlabs` is selected with voice
+enabled, verify `ELEVENLABS_API_KEY` before inspecting the project or creating
+the composition.
 
 Tone can be a preset (`default`, `polished`, `yc-parody`, `chaotic`, `deadpan`, `cinematic`, `app-store`) or a creative direction such as "fake Series A launch from 2016", "museum exhibit", or "overproduced mobile game ad".
 

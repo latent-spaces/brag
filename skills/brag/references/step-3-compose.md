@@ -108,13 +108,33 @@ Hyperframes copies any SFX it selects into the same `assets/` tree after choosin
 
 ## Voiceover (only when the user explicitly asks)
 
-Voiceover is off by default and is not offered to the user. Only add narration when the user explicitly requests it ("add a voiceover", "narrate this", etc.). In that case, write the narration lines into `brag-plan.md` under a `## Voiceover script` section, then generate the audio:
+Read [voice.md](voice.md) for the provider contract, defaults, and validation
+rules. Voiceover is disabled unless the user explicitly requests it (for
+example, "add a voiceover", `--voice`, or "narrate this"). Do not offer or
+enable narration during a normal `/brag` run.
+
+When voice is disabled, do not write a voiceover script, call a provider,
+transcribe audio, duck music, add a voice track, or merge narration into the
+video. The normal video export must remain entirely audio-provider agnostic.
+
+When voice is enabled, validate `voice.provider` before creating the
+composition. Use `kokoro` when no provider was specified. Select
+`elevenlabs` only when the user explicitly requested it, and require
+`ELEVENLABS_API_KEY` before invoking its adapter. Write the narration lines
+into `brag-plan.md` under a `## Voiceover script` section, then generate the
+audio through the provider contract:
 
 ```bash
 npx hyperframes tts "<narration text or path to script>" \
   --voice af_heart \
   --output <output-dir>/composition/assets/voiceover.wav
 ```
+
+The command above is the Kokoro implementation. For ElevenLabs, use the
+installed Hyperframes ElevenLabs media adapter with the same input/output
+contract; do not add provider-specific calls to the composition or skill
+pipeline. Both providers must leave one local audio artifact at
+`assets/voiceover.wav` (or an equivalent path passed to the composition).
 
 Run `npx hyperframes tts --list` to see other voices.
 
