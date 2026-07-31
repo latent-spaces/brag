@@ -62,18 +62,13 @@ Or steer the tone:
 /brag --tone "fake Series A launch from 2016"
 ```
 
-Voiceover is off by default. Enable it explicitly with Kokoro (the local
-default provider), or opt into ElevenLabs:
+Voiceover is off by default. Enable it explicitly with:
 
 ```text
 /brag --voice
-/brag --voice --voice-provider kokoro
-/brag --voice --voice-provider elevenlabs  # requires ELEVENLABS_API_KEY
 ```
 
-A provider choice alone never turns narration on. See
-[`skills/brag/references/voice.md`](skills/brag/references/voice.md) for the
-provider contract and failure behavior.
+Narration uses Kokoro through Hyperframes when enabled.
 
 You get a `brag-output/` folder with the plan, a composition brief, share copy, and the rendered `brag.mp4`.
 

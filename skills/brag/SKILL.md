@@ -10,21 +10,9 @@ You built it. Now let's brag about it.
 ## Invocation dispatch (must happen first)
 
 Before inspecting the project, parse the complete `/brag` invocation. If the
-invocation contains `--voice`, set `voice.enabled = true`. If it contains
-`--voice-provider <value>`, record that exact provider. Do not silently drop
-either flag and do not fall back to the normal no-voice workflow.
-
-When `voice.enabled` is true, validate the provider immediately:
-
-- missing provider: use `kokoro`;
-- `kokoro`: continue without credentials;
-- `elevenlabs`: require `ELEVENLABS_API_KEY`, then use the ElevenLabs adapter;
-- any other value: stop and list `kokoro` and `elevenlabs`.
-
-If an enabled provider cannot be used, report the provider-specific error and
-stop. Never complete a video while claiming that the requested voice provider
-was used when narration was skipped. Include the resolved voice state and
-provider in the plan and final handoff.
+invocation contains `--voice`, set `voice.enabled = true`. Enable narration
+only for that run. Do not enable narration automatically and do not fall back
+to the normal no-voice workflow.
 
 `/brag` turns the current project website or app into a short, polished, shareable launch video using Hyperframes. It is narrow, opinionated, and fun.
 
@@ -58,20 +46,22 @@ Parse these options:
 | `--no-sfx` | flag | sfx on |
 | `--title` | string | inferred from project |
 | `--voice` | flag | narration off |
-| `--voice-provider` | `kokoro`, `elevenlabs` | `kokoro` (only with `--voice`) |
 
-Voice is opt-in. Selecting a provider does not enable narration by itself.
-Read [references/voice.md](references/voice.md) before planning any run that
-contains `--voice` or `--voice-provider`.
-
-Reject an unsupported `--voice-provider` immediately and list `kokoro` and
-`elevenlabs` as the supported values. If `elevenlabs` is selected with voice
-enabled, verify `ELEVENLABS_API_KEY` before inspecting the project or creating
-the composition.
+Voice is opt-in. If `--voice` is present, use Kokoro via Hyperframes and do
+not add any provider-selection logic. The voice workflow is intentionally
+single-provider in this PR.
 
 Tone can be a preset (`default`, `polished`, `yc-parody`, `chaotic`, `deadpan`, `cinematic`, `app-store`) or a creative direction such as "fake Series A launch from 2016", "museum exhibit", or "overproduced mobile game ad".
 
 When the user gives freeform tone direction, map it to the nearest preset for pacing and structure, but preserve the user's direction in the plan and composition brief.
+
+## Narration guidance
+
+When `--voice` is enabled, write narration that complements the visuals, does
+not simply read visible text, matches scene pacing, sounds natural and
+conversational, and moves smoothly between scenes. Keep the script concise and
+specific to the product so the voice feels like part of the edit rather than a
+separate narration track.
 
 ---
 
