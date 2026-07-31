@@ -1,9 +1,49 @@
 (() => {
-  // Hero mute toggle
+  // Hero playback and mute controls
   const heroVid = document.getElementById('hero-vid');
   const heroMute = document.getElementById('hero-mute');
   if (heroVid && heroMute) {
+    const heroMuteLabel = heroMute.querySelector('.hero-mute-label');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const setControlMode = (mode) => {
+      if (mode === 'play') {
+        heroMute.dataset.mode = 'play';
+        heroMute.removeAttribute('aria-pressed');
+        heroMute.setAttribute('aria-label', 'play brag video');
+        if (heroMuteLabel) heroMuteLabel.textContent = 'play video';
+        return;
+      }
+
+      delete heroMute.dataset.mode;
+      heroMute.setAttribute('aria-pressed', heroVid.muted ? 'true' : 'false');
+      heroMute.setAttribute('aria-label', heroVid.muted ? 'unmute brag video' : 'mute brag video');
+      if (heroMuteLabel) heroMuteLabel.textContent = 'tap for sound';
+    };
+
+    const applyMotionPreference = () => {
+      if (reducedMotion.matches) {
+        heroVid.pause();
+        heroVid.load();
+        setControlMode('play');
+        return;
+      }
+
+      heroVid.muted = true;
+      setControlMode('mute');
+      const playback = heroVid.play();
+      if (playback && playback.catch) playback.catch(() => {});
+    };
+
     heroMute.addEventListener('click', () => {
+      if (heroMute.dataset.mode === 'play') {
+        heroVid.muted = false;
+        setControlMode('mute');
+        const playback = heroVid.play();
+        if (playback && playback.catch) playback.catch(() => {});
+        return;
+      }
+
       const wasMuted = heroVid.muted;
       heroVid.muted = !wasMuted;
       heroMute.setAttribute('aria-pressed', wasMuted ? 'false' : 'true');
@@ -14,6 +54,9 @@
         if (p && p.catch) p.catch(() => {});
       }
     });
+
+    applyMotionPreference();
+    reducedMotion.addEventListener('change', applyMotionPreference);
   }
 
   // Gallery videos use the native <video controls> player. No custom JS.

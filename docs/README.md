@@ -9,6 +9,14 @@ python3 -m http.server 8000
 open http://localhost:8000
 ```
 
+## Sanity check
+
+```bash
+node ../scripts/check-docs.mjs
+```
+
+This verifies local docs links and media paths, plus the gallery count copy.
+
 ## Deploy (GitHub Pages)
 
 Fully self-contained — no build step. In the repo's **Settings → Pages**, set the source to **Deploy from a branch**, branch `main`, folder **`/docs`**.

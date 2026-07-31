@@ -250,9 +250,6 @@ button { font: inherit; cursor: pointer; }
   object-fit: cover;
   display: block;
 }
-@media (prefers-reduced-motion: reduce) {
-  .hero-video-media { display: none; }
-}
 
 /* Mute toggle, lower-right of the hero tile */
 .hero-mute {
@@ -284,7 +281,10 @@ button { font: inherit; cursor: pointer; }
 }
 .hero-mute:focus-visible { box-shadow: 0 0 0 3px var(--hero-tint); }
 .hero-mute svg { width: 16px; height: 16px; }
+.hero-mute .icon-play,
 .hero-mute .icon-sound { display: none; }
+.hero-mute[data-mode="play"] .icon-play { display: inline-block; }
+.hero-mute[data-mode="play"] .icon-muted { display: none; }
 .hero-mute[aria-pressed="false"] .icon-muted { display: none; }
 .hero-mute[aria-pressed="false"] .icon-sound { display: inline-block; }
 .hero-mute[aria-pressed="false"] .hero-mute-label::after { content: "sound on"; }
