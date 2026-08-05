@@ -1,0 +1,28 @@
+{
+  "label": "bad",
+  "answers": {
+    "schema": "brag.review_narrative/1",
+    "product": "A note-taking app",
+    "problem": "People forget their ideas",
+    "proof": [
+      "a logo"
+    ],
+    "scenes": [
+      "a logo",
+      "some words",
+      "a button",
+      "an ending"
+    ],
+    "unsupported": [
+      "every number shown"
+    ],
+    "readable": [
+      "all of the body copy"
+    ],
+    "silent": {
+      "yes": false,
+      "because": "the frames alone do not make a case"
+    },
+    "ending": "unclear"
+  }
+}

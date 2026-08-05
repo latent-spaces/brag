@@ -1,0 +1,81 @@
+{
+  "schema": "brag.visual_world/1",
+  "id": "code-as-architecture",
+  "name": "Code as architecture",
+  "summary": "Source treated as structure: files as volumes, calls as spans between them. The camera moves through the codebase rather than scrolling a file.",
+  "camera_model": "push",
+  "depth_levels": 5,
+  "transition_families": [
+    "zoom",
+    "morph",
+    "slide"
+  ],
+  "motion_intensity": "moderate",
+  "background": {
+    "kind": "flat",
+    "detail": "deep ground so the structure reads as built rather than drawn"
+  },
+  "typography": {
+    "display_scale": 0.9,
+    "case": "sentence",
+    "lead_family": "mono",
+    "measure": 1200
+  },
+  "layouts": [
+    {
+      "id": "elevation",
+      "align": "center",
+      "anchor": "middle",
+      "scale": 1,
+      "inset": 0.08,
+      "chrome": "none",
+      "best_for": [
+        "Product_Intro",
+        "Key_Feature"
+      ]
+    },
+    {
+      "id": "section-cut",
+      "align": "leading",
+      "anchor": "split",
+      "scale": 0.85,
+      "inset": 0.06,
+      "chrome": "rule",
+      "best_for": [
+        "Problem",
+        "Benefits"
+      ]
+    },
+    {
+      "id": "close-detail",
+      "align": "leading",
+      "anchor": "lower",
+      "scale": 0.75,
+      "inset": 0.07,
+      "chrome": "panel",
+      "best_for": [
+        "Social_Proof"
+      ]
+    },
+    {
+      "id": "wide-establish",
+      "align": "center",
+      "anchor": "upper",
+      "scale": 1.3,
+      "inset": 0.14,
+      "chrome": "none",
+      "best_for": [
+        "Hook",
+        "Brand_Outro"
+      ]
+    }
+  ],
+  "avoid": [
+    "syntax-highlighted screenshots as wallpaper"
+  ],
+  "suits_surfaces": [
+    "library",
+    "cli",
+    "api"
+  ]
+}

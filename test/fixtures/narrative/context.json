@@ -1,0 +1,44 @@
+{
+  "model": {
+    "name": "Tapedeck",
+    "one_line": "Records what your terminal printed so a demo never drifts.",
+    "problem": "A recorded demo drifts from what the tool really prints.",
+    "proof": [
+      {
+        "id": "byte_identical",
+        "claim": "100% of frames replay byte-identical"
+      },
+      {
+        "id": "two_commands",
+        "claim": "the whole tool is record and play"
+      }
+    ]
+  },
+  "positioning": {
+    "action": "npm i -g tapedeck",
+    "claims": []
+  },
+  "graph": {
+    "scenes": [
+      {
+        "id": "hook",
+        "required_proof": []
+      },
+      {
+        "id": "mechanism",
+        "required_proof": [
+          "two_commands"
+        ]
+      },
+      {
+        "id": "proof",
+        "required_proof": [
+          "byte_identical"
+        ]
+      }
+    ],
+    "audio": {
+      "silent_comprehension": true
+    }
+  }
+}

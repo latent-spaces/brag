@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "brag/selected_concept",
+  "title": "Locked concept",
+  "description": "Once chosen, a concept stops being a suggestion and becomes a constraint. Every later stage is checked against it, which is what stops an implementation drifting back into another typography video.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "name", "central_metaphor", "visual_rule", "emotional_arc", "forbidden_motifs", "selection"],
+  "properties": {
+    "schema": { "const": "brag.selected_concept/1" },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "premise": { "type": "string" },
+    "central_metaphor": { "type": "string" },
+    "visual_rule": { "type": "string" },
+    "emotional_arc": { "type": "string" },
+    "forbidden_motifs": { "type": "array", "items": { "type": "string" } },
+    "suggested_world": { "type": "string" },
+    "beats": { "type": "array" },
+    "why_this_product": { "type": "string" },
+    "risk": { "type": "string" },
+
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "rated", "computed", "runners_up"],
+      "properties": {
+        "total": { "type": "number" },
+        "rated": { "type": "object" },
+        "computed": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "novelty": { "type": "number" },
+            "difference_from_previous": { "type": "number" }
+          }
+        },
+        "runners_up": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string" },
+              "total": { "type": "number" },
+              "worth_grafting": { "type": "string" }
+            }
+          }
+        },
+        "selected_at": { "type": "string" }
+      }
+    }
+  }
+}

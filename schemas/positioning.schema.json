@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "brag/positioning",
+  "title": "Positioning",
+  "description": "Audience, angle and the claim-to-source map. The gate on this stage is that every claim the video intends to make resolves to a proof id in the product model — which is what stops a good-sounding line entering the edit unsupported.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "audience", "angle", "claims", "action"],
+  "properties": {
+    "schema": { "const": "brag.positioning/1" },
+
+    "audience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["who", "already_knows", "cares_about"],
+      "properties": {
+        "who": { "type": "string", "minLength": 8, "maxLength": 200 },
+        "already_knows": {
+          "description": "What you can assume, so the video does not spend its first seconds explaining it.",
+          "type": "string",
+          "maxLength": 300
+        },
+        "cares_about": { "type": "string", "maxLength": 300 },
+        "destination": {
+          "description": "Where this will be watched. Changes pacing, framing and whether sound can be assumed.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "enum": ["x", "linkedin", "discord", "hacker_news", "product_hunt", "readme", "conference", "internal", "youtube", "tiktok", "instagram"] }
+        }
+      }
+    },
+
+    "angle": {
+      "description": "The one sentence the video argues. Not a feature list.",
+      "type": "string",
+      "minLength": 15,
+      "maxLength": 300
+    },
+
+    "claims": {
+      "description": "Everything the video will assert, each bound to a proof id. Unbound claims fail this stage.",
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text", "proof_ref"],
+        "properties": {
+          "text": { "type": "string", "minLength": 3 },
+          "proof_ref": { "type": "string" },
+          "verbatim": {
+            "description": "True when this must be shown in the product's own words rather than paraphrased.",
+            "type": "boolean"
+          }
+        }
+      }
+    },
+
+    "action": {
+      "description": "What a convinced viewer does next, in the product's own terms.",
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 200
+    },
+
+    "avoid": {
+      "description": "Framings that are wrong for this product even though they would land — competitor comparisons it does not want, categories it is not in.",
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "generated_at": { "type": "string", "format": "date-time" }
+  }
+}

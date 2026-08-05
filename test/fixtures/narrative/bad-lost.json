@@ -1,0 +1,24 @@
+{
+  "label": "bad",
+  "answers": {
+    "schema": "brag.review_narrative/1",
+    "product": "I could not tell what this is for",
+    "problem": "Something about files, I think",
+    "proof": [],
+    "scenes": [
+      "some text",
+      "more text"
+    ],
+    "unsupported": [
+      "it claims to be fast with nothing behind it"
+    ],
+    "readable": [
+      "the second line went by too quickly"
+    ],
+    "silent": {
+      "yes": false,
+      "because": "nothing on screen explains the idea without narration"
+    },
+    "ending": "nothing is asked"
+  }
+}

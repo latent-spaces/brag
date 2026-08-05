@@ -1,0 +1,83 @@
+{
+  "schema": "brag.visual_world/1",
+  "id": "technical-blueprint",
+  "name": "Technical blueprint",
+  "summary": "Measured drawing. Content is annotated, dimensioned and connected by leader lines, as though the product were being specified rather than advertised.",
+  "camera_model": "planar-drift",
+  "depth_levels": 2,
+  "transition_families": [
+    "slide",
+    "dissolve",
+    "mask"
+  ],
+  "motion_intensity": "restrained",
+  "background": {
+    "kind": "grid",
+    "detail": "a faint measured grid that the camera drifts across"
+  },
+  "typography": {
+    "display_scale": 0.8,
+    "case": "upper",
+    "lead_family": "mono",
+    "measure": 1100
+  },
+  "layouts": [
+    {
+      "id": "plan-view",
+      "align": "center",
+      "anchor": "middle",
+      "scale": 0.9,
+      "inset": 0.1,
+      "chrome": "frame",
+      "best_for": [
+        "Product_Intro",
+        "Key_Feature"
+      ]
+    },
+    {
+      "id": "annotated-left",
+      "align": "leading",
+      "anchor": "upper",
+      "scale": 0.85,
+      "inset": 0.07,
+      "chrome": "rule",
+      "best_for": [
+        "Problem",
+        "Benefits"
+      ]
+    },
+    {
+      "id": "detail-callout",
+      "align": "trailing",
+      "anchor": "lower",
+      "scale": 0.7,
+      "inset": 0.07,
+      "chrome": "panel",
+      "best_for": [
+        "Social_Proof"
+      ]
+    },
+    {
+      "id": "title-block",
+      "align": "leading",
+      "anchor": "lower",
+      "scale": 1,
+      "inset": 0.06,
+      "chrome": "frame",
+      "best_for": [
+        "Hook",
+        "Brand_Outro"
+      ]
+    }
+  ],
+  "avoid": [
+    "gradients",
+    "soft focus"
+  ],
+  "suits_surfaces": [
+    "api",
+    "hardware",
+    "library",
+    "research"
+  ]
+}

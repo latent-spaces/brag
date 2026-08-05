@@ -1,0 +1,24 @@
+{
+  "label": "good",
+  "answers": {
+    "schema": "brag.review_narrative/1",
+    "product": "Tapedeck, a command-line tool for recording terminal demos",
+    "problem": "A recorded demo drifts from what the tool really prints",
+    "proof": [
+      "100% of frames replay byte-identical",
+      "the whole tool is record and play"
+    ],
+    "scenes": [
+      "a demo drifting",
+      "the record command",
+      "the measured result"
+    ],
+    "unsupported": [],
+    "readable": [],
+    "silent": {
+      "yes": true,
+      "because": "the argument is carried by what is on screen"
+    },
+    "ending": "npm i -g tapedeck"
+  }
+}

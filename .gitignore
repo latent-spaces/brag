@@ -10,6 +10,20 @@ __pycache__/
 **/.venv/
 .uv-cache/
 
+# Node
+node_modules/
+**/node_modules/
+package-lock.json
+
+# Brag working state (per-product; regenerable, and captures hold whatever the
+# product printed)
+**/brag/captures/
+**/brag/renders/
+**/brag/compositions/
+**/brag/delivery/
+**/brag/tasks/
+**/brag/reviews/
+
 # Local tooling / machine config
 .playwright-mcp/
 .agents/
@@ -25,3 +39,11 @@ skills-lock.json
 # Codex packaging — excluded from the Claude-only initial release
 .codex-plugin/
 CODEX_PLUGIN_FOLLOWUPS.md
+
+# Per-agent instruction sidecars some tools generate in a checkout
+AGENTS.md
+GEMINI.md
+CLAUDE.md
+DECISIONS.md
+IMPLEMENTED.md
+TASKS.md

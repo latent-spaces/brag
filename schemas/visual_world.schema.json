@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "brag/visual_world",
+  "title": "Visual world",
+  "description": "How the product should physically exist on screen. A tone preset governs what the copy says; a world governs camera, depth, materials, and where content sits. Worlds are data rather than prose because the composition reads them directly — a world that does not change the rendered frame is a name, not a look.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "id", "name", "summary", "camera_model", "depth_levels", "transition_families", "layouts"],
+  "properties": {
+    "schema": { "const": "brag.visual_world/1" },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "name": { "type": "string", "minLength": 3 },
+    "summary": { "type": "string", "minLength": 20, "maxLength": 400 },
+
+    "camera_model": {
+      "description": "How the frame moves. Only the documented CSS-perspective camera is supported; three.js is deliberately excluded because it cannot infer a duration and heavy WebGL is out of scope upstream.",
+      "enum": ["locked", "planar-drift", "perspective-flight", "orbit", "scroll", "push"]
+    },
+    "depth_levels": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "transition_families": {
+      "description": "Seam vocabulary this world may spend. At least two, so a film in this world cannot be built from a single move.",
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": { "enum": ["slide", "zoom", "morph", "mask", "cut", "rotate", "dissolve"] }
+    },
+
+    "motion_intensity": { "enum": ["restrained", "moderate", "energetic"] },
+
+    "background": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["flat", "grid", "gradient", "panel", "rule", "vignette"] },
+        "detail": { "type": "string" }
+      }
+    },
+
+    "typography": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "display_scale": { "type": "number", "minimum": 0.5, "maximum": 2 },
+        "case": { "enum": ["sentence", "upper", "title"] },
+        "lead_family": { "enum": ["sans", "mono"] },
+        "measure": { "type": "integer", "minimum": 400, "maximum": 1800 }
+      }
+    },
+
+    "layouts": {
+      "description": "The compositions this world can put on screen. Scenes rotate through them, which is what stops every frame being the same picture with different words.",
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "align", "anchor"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "align": { "enum": ["leading", "center", "trailing"] },
+          "anchor": {
+            "description": "Where the content block sits vertically. Nothing may anchor into the caption band.",
+            "enum": ["top", "upper", "middle", "lower", "split"]
+          },
+          "scale": { "type": "number", "minimum": 0.5, "maximum": 1.8 },
+          "inset": { "type": "number", "minimum": 0.02, "maximum": 0.25 },
+          "chrome": { "enum": ["none", "panel", "rule", "frame"] },
+          "best_for": {
+            "type": "array",
+            "items": { "enum": ["Hook", "Problem", "Product_Intro", "Key_Feature", "Benefits", "Social_Proof", "CTA", "Brand_Outro"] }
+          }
+        }
+      }
+    },
+
+    "avoid": { "type": "array", "items": { "type": "string" } },
+    "suits_surfaces": {
+      "type": "array",
+      "items": { "enum": ["website", "cli", "library", "api", "desktop", "mobile", "game", "hardware", "research"] }
+    }
+  }
+}
