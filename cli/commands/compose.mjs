@@ -83,15 +83,21 @@ export async function run({ flags }) {
     flags.world ?? graph.visual_world ?? worldsFor(model.surface_type)[0].id,
   );
 
+  const variant =
+    flags.variant ?? graph.format.name ?? `${graph.format.width}x${graph.format.height}`;
+
   /* Is this the same video again? Measured before anything is rendered, so a
-     repeat costs seconds rather than a full render. */
+     repeat costs seconds rather than a full render. This variant's own earlier
+     deliveries are excluded: recompiling a film after fixing something in it
+     is meant to produce the same film. */
   const fp = fingerprint({ graph, world });
-  const sameness = assertSameness(fp, new Memory().recentFingerprints(10));
+  const sameness = assertSameness(
+    fp,
+    new Memory().recentFingerprints(10, { exclude: { project: info.name, variant } }),
+  );
   for (const a of sameness.advisories) warn(`${a.message} — ${a.fix}`);
   project.write("fingerprint.json", fp);
 
-  const variant =
-    flags.variant ?? graph.format.name ?? `${graph.format.width}x${graph.format.height}`;
   const outDir = project.path("compositions", variant);
   ensureDir(outDir);
 

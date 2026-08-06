@@ -112,9 +112,20 @@ export function assignLayouts(world, scenes, seams = []) {
     if (seam.carrier) carriedInto.set(seam.to, seam.from);
   }
 
+  /* Two layouts with the same anchor put content in the same horizontal band,
+     and a band is what a viewer reads as "the same picture again" — the repeat
+     detector measures exactly that, from pixels. Rotating layout ids alone can
+     therefore produce a film that looks repetitive while every id is different,
+     so candidates are ordered by how little their anchor has been spent. */
+  const anchorUse = new Map();
+
   for (const scene of scenes) {
     const preferred = layouts.filter((l) => !scene.role || l.best_for?.includes(scene.role));
     let ordered = [...(preferred.length ? preferred : layouts), ...layouts];
+    ordered = ordered
+      .map((l, i) => ({ l, i }))
+      .sort((a, b) => (anchorUse.get(a.l.anchor) ?? 0) - (anchorUse.get(b.l.anchor) ?? 0) || a.i - b.i)
+      .map((e) => e.l);
 
     const carriedFrom = carriedInto.get(scene.id);
     const inherited = carriedFrom ? byScene.get(carriedFrom) : null;
@@ -126,6 +137,7 @@ export function assignLayouts(world, scenes, seams = []) {
       layouts[0];
 
     used.set(pick.id, (used.get(pick.id) ?? 0) + 1);
+    anchorUse.set(pick.anchor, (anchorUse.get(pick.anchor) ?? 0) + 1);
     previous = pick.id;
     byScene.set(scene.id, pick);
     out.push({ scene: scene.id, layout: pick, carried: Boolean(inherited) });

@@ -226,10 +226,18 @@ export class Memory {
     return history;
   }
 
-  /** Fingerprints of the N most recent videos, newest first. */
-  recentFingerprints(limit = 10, { project = null } = {}) {
+  /**
+   * Fingerprints of the N most recent videos, newest first.
+   *
+   * `exclude` drops earlier deliveries of one project's own variant. Rebuilding
+   * a film after fixing something in it is not the failure the sameness gate
+   * exists to catch — without this, the second compile of the same cut always
+   * reads as 100% identical to the first, which it is, and which is the point.
+   */
+  recentFingerprints(limit = 10, { project = null, exclude = null } = {}) {
     return this.history()
       .videos.filter((v) => !project || v.project === project)
+      .filter((v) => !exclude || !(v.project === exclude.project && v.variant === exclude.variant))
       .slice(-limit)
       .reverse()
       .map((v) => v.fingerprint)

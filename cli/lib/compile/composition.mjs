@@ -125,6 +125,14 @@ export function buildIndexHtml({ model, graph, world, captures = {} }) {
               ? `        border-top: 2px solid var(--accent); padding-top: ${px(36)}px;`
               : "",
         "      }",
+        /* A split anchor with one child is not a split. Centring it would be
+           the safe answer and the wrong one: every other layout already
+           centres, so collapsing this one too makes consecutive scenes the
+           same picture with different words in them. It keeps its own band —
+           below the middle, clear of the caption zone. */
+        l.anchor === "split"
+          ? `      .lay-${l.id}.solo { justify-content: flex-end; bottom: ${Math.round(height * 0.28)}px; }`
+          : "",
       ]
         .filter(Boolean)
         .join("\n");
@@ -161,7 +169,14 @@ export function buildIndexHtml({ model, graph, world, captures = {} }) {
 
     const body = [
       `      <div class="bg"></div>`,
-      `      <div class="stage lay-${(layoutFor.get(scene.id) ?? { id: "default" }).id}" id="stage-${scene.id}">`,
+      /* A split anchor distributes its children between the top and bottom
+         edges, which is a composition only when there is more than one thing
+         to distribute. A scene holding a kicker and a single line has nothing
+         to split, so in a tall frame the line is pushed into the caption band
+         with a screen of dead space above it. Those collapse to centred. */
+      `      <div class="stage lay-${(layoutFor.get(scene.id) ?? { id: "default" }).id}${
+        (terminal ? 1 : 0) + Math.max(reading.length, 1) > 1 ? "" : " solo"
+      }" id="stage-${scene.id}">`,
       terminal ? terminal.html : "",
       scene.role ? `        <p class="kicker" id="kicker-${scene.id}">${esc(scene.role.replace(/_/g, " "))}</p>` : "",
       ...reading.map(

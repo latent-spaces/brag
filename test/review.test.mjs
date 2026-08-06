@@ -200,7 +200,7 @@ test("content in the caption band is caught, above it is not", () => {
   assert.equal(detectCaptionZone([frame({ ink: high })]).length, 0);
 });
 
-test("two scenes with the same layout are reported once, naming both", () => {
+test("a cut that lands back on the same composition is reported, naming both", () => {
   const inkAt = (f) => rowInk(grayWithInkAt(f)).map((v) => Number(v.toFixed(3)));
   const same = inkAt(0.4);
   const findings = detectRepeatedLayouts([
@@ -211,7 +211,40 @@ test("two scenes with the same layout are reported once, naming both", () => {
   ]);
   assert.equal(findings.length, 1);
   assert.equal(findings[0].code, "repeated_layout");
-  assert.match(findings[0].message, /"a" and "b"/);
+  assert.match(findings[0].message, /"a" cuts to "b"/);
+});
+
+test("a composition reused inside its budget, never twice in a row, is allowed", () => {
+  const inkAt = (f) => rowInk(grayWithInkAt(f)).map((v) => Number(v.toFixed(3)));
+  const a = inkAt(0.25);
+  const b = inkAt(0.6);
+  /* A world ships four layouts, so demanding a distinct picture for every
+     scene is unsatisfiable — and the assigner already budgets reuse at 40%. */
+  const findings = detectRepeatedLayouts([
+    frame({ scene: "one", kind: "midpoint", ink: a }),
+    frame({ scene: "two", kind: "midpoint", ink: b }),
+    frame({ scene: "three", kind: "midpoint", ink: a }),
+    frame({ scene: "four", kind: "midpoint", ink: b }),
+  ]);
+  assert.deepEqual(findings, []);
+});
+
+test("one composition carrying more of the film than the budget is reported", () => {
+  const inkAt = (f) => rowInk(grayWithInkAt(f)).map((v) => Number(v.toFixed(3)));
+  const a = inkAt(0.25);
+  const b = inkAt(0.6);
+  /* Three of five on one picture against a budget of two, and never adjacent,
+     so the only thing wrong is how much of the film it carries. */
+  const findings = detectRepeatedLayouts([
+    frame({ scene: "one", kind: "midpoint", ink: a }),
+    frame({ scene: "two", kind: "midpoint", ink: b }),
+    frame({ scene: "three", kind: "midpoint", ink: a }),
+    frame({ scene: "four", kind: "midpoint", ink: b }),
+    frame({ scene: "five", kind: "midpoint", ink: a }),
+  ]);
+  assert.equal(findings.length, 1);
+  assert.equal(findings[0].code, "repeated_layout");
+  assert.match(findings[0].message, /3 of 5 scenes/);
 });
 
 test("scenes that place content differently are not called repetitive", () => {
@@ -344,4 +377,49 @@ test("the same construction twice is caught by similarity", () => {
     !fresh.violations.some((v) => v.code === "too_similar"),
     `a different world should not read as a repeat (nearest ${fresh.nearest?.score})`,
   );
+});
+
+/* -------------------------------------------------- the ink noise floor */
+
+test("a background a few levels off does not register as ink", () => {
+  /* A page whose bottom band renders slightly brighter than the rest — an
+     encoder seam, a panel a shade off — with real text higher up. Rows are
+     normalised against the frame's own peak, so on a sparse frame that
+     invisible shift used to normalise up into something the caption detector
+     reported as copy in an empty band. */
+  const w = 64;
+  const h = 36;
+  const data = new Uint8Array(w * h).fill(244);
+  for (let x = 4; x < w - 4; x++) {
+    data[14 * w + x] = 40;
+    data[15 * w + x] = 40;
+  }
+  for (let y = 34; y < h; y++) for (let x = 0; x < w; x++) data[y * w + x] = 249;
+
+  const ink = rowInk({ w, h, data });
+  assert.ok(ink[14] > 0.9, "the text row is the peak");
+  assert.equal(ink[34], 0, "a five-level background shift is not ink");
+  assert.equal(ink[35], 0);
+  assert.equal(detectCaptionZone([frame({ ink, scene: "outro", at: 3 })]).length, 0);
+});
+
+/* ----------------------------------------------------- layout assignment */
+
+test("layouts are spread across anchors, not only across ids", () => {
+  const world = {
+    id: "w",
+    layouts: [
+      { id: "one", align: "center", anchor: "middle" },
+      { id: "two", align: "leading", anchor: "middle" },
+      { id: "three", align: "center", anchor: "upper" },
+      { id: "four", align: "leading", anchor: "lower" },
+    ],
+  };
+  const scenes = [{ id: "a" }, { id: "b" }, { id: "c" }, { id: "d" }];
+  const anchors = assignLayouts(world, scenes).map((a) => a.layout.anchor);
+
+  /* Two layouts sharing an anchor put content in the same band, which is what
+     a viewer reads as the same picture — rotating ids alone would give
+     middle, middle, upper, lower and look repetitive while every id differed. */
+  assert.equal(new Set(anchors).size, 3, `anchors used: ${anchors.join(", ")}`);
 });

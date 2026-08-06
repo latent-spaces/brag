@@ -179,4 +179,9 @@ export const TERMINAL_CSS = `
       .tview { position: relative; padding: 14px 16px; }
       .tstate { position: absolute; inset: 14px 16px; opacity: 0; }
       .trow { position: absolute; left: 0; right: 0; height: var(--th); line-height: var(--th); white-space: pre; }
-      .trow span { position: absolute; font-size: calc(var(--tw) * 1.68); }`;
+      /* Runs are positioned on a --tw grid, so a glyph advance wider than --tw
+         makes a long run overrun its own cells and spill past the panel. The
+         factor has to assume the widest advance a mono stack might have
+         (~0.69em) rather than the narrowest, since under-filling a cell reads
+         as tracking and overfilling reads as clipped text. */
+      .trow span { position: absolute; font-size: calc(var(--tw) * 1.44); }`;

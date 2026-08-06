@@ -71,12 +71,23 @@ export function rowInk(frame) {
   let peak = 0;
   for (let y = 0; y < h; y++) {
     let acc = 0;
-    for (let x = 0; x < w; x++) acc += Math.abs(data[y * w + x] - background);
+    for (let x = 0; x < w; x++) {
+      const departure = Math.abs(data[y * w + x] - background);
+      /* Below the noise floor is not ink. Rows are normalised against the
+         frame's own peak, so on a sparse frame an invisible few-level shift —
+         an encoder seam, a faint gradient, a panel a shade off the page —
+         normalises up into something that reads as content, and the caption
+         detector reports copy in a band that is empty to the eye. */
+      if (departure > INK_FLOOR) acc += departure;
+    }
     rows[y] = acc / w;
     if (rows[y] > peak) peak = rows[y];
   }
   return peak > 0 ? rows.map((v) => v / peak) : rows.map(() => 0);
 }
+
+/** Levels of departure from background below which a pixel is not ink. */
+const INK_FLOOR = 12;
 
 /**
  * Average hash: downsample to 8×8, one bit per cell against the mean.

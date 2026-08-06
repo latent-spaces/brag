@@ -78,41 +78,71 @@ export function detectCaptionZone(frames, { zone = CAPTION_ZONE, minInk = 0.35 }
 }
 
 /**
- * Two scenes that look the same.
+ * Compositions the film leans on too hard, and cuts that land on the same one.
  *
  * Compares one representative frame per scene, so a repeated layout is caught
  * while a scene's own frames — which should of course resemble each other —
  * are not. A repeat is only interesting between *different* scenes.
+ *
+ * What counts as too much is the same budget the layout assigner spends
+ * against: a composition may carry up to 40% of a film. Failing every pair
+ * that matched would contradict that outright — a world ships four layouts, so
+ * a seven-scene film cannot give each scene its own and the two rules would
+ * make each other unsatisfiable. Two things are actually wrong: one picture
+ * carrying more of the film than the budget allows, and a cut that lands back
+ * on the picture it just left, which reads as no cut at all.
  */
-export function detectRepeatedLayouts(frames, { maxDistance = 1 } = {}) {
+export function detectRepeatedLayouts(frames, { maxDistance = 1, budgetShare = 0.4 } = {}) {
   const byScene = new Map();
   for (const f of frames) {
     if (!f.scene || f.kind !== "midpoint") continue;
     if (!byScene.has(f.scene)) byScene.set(f.scene, f);
   }
 
-  const entries = [...byScene.values()];
+  const entries = [...byScene.values()].filter((f) => layoutSignature(f) !== null);
   const out = [];
-  for (let i = 0; i < entries.length; i++) {
-    for (let j = i + 1; j < entries.length; j++) {
-      const a = entries[i];
-      const b = entries[j];
-      const sa = layoutSignature(a);
-      const sb = layoutSignature(b);
-      if (sa === null || sb === null) continue;
+  if (!entries.length) return out;
 
-      const distance = hamming(sa, sb);
-      if (distance > maxDistance) continue;
-      out.push({
-        code: "repeated_layout",
-        scene: b.scene,
-        at: b.at,
-        message:
-          `"${a.scene}" and "${b.scene}" put content in the same places ` +
-          `(layout distance ${distance}) — the video shows the same picture twice with different words in it`,
-        fix: "change the composition, the camera, or what is on screen — not only the copy",
-      });
-    }
+  /* Group scenes whose compositions are within maxDistance of each other. */
+  const groups = [];
+  for (const entry of entries) {
+    const sig = layoutSignature(entry);
+    const group = groups.find((g) => hamming(g.signature, sig) <= maxDistance);
+    if (group) group.scenes.push(entry);
+    else groups.push({ signature: sig, scenes: [entry] });
+  }
+
+  const budget = Math.max(2, Math.floor(entries.length * budgetShare));
+  for (const group of groups) {
+    if (group.scenes.length <= budget) continue;
+    const last = group.scenes[group.scenes.length - 1];
+    out.push({
+      code: "repeated_layout",
+      scene: last.scene,
+      at: last.at,
+      message:
+        `${group.scenes.length} of ${entries.length} scenes put content in the same places ` +
+        `(${group.scenes.map((s) => `"${s.scene}"`).join(", ")}) — more than the ${budget} a single ` +
+        "composition may carry, so the film reads as one picture with the words changing",
+      fix: "change the composition, the camera, or what is on screen — not only the copy",
+    });
+  }
+
+  /* A cut that lands back where it started. */
+  for (let i = 1; i < entries.length; i++) {
+    const a = entries[i - 1];
+    const b = entries[i];
+    const distance = hamming(layoutSignature(a), layoutSignature(b));
+    if (distance > maxDistance) continue;
+    out.push({
+      code: "repeated_layout",
+      scene: b.scene,
+      at: b.at,
+      message:
+        `"${a.scene}" cuts to "${b.scene}" and the content stays in the same places ` +
+        `(layout distance ${distance}) — consecutive scenes reading as one`,
+      fix: "give one of them a different composition, or hand something across the cut that moves",
+    });
   }
   return out;
 }
