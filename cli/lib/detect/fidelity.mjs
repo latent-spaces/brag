@@ -54,6 +54,10 @@ export function extractRenderedText(html) {
   for (const m of html.matchAll(tag("p", "lead|line"))) {
     push("copy", m[2], idOf(m[0]));
   }
+  /* The compiler no longer emits kickers — a scene's role is brag's filing
+     system, not something a viewer should read. A hand-edited composition may
+     still carry one, and it has to keep being classified as structure so the
+     fidelity pass does not report it as an unsourced claim. */
   for (const m of html.matchAll(tag("p", "kicker"))) {
     push("kicker", m[2]);
   }

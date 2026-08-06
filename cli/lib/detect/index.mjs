@@ -42,7 +42,7 @@ export function detectFlatFrames(frames) {
           : `${f.at}s is ${f.tone.dark ? "black" : "flat"} (tonal range ${f.tone.stdDev})${f.scene ? ` in "${f.scene}"` : ""}`,
       fix:
         f.kind === "frame_zero"
-          ? "bake a settled frame as frame zero"
+          ? "open on something settled — frame zero is the thumbnail, and splicing a later frame over it puts the middle of the film in front of its own opening"
           : "move the cut, or give the moment something to show",
     });
   }

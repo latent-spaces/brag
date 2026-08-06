@@ -1,11 +1,15 @@
 /**
- * brag deliver — render, pick a poster, bake it as frame zero, write the manifest.
+ * brag deliver — render, pick a poster, attach it, write the manifest.
  *
- * The poster is not an afterthought. A bare .mp4 has no poster attribute, and
- * every platform that regenerates thumbnails server-side grabs frame 0 — so an
+ * The poster is not an afterthought. A bare .mp4 has no poster attribute, so an
  * unhandled render advertises itself with whatever happens to be at t=0, which
  * on a well-made video is usually an empty background mid-fade. Brag picks the
- * strongest settled moment it can name and makes frame 0 *be* that frame.
+ * strongest settled moment it can name and attaches it as cover art, and writes
+ * it beside the file for anywhere that wants an image rather than a stream.
+ *
+ * It is not painted onto frame 0. Doing that shows a frame from the middle of
+ * the film in front of its own opening, and the alternative to a weak first
+ * frame is a stronger opening scene, not a splice.
  */
 
 import { spawnSync } from "node:child_process";
@@ -78,20 +82,27 @@ export async function run({ flags }) {
   run_(["-v", "error", "-ss", String(poster.at), "-i", mp4, "-frames:v", "1", "-q:v", "2", jpg, "-y"]);
   if (!fs.existsSync(jpg)) throw gateError("ffmpeg produced no poster frame");
 
-  /* Replace only frame 0's pixels; every other frame, the duration and the
-     audio pass through untouched. At 30fps the poster shows for 1/30s. */
-  const baked = `${finalMp4}.tmp.mp4`;
+  /* Attached as cover art, not painted over frame 0.
+     Overlaying the poster onto the first frame is the obvious way to do this
+     and it puts a frame from the middle of the film in front of its own
+     opening for 1/30s. Every code gate passes that — nothing is malformed —
+     and a person watching sees a flash of a later scene before the video
+     starts. A blind reviewer called it a glitch, which is what it is.
+     An attached_pic stream is what players and metadata readers look for, and
+     it leaves the film's own first frame alone. Copying the streams rather
+     than re-encoding also means delivery cannot degrade the render. */
+  const withCover = `${finalMp4}.tmp.mp4`;
   run_([
     "-y", "-v", "error",
     "-i", mp4,
     "-i", jpg,
-    "-filter_complex", "[0:v][1:v]overlay=0:0:enable='eq(n,0)'[v]",
-    "-map", "[v]", "-map", "0:a?",
-    "-c:v", "libx264", "-crf", "18", "-preset", "slow", "-pix_fmt", "yuv420p",
-    "-c:a", "copy", "-movflags", "+faststart",
-    baked,
+    "-map", "0", "-map", "1",
+    "-c", "copy", "-c:v:1", "mjpeg",
+    "-disposition:v:1", "attached_pic",
+    "-movflags", "+faststart",
+    withCover,
   ]);
-  fs.renameSync(baked, finalMp4);
+  fs.renameSync(withCover, finalMp4);
 
   const finalProbe = probe(finalMp4);
   if (Math.abs(finalProbe.duration - probed.duration) > 0.1) {
@@ -137,7 +148,7 @@ export async function run({ flags }) {
     [
       `Delivered ${variant}.`,
       `  ${path.relative(project.targetRoot, finalMp4)}  ${(manifest.bytes / 1e6).toFixed(1)} MB · ${manifest.duration}s${manifest.has_audio ? " · audio" : " · silent"}`,
-      `  poster baked as frame 0 from ${poster.at}s (${poster.why})`,
+      `  poster attached as cover art from ${poster.at}s (${poster.why})`,
       `  ${path.relative(project.targetRoot, path.join(deliveryDir, `${variant}.share-copy.txt`))}`,
     ],
   );

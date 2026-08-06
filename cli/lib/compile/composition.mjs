@@ -178,7 +178,12 @@ export function buildIndexHtml({ model, graph, world, captures = {} }) {
         (terminal ? 1 : 0) + Math.max(reading.length, 1) > 1 ? "" : " solo"
       }" id="stage-${scene.id}">`,
       terminal ? terminal.html : "",
-      scene.role ? `        <p class="kicker" id="kicker-${scene.id}">${esc(scene.role.replace(/_/g, " "))}</p>` : "",
+      /* A scene's role is how the storyboard classifies it — "Key_Feature",
+         "Social_Proof", "Brand_Outro". Printing it on the frame puts brag's
+         own filing system in front of the viewer: a blind reviewer read the
+         labels as an unfinished export, and objected that a card marked
+         SOCIAL PROOF contained no third party. It was right on both counts.
+         The role stays in the graph, where it belongs. */
       ...reading.map(
         (r, ri) =>
           `        <p class="${ri === 0 ? "lead" : "line"}" id="read-${scene.id}-${ri}">${esc(r.text)}</p>`,
@@ -203,14 +208,16 @@ export function buildIndexHtml({ model, graph, world, captures = {} }) {
      before it can be read. */
   const tweens = scenes.flatMap((scene) => {
     const out = [];
-    if (scene.role) {
-      out.push(
-        `      tl.fromTo("#kicker-${scene.id}", { opacity: 0, y: ${px(14)} }, { opacity: 1, y: 0, duration: 0.32, ease: "power3.out" }, ${Number(scene.start.toFixed(2))});`,
-      );
-    }
     for (const line of scheduleReading(scene)) {
+      /* The film's very first line cannot fade up from nothing. Frame 0 is
+         both the thumbnail and the image a paused player parks on, so an
+         entrance starting at t=0 means the video advertises itself with an
+         empty background. It arrives already legible and rises into place. */
+      const opensTheFilm = line.enter <= 0.001 && line.index === 0;
       out.push(
-        `      tl.fromTo("#read-${scene.id}-${line.index}", { opacity: 0, y: ${px(28)} }, { opacity: 1, y: 0, duration: 0.4, ease: "power4.out" }, ${line.enter});` +
+        `      tl.fromTo("#read-${scene.id}-${line.index}", ` +
+          `{ opacity: ${opensTheFilm ? 1 : 0}, y: ${px(opensTheFilm ? 12 : 28)} }, ` +
+          `{ opacity: 1, y: 0, duration: 0.4, ease: "power4.out" }, ${line.enter});` +
           `  // settled ${line.settled}s, floor ${line.floor}s${line.tight ? " (TIGHT — scene is too short for this copy)" : ""}`,
       );
     }
@@ -255,15 +262,6 @@ export function buildIndexHtml({ model, graph, world, captures = {} }) {
         gap: ${px(24)}px;
       }
 ${layoutCss}
-      .kicker {
-        font-family: var(--mono);
-        font-size: ${px(26)}px;
-        line-height: ${px(34)}px;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--accent);
-        opacity: 0;
-      }
       .lead {
         font-size: ${tx(64)}px;
         line-height: ${tx(78)}px;

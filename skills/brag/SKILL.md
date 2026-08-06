@@ -166,7 +166,7 @@ controls it. Readability outranks the beat, always.
 
 Everything lands under `brag/` in the project: the product model, captures,
 compositions, renders, reviews, and `brag/delivery/` with the video, its poster
-baked as frame zero, and share copy. Add `brag/` to the project's gitignore —
+attached as cover art, and share copy. Add `brag/` to the project's gitignore —
 captures hold whatever the product printed when it ran.
 
 ## When something fails
