@@ -4,7 +4,7 @@
 
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { checkFidelity, extractRenderedText } from "../cli/lib/detect/fidelity.mjs";
+import { checkFidelity, extractRenderedText, extractRenderedTree } from "../cli/lib/detect/fidelity.mjs";
 
 const model = {
   name: "Tapedeck",
@@ -83,4 +83,67 @@ test("extraction survives the attributes HyperFrames injects", () => {
   assert.equal(items[0].kind, "copy");
   assert.equal(items[2].kind, "kicker");
   assert.equal(items.at(-1).text, "C588 Fix issues");
+});
+
+/* ------------------------------------------- frames as sub-compositions */
+
+test("the whole tree is read, not just the index that mounts it", () => {
+  const index = `<div id="root">
+    <div id="el-hook" class="clip" data-composition-id="01-hook"
+         data-composition-src="compositions/frames/01-hook.html"></div>
+  </div>`;
+  const frame = `<template><div id="root" data-composition-id="01-hook">
+    <p id="read-hook-0" class="hook-lead">frames replay byte-identical</p>
+    <span class="hook-tag">invented label</span>
+  </div></template>`;
+
+  /* Reading only the index found nothing at all and reported "0/0 resolve to
+     a source", which prints as a pass — the worst way for a gate to fail. */
+  assert.equal(extractRenderedText(index).length, 0);
+
+  const tree = extractRenderedTree(index, (src) =>
+    src === "compositions/frames/01-hook.html" ? frame : null,
+  );
+  assert.ok(tree.length >= 2, `expected the frame's copy, got ${tree.length}`);
+  assert.ok(tree.some((t) => t.text === "frames replay byte-identical"));
+  assert.ok(tree.some((t) => t.text === "invented label"));
+});
+
+test("a fragment of a sourced line is sourced; a wrapper around one is not", () => {
+  const model = {
+    verbatim_copy: [{ text: "Nobody told it. It already knew." }],
+    proof: [],
+    forbidden_claims: [],
+  };
+
+  /* A hero line revealed clause by clause arrives as separate elements. */
+  const split = checkFidelity({
+    rendered: [
+      { kind: "copy", text: "Nobody told it.", id: null },
+      { kind: "copy", text: "It already knew.", id: null },
+    ],
+    model,
+  });
+  assert.deepEqual(split.findings, []);
+  assert.equal(split.resolved, 2);
+
+  /* Showing MORE than the source is the case that can invent a claim. */
+  const wrapped = checkFidelity({
+    rendered: [{ kind: "copy", text: "Nobody told it. It already knew. Guaranteed.", id: null }],
+    model,
+  });
+  assert.equal(wrapped.findings.length, 1);
+  assert.equal(wrapped.findings[0].code, "paraphrased_source");
+});
+
+test("punctuation-only chrome is not a claim and is not counted", () => {
+  const r = checkFidelity({
+    rendered: [
+      { kind: "copy", text: "$", id: "prompt" },
+      { kind: "copy", text: "→", id: null },
+    ],
+    model: { verbatim_copy: [], proof: [], forbidden_claims: [] },
+  });
+  assert.deepEqual(r.findings, []);
+  assert.equal(r.checked, 0, "a shell prompt is chrome, not copy to source");
 });

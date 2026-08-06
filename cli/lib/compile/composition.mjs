@@ -62,7 +62,12 @@ export function projectFiles({ name, graph, pin }) {
 
 /* ------------------------------------------------------------------ index.html */
 
-export function buildIndexHtml({ model, graph, world, captures = {} }) {
+/**
+ * @param designedFrames Map of scene id → `compositions/frames/<file>` for
+ *   frames a worker has authored. A scene present here mounts its own
+ *   sub-composition; a scene absent from it falls back to the scaffold below.
+ */
+export function buildIndexHtml({ model, graph, world, captures = {}, designedFrames = new Map() }) {
   const scenes = withStarts(graph);
   const layoutFor = new Map(
     assignLayouts(world, scenes, graph.seams ?? []).map((a) => [a.scene, a.layout]),
@@ -167,6 +172,31 @@ export function buildIndexHtml({ model, graph, world, captures = {} }) {
       : null;
     if (terminal) terminals.push(terminal);
 
+    /* A designed frame wins over the generated one.
+       The generated body below is a scaffold — a flexbox, a paragraph, an
+       optional terminal — and it was never meant to be the finished film.
+       Shipping it as one produced exactly what you would expect: a world
+       declaring a push camera and five depth levels rendering as a sentence
+       on a flat page, with most of a 1080x1920 canvas empty. When a frame
+       worker has authored `compositions/frames/<n>-<id>.html`, the clip mounts
+       that instead, and HyperFrames' rule and blueprint catalogue does the
+       part it is actually good at. */
+    const designed = designedFrames.get(scene.id);
+    if (designed) {
+      /* The host IS the clip — it carries the timing and the canvas, and its
+         `data-composition-id` must match the id inside the file it mounts.
+         Wrapping it in another timed element puts two clips on one track at
+         the same instant, which the checker refuses and is right to. */
+      return (
+        `    <div id="el-${scene.id}" class="clip"` +
+        ` data-composition-id="${designed.compositionId}"` +
+        ` data-composition-src="${designed.src}"` +
+        ` data-start="${Number(scene.start.toFixed(3))}"` +
+        ` data-duration="${clipDuration}"` +
+        ` data-track-index="${i % 2}"` +
+        ` data-width="${width}" data-height="${height}"></div>`
+      );
+    }
     const body = [
       `      <div class="bg"></div>`,
       /* A split anchor distributes its children between the top and bottom
@@ -208,6 +238,9 @@ export function buildIndexHtml({ model, graph, world, captures = {} }) {
      before it can be read. */
   const tweens = scenes.flatMap((scene) => {
     const out = [];
+    /* A designed frame owns its own timeline and its own reveals. Driving its
+       reading lines from the root would fight the worker's choreography. */
+    if (designedFrames.has(scene.id)) return out;
     for (const line of scheduleReading(scene)) {
       /* The film's very first line cannot fade up from nothing. Frame 0 is
          both the thumbnail and the image a paused player parks on, so an

@@ -25,7 +25,7 @@ import {
   detectUnreadableCopy,
   summarize,
 } from "../lib/detect/index.mjs";
-import { checkFidelity, extractRenderedText } from "../lib/detect/fidelity.mjs";
+import { checkFidelity, extractRenderedText, extractRenderedTree } from "../lib/detect/fidelity.mjs";
 import { scoreNarrative } from "../lib/detect/narrative.mjs";
 import { acceptTaskAnswer, emitTaskSpec } from "../lib/taskspec.mjs";
 import { hyperframes } from "../lib/hyperframes.mjs";
@@ -199,8 +199,12 @@ export async function run({ flags, args }) {
       context: {
         contact_sheet: layers.visual?.contact_sheet ?? null,
         frames: (bundle.frames ?? []).map((f) => ({ at: f.at, file: f.file })),
-        text_on_screen: extractRenderedText(
+        text_on_screen: extractRenderedTree(
           fs.readFileSync(project.path("compositions", variant, "index.html"), "utf8"),
+          (src) => {
+            const abs = project.path("compositions", variant, ...src.split("/"));
+            return fs.existsSync(abs) ? fs.readFileSync(abs, "utf8") : null;
+          },
         ).map((t) => t.text),
       },
       rejects: [
@@ -218,7 +222,12 @@ export async function run({ flags, args }) {
   if (variant) {
     const htmlPath = project.path("compositions", variant, "index.html");
     if (fs.existsSync(htmlPath)) {
-      const rendered = extractRenderedText(fs.readFileSync(htmlPath, "utf8"));
+      /* The index holds the mounts; the copy lives in the frames they point
+         at, so the whole tree gets read or the layer checks nothing. */
+      const rendered = extractRenderedTree(fs.readFileSync(htmlPath, "utf8"), (src) => {
+        const abs = project.path("compositions", variant, ...src.split("/"));
+        return fs.existsSync(abs) ? fs.readFileSync(abs, "utf8") : null;
+      });
       const manifest = project.read("captures/capture_manifest.json", { optional: true });
       const captureLines = (manifest?.sessions ?? []).flatMap((entry) => [
         ...(entry.lines ?? []),

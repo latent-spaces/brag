@@ -29,6 +29,58 @@ const loose = (s) => norm(s).toLowerCase().replace(/[^a-z0-9 ]+/g, "").trim();
  * Terminal rows are read per row rather than per run, since a row is what a
  * viewer reads; runs are a styling detail.
  */
+/**
+ * Every file a viewer's eyes end up reading.
+ *
+ * `index.html` stopped being the whole composition the moment frames became
+ * sub-compositions: it holds the mounts, and the copy lives in the files those
+ * mounts point at. Reading only the index returned zero strings and reported
+ * `0/0 resolve to a source`, which prints as a pass. A fidelity layer that
+ * checks nothing is worse than one that fails, because nobody investigates a
+ * tick.
+ *
+ * @param read (relativePath) => string|null — resolves a `data-composition-src`
+ */
+export function extractRenderedTree(indexHtml, read) {
+  const out = extractRenderedText(indexHtml);
+  const seen = new Set();
+  for (const m of indexHtml.matchAll(/data-composition-src="([^"]+)"/g)) {
+    const src = m[1];
+    if (seen.has(src)) continue;
+    seen.add(src);
+    const contents = read(src);
+    if (contents) out.push(...extractAuthoredText(contents));
+  }
+  return out;
+}
+
+/**
+ * Visible strings in a frame nobody generated.
+ *
+ * The scaffold's extractor matches its own class names, which a designed frame
+ * has no reason to use. So this reads structurally instead: strip anything
+ * that is not rendered, then take the text of every leaf element. It over-reads
+ * rather than under-reads on purpose — a string wrongly listed is a finding
+ * someone dismisses, and a string missed is a claim nobody checked.
+ */
+export function extractAuthoredText(html) {
+  const body = html
+    .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
+    .replace(/<!--[\s\S]*?-->/g, " ");
+
+  const out = [];
+  /* Leaf elements only: an ancestor's text is its descendants' concatenated,
+     which would report "tapedeck recordnpm test" as an unsourced line of its own. */
+  for (const m of body.matchAll(/<([a-z][\w-]*)\b([^>]*)>([^<]*)<\/\1>/gi)) {
+    const value = norm(m[3]);
+    if (!value) continue;
+    const id = (m[2].match(/(?:^|\s)id="([^"]*)"/) ?? [])[1] ?? null;
+    out.push({ kind: "copy", text: value, id });
+  }
+  return out;
+}
+
 export function extractRenderedText(html) {
   const out = [];
   const push = (kind, text, id) => {
@@ -102,6 +154,11 @@ export function checkFidelity({ rendered, model, positioning, captureLines = [] 
 
   for (const item of rendered) {
     if (item.kind === "kicker") continue;
+    /* Chrome, not copy. A run with no letters and no digits asserts nothing —
+       a shell prompt's `$`, an arrow, a rule. Demanding a source for those
+       means either a frame cannot draw a prompt or someone adds "$" to the
+       product model, and both are worse than the rule. */
+    if (!/[a-z0-9]/i.test(item.text)) continue;
     checked++;
 
     if (exact.has(item.text)) {
@@ -110,6 +167,18 @@ export function checkFidelity({ rendered, model, positioning, captureLines = [] 
     }
     const key = loose(item.text);
     if (looseSet.has(key) || structural.has(key)) {
+      resolved++;
+      continue;
+    }
+
+    /* A fragment of a sourced string is sourced.
+       Splitting a line across elements is ordinary craft — a hero sentence
+       revealed clause by clause, a figure labelling the two numbers out of the
+       sentence that states them. Reading the rendered tree leaf by leaf sees
+       those pieces individually, and reporting each one as an invented claim
+       buries the real findings. Showing less of a true string cannot make it
+       untrue; showing MORE can, and that is the paraphrase case below. */
+    if (key && [...looseSet, ...structural].some((source) => source.includes(key))) {
       resolved++;
       continue;
     }

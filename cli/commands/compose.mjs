@@ -11,6 +11,7 @@
  */
 
 import { spawnSync } from "node:child_process";
+import fs from "node:fs";
 import path from "node:path";
 import { buildFrameStub, buildIndexHtml, projectFiles } from "../lib/compile/composition.mjs";
 import {
@@ -127,7 +128,31 @@ export async function run({ flags }) {
       .filter(([, session]) => session),
   );
 
-  put("index.html", buildIndexHtml({ model, graph, world, captures }));
+  /* Frames a worker has already designed. A stub is an outline waiting to be
+     built, so it does not count — mounting one would put the scaffold on
+     screen with extra steps. */
+  const scenesForFrames = withStarts(graph);
+  const designedFrames = new Map();
+  scenesForFrames.forEach((scene, i) => {
+    const rel = path.posix.join("compositions", "frames", frameFile(i, scene));
+    const abs = path.join(outDir, rel.split("/").join(path.sep));
+    if (!fs.existsSync(abs)) return;
+    const contents = fs.readFileSync(abs, "utf8");
+    if (/^<!-- outline frame:/.test(contents.trimStart())) return;
+    /* The host's id has to match the one inside the file it mounts, and the
+       file is the authority on what that is — deriving it from the filename
+       would break the moment a worker names its root anything else. */
+    const declared = contents.match(/data-composition-id="([^"]+)"/);
+    if (!declared) {
+      throw gateError(
+        `${rel} has no data-composition-id, so nothing can mount it. ` +
+          "A frame's root must declare the id the storyboard knows it by.",
+      );
+    }
+    designedFrames.set(scene.id, { src: rel, compositionId: declared[1] });
+  });
+
+  put("index.html", buildIndexHtml({ model, graph, world, captures, designedFrames }));
   put("ledger.json", stableStringify(buildLedger({ graph })));
   put("index.motion.json", stableStringify(buildMotionJson({ graph })));
   /* The solved graph travels with the composition it produced, so delivery
@@ -135,10 +160,26 @@ export async function run({ flags }) {
      whatever happens to be current in the project. */
   put("scene_graph.json", stableStringify(graph));
 
-  const scenes = withStarts(graph);
+  const scenes = scenesForFrames;
+  const liveFrames = new Set(scenes.map((scene, i) => frameFile(i, scene)));
   scenes.forEach((scene, i) => {
+    /* Never overwrite a designed frame with its own outline. */
+    if (designedFrames.has(scene.id)) return;
     put(path.join("compositions", "frames", frameFile(i, scene)), buildFrameStub({ scene, model, graph }));
   });
+
+  /* Frames whose scene no longer exists. Renaming a scene or cutting one
+     leaves its file behind, and `check` reads every file in the project — so
+     a deleted scene keeps failing the gate from beyond the grave, with an
+     error naming a frame the storyboard has not mentioned for three edits. */
+  const framesDir = path.join(outDir, "compositions", "frames");
+  if (fs.existsSync(framesDir)) {
+    for (const name of fs.readdirSync(framesDir)) {
+      if (!name.endsWith(".html") || liveFrames.has(name)) continue;
+      fs.rmSync(path.join(framesDir, name));
+      warn(`removed compositions/frames/${name}: no scene in the graph builds it`);
+    }
+  }
 
   const existing = project.read("compositions/index.json", { optional: true }) ?? { variants: {} };
   existing.variants[variant] = {

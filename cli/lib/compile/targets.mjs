@@ -272,9 +272,9 @@ export function buildFrameMd({ model, graph, world = null }) {
       : ["No palette was extracted from the source, so these are neutral defaults.", ""]),
     "## Type",
     "",
-    `- Display: ${model.identity?.display_font ?? "Inter, system sans"}`,
-    `- Body: ${model.identity?.body_font ?? "Inter, system sans"}`,
-    `- Mono: ${model.identity?.mono_font ?? "JetBrains Mono, Consolas, monospace"}`,
+    `- Display: ${renderableFont(model.identity?.display_font, "Inter, system-ui, sans-serif")}`,
+    `- Body: ${renderableFont(model.identity?.body_font, "Inter, system-ui, sans-serif")}`,
+    `- Mono: ${renderableFont(model.identity?.mono_font, "JetBrains Mono, monospace")}`,
     "",
     "## Composition rules",
     "",
@@ -360,11 +360,19 @@ export function buildMotionJson({ graph }) {
       bySec: Number((scene.start + 0.5).toFixed(2)),
     });
 
+    /* The deadline, not brag's own tween schedule.
+       The requirement is that a line is on screen long enough to read: it must
+       appear by the last moment that still leaves its reading floor before the
+       scene ends. Asserting `settled` instead pinned the frame to the exact
+       entrance the scaffold happened to author, so a designed frame that
+       revealed the same line a quarter-second differently — and held it far
+       longer than the floor — failed a readability check it comfortably met. */
     scheduleReading(scene).forEach((line) => {
+      const deadline = scene.start + scene.duration - line.floor;
       assertions.push({
         kind: "appearsBy",
         selector: `#read-${scene.id}-${line.index}`,
-        bySec: line.settled,
+        bySec: Number(Math.max(line.settled, deadline).toFixed(2)),
       });
     });
   }
@@ -397,4 +405,44 @@ export function buildMotionJson({ graph }) {
   });
 
   return { duration: totalDuration(graph), assertions };
+}
+
+/**
+ * A font stack the renderer can actually supply.
+ *
+ * The product's own CSS stack is the right *intent* and the wrong thing to
+ * hand a frame worker verbatim. A browser falls back silently through a stack
+ * until something is installed; the renderer does not have the machine's fonts
+ * and fails the build on a family it cannot resolve. One project shipping
+ * `ui-monospace, SF Mono, Cascadia Mono, Menlo, monospace` put an unrenderable
+ * family into the design truth, and every frame built from it inherited the
+ * failure.
+ *
+ * So the extracted stack is filtered to families the renderer resolves, and
+ * the fallback stands in when nothing survives.
+ */
+const RENDERABLE = new Set([
+  "inter", "roboto", "roboto mono", "open sans", "lato", "montserrat", "poppins",
+  "source sans pro", "source code pro", "raleway", "oswald", "merriweather",
+  "playfair display", "ibm plex sans", "ibm plex mono", "ibm plex serif",
+  "jetbrains mono", "fira code", "fira sans", "space grotesk", "space mono",
+  "dm sans", "dm mono", "work sans", "nunito", "karla", "manrope", "rubik",
+  "system-ui", "sans-serif", "serif", "monospace", "ui-monospace", "ui-sans-serif",
+  /* Aliased to a bundled face at render time rather than rejected — the
+     checker reports these as info, so keeping them preserves the project's
+     intent without risking the build. */
+  "sf mono", "sf pro", "menlo", "consolas", "segoe ui", "helvetica", "helvetica neue", "arial",
+]);
+
+export function renderableFont(declared, fallback) {
+  if (!declared) return fallback;
+  const kept = String(declared)
+    .split(",")
+    .map((f) => f.trim().replace(/^["']|["']$/g, ""))
+    .filter((f) => f && RENDERABLE.has(f.toLowerCase()));
+  if (!kept.length) return fallback;
+  /* A generic family has to close the stack, or the renderer has nothing to
+     fall back to when the named one is missing. */
+  const generic = fallback.split(",").at(-1).trim();
+  return kept.includes(generic) ? kept.join(", ") : [...kept, generic].join(", ");
 }

@@ -34,6 +34,7 @@ const COMMANDS = {
   storyboard: { blurb: "build the scene graph", load: () => import("./commands/storyboard.mjs") },
   capture: { blurb: "record the real product surface", load: () => import("./commands/capture.mjs") },
   compose: { blurb: "compile the scene graph into a HyperFrames project", load: () => import("./commands/compose.mjs") },
+  frames: { blurb: "build frame packets and list the frames still to design", load: () => import("./commands/frames.mjs") },
   watch: { blurb: "turn a render into a reviewable bundle of frames and facts", load: () => import("./commands/watch.mjs") },
   review: { blurb: "run the four verification layers against a render", load: () => import("./commands/review.mjs") },
   revise: { blurb: "apply a scoped change without regenerating everything", load: () => import("./commands/revise.mjs") },

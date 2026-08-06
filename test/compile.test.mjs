@@ -151,12 +151,27 @@ test("motion assertions never contradict the seam technique", () => {
   assert.equal(moving[0].withinSelector, "#root");
 });
 
-test("every reading line gets an appearsBy assertion at its settled time", () => {
+test("every reading line must appear in time to be read, however it is revealed", () => {
   const motion = buildMotionJson({ graph });
   const appears = motion.assertions.filter((a) => a.kind === "appearsBy" && a.selector.startsWith("#read-"));
   assert.equal(appears.length, 3);
+
+  /* The assertion is the deadline, not the scaffold's own tween schedule: a
+     line has to be up by the last moment that still leaves its reading floor.
+     Pinning it to `settled` failed designed frames that revealed the same
+     line a quarter-second differently and held it far longer than the floor. */
+  const scenes = withStarts(graph);
+  for (const a of appears) {
+    const [, id, index] = a.selector.match(/^#read-(.+)-(\d+)$/);
+    const scene = scenes.find((s) => s.id === id);
+    const line = scheduleReading(scene)[Number(index)];
+    assert.equal(a.bySec, Number((scene.start + scene.duration - line.floor).toFixed(2)));
+    assert.ok(a.bySec < scene.start + scene.duration, "a line cannot first appear after its scene ends");
+  }
+
+  /* A longer line therefore has an EARLIER deadline — it needs more time. */
   const mech = appears.filter((a) => a.selector.startsWith("#read-mechanism-"));
-  assert.ok(mech[0].bySec < mech[1].bySec, "assertions must follow the same order as the composition");
+  assert.ok(mech[1].bySec < mech[0].bySec, "the longer line must be up sooner, not later");
 });
 
 test("the storyboard carries brag's payload under keys the parser preserves", () => {
@@ -202,4 +217,41 @@ test("the schema validator reports the path and the reason, not just a failure",
   assert.equal(errors.length, 2);
   assert.match(errors[0].message, /at least 2 characters/);
   assert.equal(errors[1].path, "count");
+});
+
+/* ----------------------------------------------- designed frames */
+
+test("a scene with a designed frame mounts it instead of the generated scaffold", () => {
+  const world = loadWorlds()[0];
+  const designedFrames = new Map([
+    ["hook", { src: "compositions/frames/01-hook.html", compositionId: "01-hook" }],
+  ]);
+  const html = buildIndexHtml({ model, graph, world, designedFrames });
+
+  /* The host IS the clip: nesting it inside another timed element puts two
+     clips on one track at the same instant, which `check` refuses. */
+  assert.match(
+    html,
+    /<div id="el-hook" class="clip" data-composition-id="01-hook" data-composition-src="compositions\/frames\/01-hook\.html"/,
+  );
+  assert.doesNotMatch(html, /<section id="el-hook"/);
+  assert.match(html, /data-width="1920" data-height="1080"><\/div>/);
+
+  /* The frame owns its own reveals, so the root must not also drive them. */
+  assert.doesNotMatch(html, /#read-hook-0/);
+
+  /* A scene without a designed frame still gets the scaffold. */
+  assert.match(html, /<section id="el-mechanism"/);
+  assert.match(html, /id="read-mechanism-0"/);
+});
+
+test("the film's first line does not fade up from nothing", () => {
+  const world = loadWorlds()[0];
+  const html = buildIndexHtml({ model, graph, world });
+  const first = html.match(/tl\.fromTo\("#read-hook-0", \{ opacity: (\d)/);
+  assert.ok(first, "the opening line should still be tweened");
+  assert.equal(first[1], "1", "frame zero is the thumbnail and the paused-player image");
+
+  const later = html.match(/tl\.fromTo\("#read-mechanism-0", \{ opacity: (\d)/);
+  assert.equal(later[1], "0", "only the film's opening line is exempt");
 });
