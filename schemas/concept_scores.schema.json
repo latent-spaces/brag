@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "brag/concept_scores",
+  "title": "Concept scores",
+  "description": "Ratings for the criteria a model can legitimately judge. Novelty and difference-from-previous are deliberately absent: those are computed by the CLI, because a model scoring its own concepts on originality is grading its own homework.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "scores"],
+  "properties": {
+    "schema": { "const": "brag.concept_scores/1" },
+    "scores": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["concept_id", "criteria"],
+        "properties": {
+          "concept_id": { "type": "string" },
+          "criteria": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["product_clarity", "product_proof", "emotional_strength", "platform_fit", "silent_comprehension"],
+            "properties": {
+              "product_clarity": { "$ref": "#/$defs/rating" },
+              "product_proof": { "$ref": "#/$defs/rating" },
+              "emotional_strength": { "$ref": "#/$defs/rating" },
+              "platform_fit": { "$ref": "#/$defs/rating" },
+              "silent_comprehension": { "$ref": "#/$defs/rating" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "rating": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "because"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "because": {
+          "description": "One sentence naming the specific thing in the concept that earns this score. A justification that would fit any concept is not one.",
+          "type": "string",
+          "minLength": 15,
+          "maxLength": 300
+        }
+      }
+    }
+  }
+}

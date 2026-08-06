@@ -1,0 +1,23 @@
+{
+  "name": "@00prabalk00/brag-video",
+  "version": "1.0.0-alpha.1",
+  "private": true,
+  "type": "module",
+  "description": "Turn a project into a short, shareable launch video. Brag 1.0: a creative system that compiles to HyperFrames.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "brag": "cli/brag.mjs"
+  },
+  "scripts": {
+    "brag": "node cli/brag.mjs",
+    "doctor": "node cli/brag.mjs doctor",
+    "test": "node --test test/*.test.mjs",
+    "check-docs": "node scripts/check-docs.mjs"
+  },
+  "dependencies": {
+    "@xterm/headless": "^6.0.0"
+  }
+}

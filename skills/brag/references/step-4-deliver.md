@@ -56,19 +56,22 @@ ffmpeg -ss 3.2 -i ../brag.mp4 -frames:v 1 -q:v 2 ../brag.jpg
 
 Aim for a frame that's postable on its own (the "show the thing" law — any frozen frame should be shareable). If the pulled frame lands on a transition or mid-animation, nudge the timestamp a few tenths of a second and re-extract.
 
-### Bake the poster as frame 0
+### Attach the poster, and make the opening earn frame 0
 
-A bare `.mp4` has no `poster` attribute — every player and platform picks its own idle thumbnail, and almost all of them grab **frame 0**. Slack, Twitter/X, and Discord regenerate thumbnails server-side and ignore embedded cover-art metadata, so the *only* reliable way to control the idle image everywhere is to make frame 0 *be* the poster.
+A bare `.mp4` has no `poster` attribute, so a player picks its own idle image and most thumbnail grabbers take **frame 0**. The tempting fix is to paint the poster over the first frame.
 
-Replace **only** the first frame's pixels with `brag.jpg`, leaving every other frame and all timing untouched — same duration, same frame count, audio copied through. At 30fps the poster shows for 1/30s before the intro rolls, so it's imperceptible on playback but it's what every thumbnail grabber sees. From `brag-output`:
+Don't. Frame 0 is what a player shows while the video sits paused — so a spliced poster is the image the viewer stares at *and then* watches jump to something else the instant they press play. It is one frame, and it reads as a glitch rather than as a thumbnail. A blind reviewer called it exactly that on a film that had passed every other gate. "Imperceptible on playback" is not true of the frame a paused video is parked on.
+
+So the poster is attached as an `attached_pic` stream — what players and metadata readers look for — copying the streams rather than re-encoding, which also means delivery cannot degrade the render:
 
 ```bash
 ffmpeg -y -i brag.mp4 -i brag.jpg \
-  -filter_complex "[0:v][1:v]overlay=0:0:enable='eq(n,0)'[v]" \
-  -map "[v]" -map 0:a? -c:v libx264 -crf 18 -preset slow -pix_fmt yuv420p \
-  -c:a copy -movflags +faststart brag.poster.mp4 \
+  -map 0 -map 1 -c copy -c:v:1 mjpeg \
+  -disposition:v:1 attached_pic -movflags +faststart brag.poster.mp4 \
   && mv brag.poster.mp4 brag.mp4
 ```
+
+That leaves the platforms which regenerate thumbnails server-side taking frame 0, and the honest answer to those is an opening worth grabbing rather than a splice. The flat-frame detector fails a frame zero that is black or empty for exactly this reason: if the hook opens on a blank background mid-fade, fix the hook.
 
 The poster (`brag.jpg`) matches the video's dimensions because it was pulled from the same render, so the overlay lines up exactly. Keep `brag.jpg` alongside — it's the custom-thumbnail asset for platforms that accept an upload (Instagram, TikTok, YouTube, Facebook, and the LinkedIn post editor) and the `poster="brag.jpg"` image for any `<video>` that embeds the brag (a gallery card, the user's site).
 

@@ -1,0 +1,84 @@
+{
+  "schema": "brag.visual_world/1",
+  "id": "minimal-cinematic-type",
+  "name": "Minimal cinematic typography",
+  "summary": "One idea at a time, very large, on empty ground. Restraint is the effect; the cut does the work the motion would otherwise do.",
+  "camera_model": "scroll",
+  "depth_levels": 2,
+  "transition_families": [
+    "dissolve",
+    "slide",
+    "cut"
+  ],
+  "motion_intensity": "restrained",
+  "background": {
+    "kind": "gradient",
+    "detail": "a ground that shifts almost imperceptibly across the film"
+  },
+  "typography": {
+    "display_scale": 1.6,
+    "case": "sentence",
+    "lead_family": "sans",
+    "measure": 1400
+  },
+  "layouts": [
+    {
+      "id": "single-line",
+      "align": "center",
+      "anchor": "middle",
+      "scale": 1.6,
+      "inset": 0.14,
+      "chrome": "none",
+      "best_for": [
+        "Hook",
+        "Brand_Outro"
+      ]
+    },
+    {
+      "id": "low-left",
+      "align": "leading",
+      "anchor": "lower",
+      "scale": 1.1,
+      "inset": 0.1,
+      "chrome": "none",
+      "best_for": [
+        "Problem",
+        "Benefits"
+      ]
+    },
+    {
+      "id": "high-right",
+      "align": "trailing",
+      "anchor": "upper",
+      "scale": 1.1,
+      "inset": 0.1,
+      "chrome": "none",
+      "best_for": [
+        "Key_Feature",
+        "Social_Proof"
+      ]
+    },
+    {
+      "id": "stacked",
+      "align": "leading",
+      "anchor": "middle",
+      "scale": 0.95,
+      "inset": 0.12,
+      "chrome": "none",
+      "best_for": [
+        "Product_Intro",
+        "CTA"
+      ]
+    }
+  ],
+  "avoid": [
+    "more than one idea per frame",
+    "any panel or card"
+  ],
+  "suits_surfaces": [
+    "website",
+    "mobile",
+    "desktop",
+    "game"
+  ]
+}

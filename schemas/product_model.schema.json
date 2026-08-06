@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "brag/product_model",
+  "title": "Product model",
+  "description": "The source of truth for every later stage. Nothing may appear in a video that is not traceable to this document, and nothing enters this document without a source reference.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "surface_type",
+    "primary_user",
+    "problem",
+    "mechanism",
+    "proof",
+    "visual_surfaces",
+    "forbidden_claims",
+    "verbatim_copy"
+  ],
+  "properties": {
+    "schema": { "const": "brag.product_model/1" },
+
+    "surface_type": {
+      "description": "How the product is actually experienced. Drives which inspection adapter and which capture adapter run. `mixed` requires primary_surface.",
+      "enum": [
+        "website",
+        "cli",
+        "library",
+        "api",
+        "desktop",
+        "mobile",
+        "game",
+        "hardware",
+        "research",
+        "mixed"
+      ]
+    },
+    "primary_surface": {
+      "description": "Required when surface_type is `mixed`: the one surface the video will actually show.",
+      "$ref": "#/$defs/surfaceEnum"
+    },
+
+    "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "one_line": {
+      "description": "What it does, in the project's own terms. No positioning yet.",
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 240
+    },
+
+    "primary_user": {
+      "description": "Who this is for, specifically. 'developers' is too broad to direct a video.",
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 200
+    },
+    "problem": {
+      "description": "The problem in the user's world, not the feature's absence.",
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 400
+    },
+    "mechanism": {
+      "description": "How it actually works. Concrete enough that a viewer could picture it.",
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 400
+    },
+
+    "proof": {
+      "description": "Every claim the video is allowed to make, each with the evidence that supports it. A claim with no source cannot be shown.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/proof" }
+    },
+
+    "visual_surfaces": {
+      "description": "What can actually be put on screen. For a CLI the terminal is a visual surface, not supporting material.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/visualSurface" }
+    },
+
+    "forbidden_claims": {
+      "description": "Things that are true-adjacent but unsupported, or that the maintainer does not want said. Enforced by substring match at review time.",
+      "type": "array",
+      "items": { "type": "string", "minLength": 3 }
+    },
+
+    "verbatim_copy": {
+      "description": "Strings that must appear exactly as written, each traceable to a file. This is what makes the video's copy checkable rather than plausible.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/verbatim" }
+    },
+
+    "identity": {
+      "description": "The project's own visual identity, extracted rather than invented.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "palette": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["role", "value"],
+            "properties": {
+              "role": { "type": "string" },
+              "value": { "type": "string", "pattern": "^(#|rgb|hsl|oklch|var\\()" },
+              "source": { "$ref": "#/$defs/source" }
+            }
+          }
+        },
+        "display_font": { "type": "string" },
+        "body_font": { "type": "string" },
+        "mono_font": { "type": "string" },
+        "logo": { "$ref": "#/$defs/source" },
+        "logo_usable_on_dark": {
+          "description": "False when the mark is dark-on-transparent and would vanish on a dark ground. Recorded so the director does not discover it at render time.",
+          "type": "boolean"
+        }
+      }
+    },
+
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "url": { "type": "string" },
+        "license": { "type": "string" },
+        "default_branch": { "type": "string" },
+        "recent_commits": {
+          "description": "Real history. Usable on screen for products whose story is the work itself.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["sha", "subject"],
+            "properties": {
+              "sha": { "type": "string", "pattern": "^[0-9a-f]{7,40}$" },
+              "subject": { "type": "string" },
+              "date": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "signals": {
+      "description": "What the deterministic scan found. Written by the CLI, not the model; present so classification is auditable.",
+      "type": "object"
+    },
+
+    "generated_at": { "type": "string", "format": "date-time" }
+  },
+
+  "$defs": {
+    "surfaceEnum": {
+      "enum": [
+        "website",
+        "cli",
+        "library",
+        "api",
+        "desktop",
+        "mobile",
+        "game",
+        "hardware",
+        "research"
+      ]
+    },
+
+    "source": {
+      "description": "Where a fact came from. Byte offsets make the fidelity check exact rather than fuzzy.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file"],
+      "properties": {
+        "file": { "type": "string", "minLength": 1 },
+        "line": { "type": "integer", "minimum": 1 },
+        "byte_start": { "type": "integer", "minimum": 0 },
+        "byte_end": { "type": "integer", "minimum": 0 },
+        "note": { "type": "string" }
+      }
+    },
+
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "claim", "evidence", "strength"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+        "claim": { "type": "string", "minLength": 5, "maxLength": 300 },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/source" }
+        },
+        "strength": {
+          "description": "measured: a number produced by a real run. demonstrated: the product visibly doing it. documented: the project states it. inferred: true but not stated — the weakest thing a video may show, and never as a headline.",
+          "enum": ["measured", "demonstrated", "documented", "inferred"]
+        },
+        "shows_well": {
+          "description": "Whether this proof can carry a scene on its own.",
+          "type": "boolean"
+        }
+      }
+    },
+
+    "visualSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "description"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+        "kind": {
+          "enum": [
+            "terminal",
+            "web_page",
+            "editor",
+            "api_exchange",
+            "file_tree",
+            "diagram",
+            "chart",
+            "app_window",
+            "device",
+            "document",
+            "code"
+          ]
+        },
+        "description": { "type": "string", "minLength": 5 },
+        "capture": {
+          "description": "How this surface will be recorded. `synthesized` means brag will build it from real strings rather than record it.",
+          "enum": ["terminal_tape", "browser", "api_tape", "editor", "screenshot", "synthesized", "none"]
+        },
+        "source": { "$ref": "#/$defs/source" },
+        "priority": { "type": "integer", "minimum": 1, "maximum": 5 }
+      }
+    },
+
+    "verbatim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text", "source"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+        "text": { "type": "string", "minLength": 1 },
+        "source": { "$ref": "#/$defs/source" },
+        "kind": {
+          "enum": ["command", "output", "headline", "tagline", "label", "code", "metric", "path", "commit"]
+        },
+        "whitespace_significant": {
+          "description": "True when the exact spacing matters — aligned CLI output, indented trees, code. The compiler must not normalise it.",
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

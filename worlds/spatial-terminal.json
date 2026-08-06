@@ -1,0 +1,23 @@
+{
+  "schema": "brag.visual_world/1",
+  "id": "spatial-terminal",
+  "name": "Spatial terminal",
+  "summary": "Terminal surfaces held in a dark workspace at different depths, with the camera travelling between them. The command line is treated as the product's interface rather than as evidence pasted into a slide.",
+  "camera_model": "perspective-flight",
+  "depth_levels": 4,
+  "transition_families": ["zoom", "slide", "morph"],
+  "motion_intensity": "restrained",
+  "background": { "kind": "vignette", "detail": "an unlit workspace that the surfaces sit inside, not a backdrop behind them" },
+  "typography": { "display_scale": 0.85, "case": "sentence", "lead_family": "mono", "measure": 1300 },
+  "layouts": [
+    { "id": "surface-near", "align": "leading", "anchor": "middle", "scale": 1.0, "inset": 0.06, "chrome": "panel", "best_for": ["Product_Intro", "Key_Feature"] },
+    { "id": "surface-pair", "align": "leading", "anchor": "split", "scale": 0.82, "inset": 0.05, "chrome": "panel", "best_for": ["Problem", "Social_Proof"] },
+    { "id": "statement", "align": "leading", "anchor": "upper", "scale": 1.25, "inset": 0.1, "chrome": "none", "best_for": ["Hook", "Brand_Outro"] },
+    { "id": "surface-far", "align": "center", "anchor": "middle", "scale": 0.68, "inset": 0.12, "chrome": "frame", "best_for": ["Benefits", "CTA"] }
+  ],
+  "avoid": [
+    "screenshots floating on a coloured card",
+    "a terminal used as decoration behind headline type"
+  ],
+  "suits_surfaces": ["cli", "library", "api"]
+}

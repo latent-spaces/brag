@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "brag/concept",
+  "title": "Concept set",
+  "description": "At least three genuinely different ways to make this video. Generating one storyboard straight from inspection produces the same film every time; the point of a set is that they should be hard to choose between.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "concepts"],
+  "properties": {
+    "schema": { "const": "brag.concepts/1" },
+    "concepts": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": { "$ref": "#/$defs/concept" }
+    }
+  },
+  "$defs": {
+    "concept": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "premise", "central_metaphor", "visual_rule", "emotional_arc", "forbidden_motifs"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$", "maxLength": 40 },
+        "name": { "type": "string", "minLength": 3, "maxLength": 60 },
+
+        "premise": {
+          "description": "What the viewer watches happen. A description of the film, not of the product.",
+          "type": "string",
+          "minLength": 40,
+          "maxLength": 700
+        },
+
+        "central_metaphor": {
+          "description": "The one idea every scene serves. \"Context is a baton\" is a metaphor; \"it is fast and reliable\" is not.",
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 160
+        },
+
+        "visual_rule": {
+          "description": "The constraint that decides every later question. Strong enough that violating it would be obvious.",
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 240
+        },
+
+        "emotional_arc": {
+          "description": "Where the viewer starts and where they end, e.g. fragmentation to continuity.",
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 160
+        },
+
+        "forbidden_motifs": {
+          "description": "What this concept must never become. Usually the generic version of itself — the thing it would drift into under pressure.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 3 }
+        },
+
+        "suggested_world": {
+          "description": "A visual world id, if one obviously fits. The director may override it.",
+          "type": "string"
+        },
+
+        "beats": {
+          "description": "Rough shape only. The scene graph is built later, from the concept that wins.",
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["what"],
+            "properties": {
+              "what": { "type": "string", "minLength": 5 },
+              "proof_ref": { "type": "string" },
+              "role": {
+                "enum": ["Hook", "Problem", "Product_Intro", "Key_Feature", "Benefits", "Social_Proof", "CTA", "Brand_Outro"]
+              }
+            }
+          }
+        },
+
+        "why_this_product": {
+          "description": "Why this concept could not be reused for a different product. If it could, it is a template.",
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 400
+        },
+
+        "risk": {
+          "description": "The most likely way this concept fails in execution.",
+          "type": "string",
+          "maxLength": 300
+        }
+      }
+    }
+  }
+}

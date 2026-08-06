@@ -1,0 +1,81 @@
+{
+  "schema": "brag.visual_world/1",
+  "id": "kinetic-editorial",
+  "name": "Kinetic editorial",
+  "summary": "Magazine typography that moves. Rules, columns and a strict baseline; the motion is the words changing rather than the boxes sliding.",
+  "camera_model": "locked",
+  "depth_levels": 1,
+  "transition_families": [
+    "cut",
+    "mask"
+  ],
+  "motion_intensity": "energetic",
+  "background": {
+    "kind": "rule",
+    "detail": "hairline rules that divide the page and survive the cut"
+  },
+  "typography": {
+    "display_scale": 1.35,
+    "case": "sentence",
+    "lead_family": "sans",
+    "measure": 1500
+  },
+  "layouts": [
+    {
+      "id": "broadsheet",
+      "align": "leading",
+      "anchor": "top",
+      "scale": 1.3,
+      "inset": 0.08,
+      "chrome": "rule",
+      "best_for": [
+        "Hook",
+        "Problem"
+      ]
+    },
+    {
+      "id": "column",
+      "align": "leading",
+      "anchor": "middle",
+      "scale": 0.9,
+      "inset": 0.12,
+      "chrome": "none",
+      "best_for": [
+        "Key_Feature",
+        "Benefits"
+      ]
+    },
+    {
+      "id": "standfirst",
+      "align": "center",
+      "anchor": "middle",
+      "scale": 1.5,
+      "inset": 0.14,
+      "chrome": "none",
+      "best_for": [
+        "Brand_Outro",
+        "CTA"
+      ]
+    },
+    {
+      "id": "caption-row",
+      "align": "leading",
+      "anchor": "lower",
+      "scale": 0.7,
+      "inset": 0.08,
+      "chrome": "rule",
+      "best_for": [
+        "Social_Proof"
+      ]
+    }
+  ],
+  "avoid": [
+    "centred everything",
+    "drop shadows"
+  ],
+  "suits_surfaces": [
+    "website",
+    "research",
+    "library"
+  ]
+}
