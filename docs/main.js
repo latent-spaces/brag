@@ -1,21 +1,21 @@
 (() => {
   // Hero playback and mute controls
   const heroVid = document.getElementById('hero-vid');
+  const heroPlayback = document.getElementById('hero-playback');
   const heroMute = document.getElementById('hero-mute');
-  if (heroVid && heroMute) {
+  if (heroVid && heroPlayback && heroMute) {
     const heroMuteLabel = heroMute.querySelector('.hero-mute-label');
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    const setControlMode = (mode) => {
-      if (mode === 'play') {
-        heroMute.dataset.mode = 'play';
-        heroMute.removeAttribute('aria-pressed');
-        heroMute.setAttribute('aria-label', 'play brag video');
-        if (heroMuteLabel) heroMuteLabel.textContent = 'play video';
-        return;
-      }
+    const syncPlaybackControl = () => {
+      const mode = heroVid.paused ? 'play' : 'pause';
+      const label = `${mode} brag video`;
+      heroPlayback.dataset.mode = mode;
+      heroPlayback.setAttribute('aria-label', label);
+      heroPlayback.setAttribute('title', label);
+    };
 
-      delete heroMute.dataset.mode;
+    const syncMuteControl = () => {
       heroMute.setAttribute('aria-pressed', heroVid.muted ? 'true' : 'false');
       heroMute.setAttribute('aria-label', heroVid.muted ? 'unmute brag video' : 'mute brag video');
       if (heroMuteLabel) heroMuteLabel.textContent = 'tap for sound';
@@ -25,36 +25,33 @@
       if (reducedMotion.matches) {
         heroVid.pause();
         heroVid.load();
-        setControlMode('play');
+        syncPlaybackControl();
         return;
       }
 
       heroVid.muted = true;
-      setControlMode('mute');
+      syncMuteControl();
       const playback = heroVid.play();
-      if (playback && playback.catch) playback.catch(() => {});
+      if (playback && playback.catch) playback.catch(syncPlaybackControl);
     };
 
-    heroMute.addEventListener('click', () => {
-      if (heroMute.dataset.mode === 'play') {
-        heroVid.muted = false;
-        setControlMode('mute');
+    heroPlayback.addEventListener('click', () => {
+      if (heroVid.paused) {
         const playback = heroVid.play();
-        if (playback && playback.catch) playback.catch(() => {});
+        if (playback && playback.catch) playback.catch(syncPlaybackControl);
         return;
       }
 
-      const wasMuted = heroVid.muted;
-      heroVid.muted = !wasMuted;
-      heroMute.setAttribute('aria-pressed', wasMuted ? 'false' : 'true');
-      heroMute.setAttribute('aria-label', wasMuted ? 'mute brag video' : 'unmute brag video');
-      // When unmuting, ensure it actually plays with sound (some browsers require gesture)
-      if (!heroVid.muted) {
-        const p = heroVid.play();
-        if (p && p.catch) p.catch(() => {});
-      }
+      heroVid.pause();
     });
 
+    heroMute.addEventListener('click', () => {
+      heroVid.muted = !heroVid.muted;
+      syncMuteControl();
+    });
+
+    heroVid.addEventListener('play', syncPlaybackControl);
+    heroVid.addEventListener('pause', syncPlaybackControl);
     applyMotionPreference();
     reducedMotion.addEventListener('change', applyMotionPreference);
   }
