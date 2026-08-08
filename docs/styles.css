@@ -251,21 +251,23 @@ button { font: inherit; cursor: pointer; }
   display: block;
 }
 
-/* Mute toggle, lower-right of the hero tile */
-.hero-mute {
+/* Video controls, lower-right of the hero tile */
+.hero-controls {
   position: absolute;
   right: 12px;
   bottom: 12px;
   z-index: 3;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
+}
+.hero-control {
+  display: inline-flex;
+  align-items: center;
   background: oklch(15% 0.05 var(--hue) / 0.78);
   backdrop-filter: blur(8px);
   color: var(--hero-tint);
   border: 1px solid oklch(96% 0.02 var(--hue) / 0.18);
-  border-radius: 999px;
-  padding: 8px 14px 8px 10px;
   font-family: "Geist Mono", ui-monospace, monospace;
   font-size: 11px;
   letter-spacing: 0.06em;
@@ -273,18 +275,31 @@ button { font: inherit; cursor: pointer; }
   cursor: pointer;
   transition: transform 220ms var(--ease-out), background 220ms var(--ease-out);
 }
-.hero-mute:hover,
-.hero-mute:focus-visible {
+.hero-mute {
+  gap: 8px;
+  border-radius: 999px;
+  padding: 8px 14px 8px 10px;
+}
+.hero-playback {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
+}
+.hero-control:hover,
+.hero-control:focus-visible {
   background: oklch(20% 0.06 var(--hue) / 0.92);
   transform: translateY(-2px);
   outline: none;
 }
-.hero-mute:focus-visible { box-shadow: 0 0 0 3px var(--hero-tint); }
-.hero-mute svg { width: 16px; height: 16px; }
-.hero-mute .icon-play,
+.hero-control:focus-visible { box-shadow: 0 0 0 3px var(--hero-tint); }
+.hero-control svg { width: 16px; height: 16px; }
+.hero-playback .icon-play,
 .hero-mute .icon-sound { display: none; }
-.hero-mute[data-mode="play"] .icon-play { display: inline-block; }
-.hero-mute[data-mode="play"] .icon-muted { display: none; }
+.hero-playback[data-mode="play"] .icon-play { display: inline-block; }
+.hero-playback[data-mode="play"] .icon-pause { display: none; }
 .hero-mute[aria-pressed="false"] .icon-muted { display: none; }
 .hero-mute[aria-pressed="false"] .icon-sound { display: inline-block; }
 .hero-mute[aria-pressed="false"] .hero-mute-label::after { content: "sound on"; }
