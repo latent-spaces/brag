@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "brag/revision",
+  "title": "Scoped revision",
+  "description": "One change, scoped to named scenes. Everything unnamed must recompile byte-identical, which is checked rather than trusted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "intent", "scenes_touched", "scenes"],
+  "properties": {
+    "schema": { "const": "brag.revision/1" },
+    "intent": { "type": "string", "minLength": 3 },
+    "scenes_touched": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "scenes": { "type": "array", "items": { "type": "object" } },
+    "blocked": {
+      "description": "Set this instead of widening the scope when the change cannot be made within the scenes named.",
+      "type": "string"
+    }
+  }
+}

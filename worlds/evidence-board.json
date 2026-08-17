@@ -1,0 +1,82 @@
+{
+  "schema": "brag.visual_world/1",
+  "id": "evidence-board",
+  "name": "Documentary evidence board",
+  "summary": "Findings pinned up and connected. Each claim arrives as a piece of evidence with its source attached, and the connections between them are drawn.",
+  "camera_model": "orbit",
+  "depth_levels": 3,
+  "transition_families": [
+    "zoom",
+    "rotate",
+    "cut"
+  ],
+  "motion_intensity": "moderate",
+  "background": {
+    "kind": "panel",
+    "detail": "a board the pieces are attached to, lit from one side"
+  },
+  "typography": {
+    "display_scale": 0.95,
+    "case": "sentence",
+    "lead_family": "sans",
+    "measure": 900
+  },
+  "layouts": [
+    {
+      "id": "pinned-centre",
+      "align": "center",
+      "anchor": "middle",
+      "scale": 1,
+      "inset": 0.1,
+      "chrome": "panel",
+      "best_for": [
+        "Social_Proof",
+        "Key_Feature"
+      ]
+    },
+    {
+      "id": "cluster",
+      "align": "leading",
+      "anchor": "upper",
+      "scale": 0.8,
+      "inset": 0.08,
+      "chrome": "panel",
+      "best_for": [
+        "Problem",
+        "Benefits"
+      ]
+    },
+    {
+      "id": "single-exhibit",
+      "align": "center",
+      "anchor": "upper",
+      "scale": 1.2,
+      "inset": 0.15,
+      "chrome": "frame",
+      "best_for": [
+        "Hook"
+      ]
+    },
+    {
+      "id": "conclusion",
+      "align": "center",
+      "anchor": "middle",
+      "scale": 1.35,
+      "inset": 0.16,
+      "chrome": "none",
+      "best_for": [
+        "Brand_Outro",
+        "CTA"
+      ]
+    }
+  ],
+  "avoid": [
+    "stock imagery",
+    "anything that looks like a slide deck"
+  ],
+  "suits_surfaces": [
+    "research",
+    "api",
+    "website"
+  ]
+}

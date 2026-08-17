@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "brag/scene_graph",
+  "title": "Scene graph",
+  "description": "A connected graph, not a list of slides. Scenes carry purpose, proof and continuity; seams carry vectors. This compiles into STORYBOARD.md, ledger.json and the motion.json sidecars — it is upstream of any one composition, which is what makes format variants a recompile rather than a copy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "format", "objects", "scenes", "seams"],
+  "properties": {
+    "schema": { "const": "brag.scene_graph/1" },
+
+    "concept": {
+      "description": "The locked concept this graph serves. Every scene must be explicable by it.",
+      "type": "string"
+    },
+    "visual_world": { "type": "string" },
+
+    "format": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "fps"],
+      "properties": {
+        "width": { "type": "integer", "minimum": 320 },
+        "height": { "type": "integer", "minimum": 320 },
+        "fps": { "type": "integer", "enum": [24, 25, 30, 50, 60] },
+        "name": { "type": "string" }
+      }
+    },
+
+    "duration": {
+      "description": "Total seconds. Solved, not asserted — the timing solver writes this back.",
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 120
+    },
+
+    "motifs": {
+      "description": "The motif budget: one dominant, two supporting, one surprise, one quiet moment. Enforced mechanically so a concept cannot dissolve into generic motion.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dominant"],
+      "properties": {
+        "dominant": { "type": "string", "minLength": 3 },
+        "supporting": { "type": "array", "maxItems": 3, "items": { "type": "string" } },
+        "surprise_scene": { "type": "string" },
+        "quiet_scene": { "type": "string" }
+      }
+    },
+
+    "objects": {
+      "description": "Things that persist across scenes. An object that appears in one scene only is still an object if it carries meaning.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/object" }
+    },
+
+    "scenes": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "$ref": "#/$defs/scene" }
+    },
+
+    "seams": {
+      "description": "One row per cut. Compiles directly to ledger.json, which motion-doctrine's seam gate verifies numerically.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/seam" }
+    },
+
+    "audio": { "$ref": "#/$defs/audio" }
+  },
+
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "maxLength": 48 },
+
+    "object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "importance"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "kind": {
+          "enum": ["surface", "text", "figure", "mark", "cursor", "packet", "chrome", "media"]
+        },
+        "label": { "type": "string" },
+        "importance": {
+          "description": "1 is decorative, 5 is the thing the video exists to show. Drives the variant layout solve and what survives a shorter cut.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "content_ref": {
+          "description": "What fills it: a verbatim_copy id, a proof id, or a capture id.",
+          "type": "string"
+        },
+        "layout": { "$ref": "#/$defs/layout" }
+      }
+    },
+
+    "layout": {
+      "description": "Framing intent, not CSS. The variant solver reads this; HyperFrames still owns the actual box.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "preferred_position": {
+          "enum": ["center", "upper", "lower", "leading", "trailing", "full_bleed", "inset"]
+        },
+        "landscape": { "enum": ["primary", "beside", "background", "omit"] },
+        "portrait": { "enum": ["primary", "stacked", "depth", "background", "omit"] },
+        "crop_tolerance": {
+          "description": "Fraction of the object that may leave frame before meaning is lost.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5
+        },
+        "min_readable_px": {
+          "description": "Smallest type size at which this still reads, at the graph's own resolution.",
+          "type": "number",
+          "minimum": 8
+        },
+        "safe_area": { "type": "boolean" }
+      }
+    },
+
+    "scene": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "purpose", "duration"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "title": { "type": "string" },
+
+        "purpose": {
+          "description": "Why this scene exists. A scene that cannot state its purpose is a scene that should be cut.",
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 240
+        },
+        "role": {
+          "description": "Maps to the HyperFrames storyboard roles so blueprint selection can be checked.",
+          "enum": ["Hook", "Problem", "Product_Intro", "Key_Feature", "Benefits", "Social_Proof", "CTA", "Brand_Outro"]
+        },
+
+        "duration": { "type": "number", "exclusiveMinimum": 0, "maximum": 30 },
+        "start": { "type": "number", "minimum": 0 },
+
+        "camera": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "start": { "type": "string" },
+            "end": { "type": "string" },
+            "path": { "type": "string" },
+            "depth_layers": { "type": "integer", "minimum": 1, "maximum": 8 }
+          }
+        },
+
+        "objects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id"],
+            "properties": {
+              "id": { "$ref": "#/$defs/id" },
+              "start_state": { "type": "string" },
+              "end_state": { "type": "string" },
+              "focal": { "type": "boolean" }
+            }
+          }
+        },
+
+        "required_proof": {
+          "description": "proof ids this scene must actually show. The fidelity check fails if the rendered frame does not contain them.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
+
+        "reading": {
+          "description": "What a viewer must be able to read here, and how long that takes. The timing solver treats these as hard constraints, not hints.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["text"],
+            "properties": {
+              "text": { "type": "string", "minLength": 1 },
+              "verbatim_ref": { "type": "string" },
+              "min_reading_s": { "type": "number", "minimum": 0.2 },
+              "settled_by": { "type": "number", "minimum": 0 }
+            }
+          }
+        },
+
+        "motion": {
+          "description": "Cited HyperFrames rule and blueprint ids. Validated against the installed pack; invented names are rejected.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "blueprint": { "type": "string" },
+            "rules": { "type": "array", "items": { "type": "string" }, "maxItems": 4 },
+            "intent": { "type": "string" }
+          }
+        },
+
+        "audio_event": { "type": "string" },
+        "motif": { "type": "string" },
+        "continuity_from": { "type": ["string", "null"] },
+        "continuity_to": { "type": ["string", "null"] },
+        "quiet": {
+          "description": "Marks the deliberate quiet moment. Exempt from the keeps-moving assertion.",
+          "type": "boolean"
+        }
+      }
+    },
+
+    "seam": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "at", "vector"],
+      "properties": {
+        "from": { "$ref": "#/$defs/id" },
+        "to": { "$ref": "#/$defs/id" },
+        "at": { "type": "number", "minimum": 0 },
+        "technique": {
+          "description": "A transition name from the installed registry, or a hand-authored morph.",
+          "type": "string"
+        },
+        "vector": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["axis", "direction"],
+          "properties": {
+            "axis": { "enum": ["x", "y", "z"] },
+            "direction": { "enum": ["left", "right", "up", "down", "in", "out"] },
+            "scale_sign": { "enum": ["grow", "shrink", "none"] },
+            "travel_px": { "type": "number", "minimum": 0 }
+          }
+        },
+        "carrier": {
+          "description": "Intent: the object meant to be handed across this cut. Recorded for whoever builds the frames.",
+          "type": "string"
+        },
+        "carrier_out": {
+          "description": "The element id in the outgoing scene. Only when both sides are named does the ledger assert a carrier, because the seam gate measures whether the two really line up.",
+          "type": "string"
+        },
+        "carrier_in": {
+          "description": "The element id in the incoming scene.",
+          "type": "string"
+        },
+        "beat_locked_to": { "type": "number", "minimum": 0 }
+      }
+    },
+
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "music": { "type": ["string", "null"] },
+        "music_volume": { "type": "number", "minimum": 0, "maximum": 1 },
+        "cue_source": { "type": ["string", "null"] },
+        "strong_cue_locks": {
+          "description": "At most three per video. More than that and the edit is following the music instead of the story.",
+          "type": "array",
+          "maxItems": 3,
+          "items": { "type": "number", "minimum": 0 }
+        },
+        "silent_comprehension": {
+          "description": "Whether the story must survive with sound off. True for feed autoplay.",
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
