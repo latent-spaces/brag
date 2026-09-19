@@ -22,6 +22,13 @@ Copy `skills/brag/` into wherever your agent looks for skill files:
 cp -r skills/brag/ ~/.your-agent/skills/brag/
 ```
 
+## Google Antigravity (AGY)
+
+Antigravity natively discovers skills without manual pasting:
+- **Project-level**: Symlink or copy `skills/brag/` to `.agents/skills/brag/` (or declare in `.agents/skills.json`).
+- **Global-level**: Copy `skills/brag/` to `~/.gemini/config/skills/brag/` to make `/brag` accessible across all your projects.
+- **Hyperframes companion skills**: Run `npx hyperframes skills` to ensure Hyperframes helper skills are installed to `~/.agents/skills` / `~/.gemini/config/skills`.
+
 ## Prerequisites
 
 Regardless of method, the environment needs:

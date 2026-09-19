@@ -41,6 +41,7 @@ This repo exposes the skill at every agent's standard discovery path via symlink
 
 | Agent | How it discovers |
 |---|---|
+| **Google Antigravity** | Auto-detects from `.agents/skills/brag/` at project root or `~/.gemini/config/skills/brag/` globally |
 | **opencode** | Auto-detects from `.opencode/skills/brag/` at project root |
 | **Codex CLI** | Reads `.agents/skills/brag/`, walking up to repo root |
 | **Claude Code** | Also reads `.claude/skills/brag/` (in addition to the `.claude-plugin/` marketplace install above) |
