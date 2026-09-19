@@ -55,18 +55,18 @@ skills/brag/assets/sfx/sfx-analysis.json
 ~/.claude/skills/brag/assets/sfx/sfx-analysis.json
 ```
 
-**Critical: copy audio files into the composition project before rendering.** Hyperframes validates and serves assets from the composition directory. Always copy the files you need into `brag-output/composition/assets/` first:
+**Critical: copy audio files into the composition project before rendering.** Hyperframes validates and serves assets from the composition directory. Always copy the files you need into `<output-dir>/composition/assets/` first:
 
 ```bash
 # Create local asset dirs
-mkdir -p brag-output/composition/assets/sfx/interface brag-output/composition/assets/sfx/impact brag-output/composition/assets/sfx/casino brag-output/composition/assets/sfx/ui
-mkdir -p brag-output/composition/assets/music
+mkdir -p <output-dir>/composition/assets/sfx/interface <output-dir>/composition/assets/sfx/impact <output-dir>/composition/assets/sfx/casino <output-dir>/composition/assets/sfx/ui
+mkdir -p <output-dir>/composition/assets/music
 
 # Copy only the files you plan to use (not the entire library)
 # From the repo copy:
-cp skills/brag/assets/sfx/interface/bong_001.ogg brag-output/composition/assets/sfx/interface/
-cp skills/brag/assets/sfx/impact/impactBell_heavy_000.ogg brag-output/composition/assets/sfx/impact/
-cp skills/brag/assets/music/happy-beats-business-moves-vol-1-by-ende-dot-app.mp3 brag-output/composition/assets/music/
+cp skills/brag/assets/sfx/interface/bong_001.ogg <output-dir>/composition/assets/sfx/interface/
+cp skills/brag/assets/sfx/impact/impactBell_heavy_000.ogg <output-dir>/composition/assets/sfx/impact/
+cp skills/brag/assets/music/happy-beats-business-moves-vol-1-by-ende-dot-app.mp3 <output-dir>/composition/assets/music/
 
 # From an installed Claude skill, use ~/.claude/skills/brag/assets/... instead.
 ```

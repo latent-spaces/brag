@@ -1,6 +1,6 @@
 # Step 2: Write the brag plan
 
-Write `brag-output/brag-plan.md`. One focused page. This is the creative north star for the entire video.
+Write `<output-dir>/brag-plan.md`. One focused page. This is the creative north star for the entire video.
 
 The plan should specify what the video must communicate and what project material must be used. It should not prescribe low-level Hyperframes implementation details. Hyperframes will decide the concrete composition structure, animation mechanics, and render workflow from the brief in Step 3.
 
