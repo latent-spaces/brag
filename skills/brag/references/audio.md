@@ -33,26 +33,24 @@ Hyperframes implementation note: follow the audio-reactive guidance owned by the
 
 ## Asset paths
 
-SFX live under `sfx/{casino,impact,interface,ui}/`, and the individual keypress set under `sfx/keyboard/`. The assets root is `~/.claude/skills/brag/assets/` in the installed skill and `skills/brag/assets/` in this repo copy.
+All paths below are relative to `<skill-dir>`, this skill's own directory (see "Skill directory" in `SKILL.md`). It differs by install method, so resolve it rather than assuming `~/.claude/skills/brag/`.
 
-Music lives in the installed skill at `~/.claude/skills/brag/assets/music/`. In this repo copy, it lives at `skills/brag/assets/music/`.
+SFX live under `<skill-dir>/assets/sfx/{casino,impact,interface,ui}/`, and the individual keypress set under `<skill-dir>/assets/sfx/keyboard/`.
+
+Music lives at `<skill-dir>/assets/music/`.
 
 Bundled music cue presets live beside the music:
 
 ```text
-skills/brag/assets/music/cues/<track-stem>.music-cues.md
-skills/brag/assets/music/cues/<track-stem>.music-cues.json
-~/.claude/skills/brag/assets/music/cues/<track-stem>.music-cues.md
-~/.claude/skills/brag/assets/music/cues/<track-stem>.music-cues.json
+<skill-dir>/assets/music/cues/<track-stem>.music-cues.md
+<skill-dir>/assets/music/cues/<track-stem>.music-cues.json
 ```
 
 SFX analysis lives beside the SFX library:
 
 ```text
-skills/brag/assets/sfx/sfx-analysis.md
-skills/brag/assets/sfx/sfx-analysis.json
-~/.claude/skills/brag/assets/sfx/sfx-analysis.md
-~/.claude/skills/brag/assets/sfx/sfx-analysis.json
+<skill-dir>/assets/sfx/sfx-analysis.md
+<skill-dir>/assets/sfx/sfx-analysis.json
 ```
 
 **Critical: copy audio files into the composition project before rendering.** Hyperframes validates and serves assets from the composition directory. Always copy the files you need into `<output-dir>/composition/assets/` first:
@@ -63,12 +61,9 @@ mkdir -p <output-dir>/composition/assets/sfx/interface <output-dir>/composition/
 mkdir -p <output-dir>/composition/assets/music
 
 # Copy only the files you plan to use (not the entire library)
-# From the repo copy:
-cp skills/brag/assets/sfx/interface/bong_001.ogg <output-dir>/composition/assets/sfx/interface/
-cp skills/brag/assets/sfx/impact/impactBell_heavy_000.ogg <output-dir>/composition/assets/sfx/impact/
-cp skills/brag/assets/music/happy-beats-business-moves-vol-1-by-ende-dot-app.mp3 <output-dir>/composition/assets/music/
-
-# From an installed Claude skill, use ~/.claude/skills/brag/assets/... instead.
+cp <skill-dir>/assets/sfx/interface/bong_001.ogg <output-dir>/composition/assets/sfx/interface/
+cp <skill-dir>/assets/sfx/impact/impactBell_heavy_000.ogg <output-dir>/composition/assets/sfx/impact/
+cp <skill-dir>/assets/music/happy-beats-business-moves-vol-1-by-ende-dot-app.mp3 <output-dir>/composition/assets/music/
 ```
 
 Then in the composition HTML, paths are **relative to the `composition/` directory**:
@@ -252,15 +247,15 @@ Beat sync needs a cue source. Three are available — use the richest one the en
 1. **Bundled track → precomputed preset (richest, instant, no deps).** The bundled tracks ship with cue metadata. Read the matching markdown summary, and pass the JSON path in `composition-brief.md`:
 
 ```text
-assets/music/cues/<track-stem>.music-cues.md
-assets/music/cues/<track-stem>.music-cues.json
+<skill-dir>/assets/music/cues/<track-stem>.music-cues.md
+<skill-dir>/assets/music/cues/<track-stem>.music-cues.json
 ```
 
-2. **Any track → extended analysis (richest for custom tracks; needs Python, any Hyperframes version).** For a custom track — or to refresh a bundled one — run `analyze_music_cues.py` on the audio file. It produces the same rich cue JSON/Markdown for any track. Run it via `uv`, which auto-provisions the deps (`librosa`, `numpy`, `scipy`, `soundfile`) from `skills/brag/scripts/pyproject.toml` — no manual `pip install` needed:
+2. **Any track → extended analysis (richest for custom tracks; needs Python, any Hyperframes version).** For a custom track — or to refresh a bundled one — run `analyze_music_cues.py` on the audio file. It produces the same rich cue JSON/Markdown for any track. Run it via `uv`, which auto-provisions the deps (`librosa`, `numpy`, `scipy`, `soundfile`) from `<skill-dir>/scripts/pyproject.toml` — no manual `pip install` needed:
 
 ```bash
-uv run --project skills/brag/scripts \
-  python skills/brag/scripts/analyze_music_cues.py <track>.mp3 \
+uv run --project <skill-dir>/scripts \
+  python <skill-dir>/scripts/analyze_music_cues.py <track>.mp3 \
   --output-json <output-dir>/composition/assets/music/cues/<stem>.music-cues.json \
   --output-md  <output-dir>/composition/assets/music/cues/<stem>.music-cues.md
 ```

@@ -97,10 +97,10 @@ Read [audio.md](audio.md). Copy the planned music into `<output-dir>/composition
 
 ```bash
 mkdir -p <output-dir>/composition/assets/music
-cp <skill-assets>/music/<track>.mp3 <output-dir>/composition/assets/music/
+cp <skill-dir>/assets/music/<track>.mp3 <output-dir>/composition/assets/music/
 ```
 
-When running from an installed Claude skill, `<skill-assets>` is `~/.claude/skills/brag/assets/`. From the repo, it is `skills/brag/assets/`.
+`<skill-dir>` is this skill's own directory (see "Skill directory" in `SKILL.md`).
 
 Hyperframes copies any SFX it selects into the same `assets/` tree after choosing exact files.
 
@@ -176,7 +176,7 @@ This gives you two layers of musicality: the big moments land on the strongest h
 
 Do not force every tween onto a beat — readability and scene pacing come first. If snapping a tween to a beat hurts copy legibility or the product story, use the natural timing instead.
 
-If SFX are enabled, also pass `skills/brag/assets/sfx/sfx-analysis.md` as selection guidance. Prefer low high-frequency-risk files for repeated or polished moments. SFX on sequential events should fire at the same timestamp as the visual — the sound and motion land together.
+If SFX are enabled, also pass `<skill-dir>/assets/sfx/sfx-analysis.md` as selection guidance. Prefer low high-frequency-risk files for repeated or polished moments. SFX on sequential events should fire at the same timestamp as the visual — the sound and motion land together.
 
 ---
 
