@@ -41,7 +41,7 @@ scenes should show the flow, not just landing-page sections. If the project is
 landing-page-only, write "none — landing-page only" and rely on Key moments instead.]
 
 ## Tone
-- Preset: [default / polished / yc-parody / chaotic / deadpan / cinematic / app-store]
+- Preset: [default / polished / yc-parody / chaotic / deadpan / cinematic / app-store / changelog]
 - Creative direction: [freeform phrase, inferred or user-provided]
 - Interpretation: [one sentence on how this affects pacing, writing, visual energy, and restraint]
 
@@ -92,6 +92,39 @@ Transition mood: [mood] → Scene 3
 **Audio summary:** [one sentence describing the full audio arc]
 ```
 
+## PR mode additions
+
+When `--pr` was passed, `brag-plan.md` gets two extra sections, placed right after
+`## What is this app?`:
+
+```markdown
+## What changed
+[One sentence in product language, lifted from pr-context.md. Not "refactored the
+reducer" — "filters now survive a page reload."]
+
+## Before → after
+- Before: [the exact old behavior, read from the base branch]
+- After: [the exact new behavior, read from the head branch]
+- Proof moment: [the single beat where the difference lands]
+- Must not claim: [adjacent things this PR did not do]
+- PR: [#42 — open / merged]
+```
+
+The rest of the template is unchanged, with these shifts:
+
+- **The angle** is the user's problem, not a creative premise. The joke, if there is
+  one, is optional here; clarity is not.
+- **Hook** is the old pain in one line.
+- **Key moments** are the steps of the new flow, in order.
+- **User flow worth showing** is the flow *as changed*. If the change is
+  `behavior-behind-ui` or `non-visual`, name the surface you're showing instead (the
+  terminal, the payload, the timing) — see pr-mode.md.
+- **Share copy (draft)** is written for the PR comment or the team channel.
+- **Storyboard** follows the before→after pattern in pr-mode.md.
+
+Every line of copy in the plan must be traceable to the diff or to `pr-context.md`.
+If you can't point at where a claim came from, cut it.
+
 ## Planning the scenes
 
 The default pattern is:
@@ -110,6 +143,7 @@ But adapt it. These are the right scene counts for each tone:
 | `deadpan` | 3-4 | Long holds. Big empty space. One word at a time. |
 | `cinematic` | 4-5 | Wide shots. Big type. Dramatic reveals. |
 | `app-store` | 4-6 | Feature cards. Clean reveals. No mess. |
+| `changelog` | 4-5 | Calm. The before/after centerpiece runs 6-10s — longer than any other tone's scene. |
 
 ## Duration guidance
 
@@ -143,6 +177,11 @@ Every brag video must show something real from the product. Options, in preferre
 4. **Text-forward sequence** — if the product is copy-driven (Psychologists for Chatbots), let the copy be the visual. Giant display type, minimal chrome.
 
 Never fill scenes with abstract patterns, color washes, or generic motion graphics that could belong to any video.
+
+**In PR mode this list is reordered.** The centerpiece is the difference: recreate the
+old state and the new state in the same frame and cut between them. See "Choosing what
+to show: the before/after law" in [pr-mode.md](pr-mode.md), and its table of surfaces
+for changes that have no UI.
 
 ## Bias the storyboard toward the user flow
 

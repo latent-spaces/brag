@@ -2,6 +2,18 @@
 
 Read the project directory to understand what you're bragging about.
 
+## PR mode: inspect the change, not the product
+
+If `--pr` was passed, [pr-mode.md](pr-mode.md) owns this step. Read it instead of the
+priority list below, and answer the PR rubric instead of the 9-question rubric.
+
+Two parts of this file still apply in full, because a PR demo has to look like the real
+product: **color extraction** and **font extraction**. Pull those from the project's
+CSS exactly as described below, even when the PR never touched a stylesheet.
+
+Everything else narrows to the diff — the changed files at head, the same files at
+base, and the screens that render them. Do not inventory the whole project.
+
 ## What to look for
 
 Read these in priority order:

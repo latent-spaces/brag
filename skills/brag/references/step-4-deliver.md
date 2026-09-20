@@ -135,6 +135,14 @@ It [what it does].
 [Feature 1], [Feature 2], and [Feature 3] — all in one place.
 ```
 
+**`changelog`** (the PR-mode default — written for a PR comment, a team channel, or a
+sprint review, not for X):
+```
+[What a person can now do, in plain language].
+[The old friction, in one clause — optional].
+Shipped in #[number].
+```
+
 ### Example: Taxi for Taxis
 
 ```
@@ -142,6 +150,29 @@ Every day, taxis carry us. But who carries the taxis?
 Taxi for Taxis: the ride-hailing app for ride-hailing assets.
 Available in 12 metros.
 ```
+
+## PR mode delivery
+
+Everything above still applies. Three differences.
+
+**Poster frame.** Pull it from the *after* state, at a settled beat — the new screen,
+fully rendered. A frozen "before" frame is a screenshot of the bug.
+
+**Share copy is internal by default.** Use the `changelog` shape above: the outcome
+first, the PR reference last, no launch language. If the user also wants a public
+version, put it in `share-copy-variants.md` and leave `share-copy.txt` as the internal
+one.
+
+**Offer to post, don't post.** Attaching the demo to the PR is outward-facing and has
+an audience. Ask every time, even if you already posted to a PR this session.
+
+```bash
+gh pr comment <pr> --body-file <output-dir>/share-copy.txt
+```
+
+The CLI can post the text but cannot attach `brag.mp4` — GitHub only accepts a video
+by drag-and-drop into the comment box. Tell the user to drop the file in, and never
+describe the video as uploaded when only the copy went up.
 
 ## Final output structure
 
@@ -153,6 +184,7 @@ After this step, `<output-dir>/` should contain:
   brag.jpg                — the poster (best frame, for <video poster>)
   brag-plan.md            — the plan and storyboard
   composition-brief.md    — the Hyperframes handoff brief
+  pr-context.md           — PR mode only: the change, before → after, source of truth
   share-copy.txt          — the share caption
   composition/            — the Hyperframes project
     index.html
@@ -166,3 +198,9 @@ After everything is done, tell the user:
 - Where the share copy is
 - One sentence on what the video does creatively
 - Optionally: offer to re-roll a scene, change tone, or try a different angle
+
+In PR mode, also tell them:
+- Which PR it covers and whether it's open or merged
+- What the video claims, in one line, so they can sanity-check it against the diff
+- Anything from the PR you deliberately left out (tests, refactors, flagged-off work)
+- That you can post the copy to the PR if they want it there

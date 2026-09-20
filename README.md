@@ -73,6 +73,36 @@ Narration uses Kokoro through Hyperframes when enabled.
 
 You get a `brag-output/` folder with the plan, a composition brief, share copy, and the rendered `brag.mp4`.
 
+## Demo a PR, not the whole product
+
+Point `/brag` at a pull request and it makes a demo of **that change** — before and
+after — instead of a launch video for the project:
+
+```text
+/brag --pr 42
+```
+
+```text
+/brag --pr https://github.com/org/repo/pull/42
+/brag --pr 42,43,47        # one video covering a set of related PRs
+```
+
+It reads the PR's description, linked issue, and diff, reads the changed files at both
+the base and the head, and builds the video around the difference: the old state, the
+new state, and what it unlocks. The register is plain by default (the `changelog` tone)
+because the audience is usually the people who did not read the diff — product
+managers, design, support, the rest of the team.
+
+Changes with no UI get a real surface too: the request and response for an endpoint,
+the terminal for a CLI, red → green for a bug fix.
+
+One rule it will not break — it only claims what the diff actually does. No invented
+metrics, no adjacent features, and an open PR is labeled as still in review.
+
+Output lands in `brag-output-pr-42/`, with a `pr-context.md` alongside the usual plan
+and video. Share copy is written for a PR comment or a team channel; posting it to the
+PR is offered, never done for you.
+
 ## How it works
 
 `/brag` owns the story — the product angle, tone, and which moments to show. It hands a focused brief to [Hyperframes](https://hyperframes.heygen.com/), which builds, times, and renders the video.
@@ -83,6 +113,7 @@ You get a `brag-output/` folder with the plan, a composition brief, share copy, 
 - Node.js 22+
 - FFmpeg on `PATH`
 - Hyperframes CLI — `npx hyperframes` (check it with `npx hyperframes doctor`)
+- For `--pr`: the GitHub CLI, authenticated (`gh auth login`). Without it, PR mode falls back to plain `git diff` against the base branch — the diff still works, the PR title and description don't.
 
 ## What's in this repo
 
