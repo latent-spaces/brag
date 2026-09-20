@@ -45,7 +45,8 @@ landing-page-only, write "none — landing-page only" and rely on Key moments in
 - Creative direction: [freeform phrase, inferred or user-provided]
 - Interpretation: [one sentence on how this affects pacing, writing, visual energy, and restraint]
 
-## Format: [landscape / vertical / square] — [width]x[height]
+## Format: [vertical / landscape / square] — [width]x[height]
+(Default: vertical, 1080x1920. Only go landscape when the user asks or the video is for a desktop surface.)
 ## Duration: [target seconds]
 
 ## Visual identity (from the project)
@@ -143,6 +144,21 @@ Every brag video must show something real from the product. Options, in preferre
 4. **Text-forward sequence** — if the product is copy-driven (Psychologists for Chatbots), let the copy be the visual. Giant display type, minimal chrome.
 
 Never fill scenes with abstract patterns, color washes, or generic motion graphics that could belong to any video.
+
+## Composing for vertical (the default)
+
+A 1080x1920 frame is not a 16:9 storyboard with the sides cropped off. Plan it as its own shape:
+
+- **The hero goes large and centred.** A phone mock, a card, a result view — give it the width and
+  let the height carry it. In landscape you park a hero to one side and put type in the other half;
+  in vertical you stack instead, type above or below.
+- **Headlines wrap.** A line that ran as one 1920px row becomes two or three rows at 1080px. That
+  is fine, and it is why vertical holds MORE type than landscape, not less — but count the lines
+  when you check the reading floor, because a three-line headline reads slower than a one-line one.
+- **The safe middle.** Feed UI (captions, handles, buttons) crowds the top and bottom ~12% on most
+  platforms. Keep anything that must be read out of those bands.
+- **One idea per frame.** Vertical is tall and narrow, so two competing elements side by side never
+  works. If a scene has a hero and a line, they stack; if it has two heroes, it is two scenes.
 
 ## Bias the storyboard toward the user flow
 

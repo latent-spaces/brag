@@ -31,7 +31,7 @@ The user may invoke with natural language or flags:
 ```
 /brag
 /brag --tone chaotic
-/brag --tone polished --format vertical
+/brag --tone polished --format landscape
 /brag this. Make it feel like a ridiculous startup launch.
 ```
 
@@ -40,7 +40,7 @@ Parse these options:
 | Option | Values | Default |
 |---|---|---|
 | `--tone` | preset or freeform description | inferred |
-| `--format` | `landscape`, `vertical`, `square` | `landscape` |
+| `--format` | `vertical`, `landscape`, `square` | `vertical` |
 | `--duration` | seconds | auto (15-25s) |
 | `--no-music` | flag | music on |
 | `--no-sfx` | flag | sfx on |
@@ -50,6 +50,27 @@ Parse these options:
 Voice is opt-in. If `--voice` is present, use Kokoro via Hyperframes and do
 not add any provider-selection logic. The voice workflow is intentionally
 single-provider.
+
+### Format
+
+**Vertical is the default: 1080x1920.** Brag videos get watched on a phone — in a feed, in a DM,
+on the platforms that autoplay them full-bleed (Reels, Shorts, TikTok, LinkedIn and X on mobile).
+A landscape film on a phone is a letterboxed strip with dead bars, and it loses the frame exactly
+where the product should be biggest.
+
+Override it only when the user asks, or when the deliverable is plainly for a desktop surface — an
+embed on a marketing site, a conference screen, a YouTube page, a README hero.
+
+| Format | Canvas | Use |
+|---|---|---|
+| `vertical` | 1080x1920 | The default. Feeds, stories, DMs, phone-first viewing. |
+| `landscape` | 1920x1080 | Site embeds, YouTube, decks, anything watched on a desktop. |
+| `square` | 1080x1080 | Mixed feeds where a 9:16 crop would be cut. |
+
+Vertical is not a landscape layout squeezed into a narrow frame. It is its own composition: a
+device mock goes **large and centred** with type stacked above or below it, headlines wrap to two
+or three lines instead of running as one, and the extra height is where the product lives. If you
+find yourself shrinking a hero to fit a side-by-side layout, you are still thinking in 16:9.
 
 Tone can be a preset (`default`, `polished`, `yc-parody`, `chaotic`, `deadpan`, `cinematic`, `app-store`) or a creative direction such as "fake Series A launch from 2016", "museum exhibit", or "overproduced mobile game ad".
 
