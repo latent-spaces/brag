@@ -14,7 +14,7 @@ Create a short launch-style brag video for [App Name].
 - Composition directory: `<output-dir>/composition/`
 - Rendered video: `<output-dir>/brag.mp4`
 - Format: [landscape / vertical / square] — [width]x[height]
-- Duration: [15-25 seconds]
+- Duration: [15-25 seconds by default, or the exact value passed via --duration]
 
 ## Source Material
 - Project root: [path]
@@ -75,11 +75,11 @@ Load the composition-building Hyperframes skills — `hyperframes` (composition 
 Requirements:
 - Show at least one real UI, copy, or visual element from the source project.
 - Keep all text readable in the final render.
-- Keep the video within 15-25 seconds.
+- Keep the video within the target duration — 15-25 seconds by default, or the exact value passed via `--duration`.
 - Include the planned music/SFX layer unless audio was explicitly disabled or documented as intentionally silent.
 - Treat `/brag` audio notes as guidance, not a fixed cue sheet. Choose SFX after the visual animation exists.
 - Treat music cue metadata as optional timing hints. Hyperframes decides exact animation timing and should ignore cues that hurt readability, scene pacing, or the product story.
-- Major reveals may move toward nearby strong cues within about 0.15s. Smaller entrances may align to nearby beat points within about 0.10s. Use only 1-3 strong cue locks in a 15-25s video unless the edit clearly benefits from more.
+- Major reveals may move toward nearby strong cues within about 0.15s. Smaller entrances may align to nearby beat points within about 0.10s. Use only 1-3 strong cue locks per 15-25s of runtime (scale up proportionally for a longer explicit `--duration`) unless the edit clearly benefits from more.
 - Use SFX to support motion and interaction: card sounds for card-like reveals, short announcement cues for major payoffs, key/click sounds for text or user actions, and restraint when the edit is already busy.
 - Honor planned music treatment such as fade-outs, ducking, beat-aligned reveals, or letting a final SFX ring over the music, using the best Hyperframes-supported implementation.
 - When music is present and the treatment is not `none`, consider Hyperframes audio-reactive workflow: extract audio data and use RMS/frequency bands for subtle, brand-specific motion. Good targets are glow, depth, background warmth, card presence, title emphasis, or other existing visual elements. Avoid waveform/equalizer visuals, musical-note graphics, generic particle systems, strobing, or heavy pulsing.
@@ -209,7 +209,7 @@ Before moving to delivery, verify:
 - [ ] Sequential events (cards, stats, list items) snap to consecutive `beats[]` timestamps (±0.10s), marked `// beat-grid` (or natural timing was chosen for readability).
 - [ ] The composition shows at least one real UI, copy, or visual element from the project.
 - [ ] Every factual claim on screen is grounded in the project (see below).
-- [ ] Total duration is 15-25 seconds.
+- [ ] Total duration matches the target — 15-25 seconds by default, or the exact value passed via `--duration`.
 - [ ] Hyperframes check passes, or any blocker is documented for the user.
 
 ### Grounding factual claims

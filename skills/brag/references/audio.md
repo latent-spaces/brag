@@ -287,7 +287,7 @@ Planning rules (apply to whichever source you have):
 - Use cue metadata to bias timing, not control it.
 - Major reveals may move toward strong cues within about `±0.15s`.
 - Smaller entrances may align to nearby beat points within about `±0.10s`.
-- Use 1-3 strong cue locks per 15-25s video.
+- Use 1-3 strong cue locks per 15-25s of runtime (scale up proportionally for a longer explicit `--duration`).
 - Ignore cues when they harm copy readability, scene pacing, or the product story.
 - For deadpan or restraint-heavy tones, cues should be rare, quiet, or saved for the final logo.
 

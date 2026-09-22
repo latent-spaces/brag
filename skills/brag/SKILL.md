@@ -43,7 +43,7 @@ Parse these options:
 |---|---|---|
 | `--tone` | preset or freeform description | inferred |
 | `--format` | `landscape`, `vertical`, `square` | `landscape` |
-| `--duration` | seconds | auto (15-25s) |
+| `--duration` | seconds | auto (15-25s); an explicit value overrides the 15-25s default |
 | `--no-music` | flag | music on |
 | `--no-sfx` | flag | sfx on |
 | `--title` | string | inferred from project |
@@ -105,7 +105,7 @@ Write `<output-dir>/brag-plan.md` (where `<output-dir>` is `brag-output/` or the
 
 When music is selected, include a compact `Music cue guidance` section: read the bundled track's cue preset from `<skill-dir>/assets/music/cues/` if present, otherwise note cues will be detected at composition time (any track now supports beat sync — see `references/audio.md`). Cue metadata is optional timing guidance only: story, readability, pacing, and product clarity stay primary.
 
-**Gate:** `<output-dir>/brag-plan.md` exists with a full storyboard. Scene durations sum to 15–25 seconds.
+**Gate:** `<output-dir>/brag-plan.md` exists with a full storyboard. Scene durations sum to the target duration — 15–25 seconds by default, or the exact value passed via `--duration`.
 
 ---
 
@@ -157,7 +157,7 @@ Always allow a freeform creative direction to refine or override the preset.
 
 These apply to every brag video regardless of tone.
 
-**Short.** 15–25 seconds. Not one second more without a reason. This holds whether or not narration is on; narration does not extend the window.
+**Short.** 15–25 seconds by default. Not one second more without a reason. If the user passes an explicit `--duration`, honor that value instead — but keep every other creative law (pacing, readability, no filler) in force at the longer length. The target holds whether or not narration is on; narration does not extend it.
 
 **Readable.** Keep the pace high through motion and cuts, never by flashing text. Every line a viewer must read holds long enough to read it (short label ~0.8s settled; a sentence ~0.3s per word). Fast-in, then hold — never fast-in, then gone.
 
@@ -176,4 +176,4 @@ These apply to every brag video regardless of tone.
 Hook (2-3s) → Reveal (2-4s) → 2-3 sharp highlights (5-12s) → Punchline/outro (2-4s)
 ```
 
-Adapt this. Not every project needs exactly 3 highlights. The pattern is a starting shape, not a template.
+Adapt this. Not every project needs exactly 3 highlights. The pattern is a starting shape, not a template. For an explicit `--duration` well outside 15-25s, scale the middle section — more highlights/scenes at a similar per-scene pace, not the same 3 highlights stretched with longer holds (see "Explicit `--duration`" guidance in `references/step-2-plan.md`).

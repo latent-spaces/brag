@@ -46,7 +46,7 @@ landing-page-only, write "none — landing-page only" and rely on Key moments in
 - Interpretation: [one sentence on how this affects pacing, writing, visual energy, and restraint]
 
 ## Format: [landscape / vertical / square] — [width]x[height]
-## Duration: [target seconds]
+## Duration: [target seconds — 15-25s default, or the exact value passed via --duration]
 
 ## Visual identity (from the project)
 - Background: [exact color value]
@@ -113,11 +113,19 @@ But adapt it. These are the right scene counts for each tone:
 
 ## Duration guidance
 
-Scene durations must sum to 15-25 seconds. Count them.
+Scene durations must sum to the target duration. Count them.
+
+**Default (no explicit `--duration`):** target 15-25 seconds.
 
 - Under 15 seconds: too thin, add a scene or lengthen holds.
 - Over 25 seconds: cut a scene or tighten timing.
 - 18-22 seconds is the sweet spot for most brag videos.
+
+**Explicit `--duration` (e.g. `--duration 50`):** hit that exact target instead of the 15-25s default, but do not just stretch the same 4-5 scenes with longer holds — that reads as padding, not pacing. Scale the storyboard:
+
+- Add more scenes / more highlights (more of the product's actual moments, not filler) so scene count grows roughly with duration — as a rough guide, keep most scenes in the same 2-6s range the tone table below suggests, and add scenes to fill the extra time rather than lengthening every hold.
+- Every scene still earns its place: no scene exists just to pad the runtime. If the product doesn't have enough real material to justify the requested length, say so in the plan and use the strongest honest length rather than forcing filler.
+- The reading-time floors and creative laws below still apply at any duration.
 
 ## Reading time (keep the pace, not at text's expense)
 
