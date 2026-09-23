@@ -206,5 +206,30 @@ Before moving to delivery, verify:
 - [ ] At least 1 major tween is beat-locked to a strong cue (a `strongCue`, or the highest-`strength` beat from `hyperframes beats`) within ±0.15s, marked `// beat-locked` (or natural timing was chosen for readability).
 - [ ] Sequential events (cards, stats, list items) snap to consecutive `beats[]` timestamps (±0.10s), marked `// beat-grid` (or natural timing was chosen for readability).
 - [ ] The composition shows at least one real UI, copy, or visual element from the project.
+- [ ] Every factual claim on screen is grounded in the project (see below).
 - [ ] Total duration is 15-25 seconds.
 - [ ] Hyperframes check passes, or any blocker is documented for the user.
+
+### Grounding factual claims
+
+`hyperframes check` audits structure. It has no opinion on copy, so a scene
+can read "Ships 10x faster" — a sentence nobody in the project ever wrote —
+and still come back clean. Read the composition once with this question in
+mind, because nothing else will ask it.
+
+The line is between what the video *asserts* and how it *says* it.
+
+**Must be grounded.** Names, numbers, capabilities, feature claims, quotes,
+anything presented as the product's own copy. If a line states something about
+the product, that something has to appear in the project — its files, its
+README, its UI, its actual output. Re-cased, trimmed or split across elements
+is fine; invented is not. "Streamline your workflow" fails not because it is
+generic but because it is a claim the project never makes.
+
+**Free to invent.** Tone, framing, jokes, hooks, transitions, connective
+narration. "Here's the part nobody asked for" is made up and welcome — it is
+the craft, and it asserts nothing about the product.
+
+When a line you want is not grounded, the fix is usually to quote what the
+project does say, which is almost always stranger and better than the
+invented version.
