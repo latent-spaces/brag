@@ -1,6 +1,6 @@
 # Tone reference
 
-Seven tones. Each changes scripting energy, pacing, typography personality, and transition style.
+Eight tones. Each changes scripting energy, pacing, typography personality, and transition style.
 
 ---
 
@@ -229,3 +229,48 @@ All chatbot models welcome.
 **Transitions:** Clean slide or wipe (0.35-0.45s). Nothing dramatic.
 
 **When to use:** Products that benefit from being taken seriously as a product, even if absurd. Good for anything B2B-parody or therapy/wellness adjacent.
+
+---
+
+## `changelog`
+
+**Energy:** Calm, informative, benefit-first. Clear beats clever. This is the register
+for showing a shipped change to people who did not read the diff.
+
+**Voice:** Plain language, addressed to the person who gets the benefit. "You can now…"
+/ "Filters stay put." No engineering vocabulary — no component names, no ticket jargon,
+no "refactored", no "implemented". Say what a user feels, not what the code does.
+
+**Typography:** Mixed case. Medium weight. Generous spacing. Nothing shouts; the
+before/after cut carries the emphasis instead of the type.
+
+**Pacing:** 4-5 scenes. The before/after centerpiece gets 6-10 seconds — longer than any
+scene in the other tones, because the viewer is reading a product, not a slogan.
+
+**Hook style:** The old pain, in one line, stated the way the person who hit it would.
+```
+Every refresh wiped your filters.
+```
+
+**Highlight style:** The change, shown rather than described, with at most one line of
+text over it.
+```
+Now they stay.
+```
+
+**Outro style:** What it unlocks for the person who asked, then the PR reference. Small,
+factual, no call to action.
+```
+Set your view once. It's there tomorrow.
+#42
+```
+
+**Transitions:** Clean slide or wipe (0.35-0.45s) everywhere, with one hard cut at the
+before→after moment. That cut is the whole video — nothing else competes with it.
+
+**When to use:** The default for `--pr` runs. Any demo whose audience is a product
+manager, a stakeholder, a support team, or a sprint review. Also good for release notes
+and internal "here's what shipped" posts outside PR mode.
+
+**Never:** Overstate. This tone's credibility is the product. See the honesty rule in
+`pr-mode.md`.

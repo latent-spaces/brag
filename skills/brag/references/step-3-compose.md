@@ -26,8 +26,19 @@ Create a short launch-style brag video for [App Name].
   - [line 1]
   - [line 2]
 
+## PR Source Material (PR mode only — omit this section otherwise)
+- PR: [#number — title — open / merged]
+- Context file: `<output-dir>/pr-context.md`
+- Change class: [ui-surface / new-flow / behavior-behind-ui / non-visual]
+- Before state to recreate: [the exact old screen, message, value, or output]
+- After state to recreate: [the exact new screen, message, value, or output]
+- The cut: [which moment carries the before→after transition]
+- Real strings from the diff that must appear verbatim:
+  - [field name, button label, error text, CLI flag, endpoint]
+- Must not claim: [adjacent work this PR did not do]
+
 ## Creative Direction
-- Tone preset: [default / polished / yc-parody / chaotic / deadpan / cinematic / app-store]
+- Tone preset: [default / polished / yc-parody / chaotic / deadpan / cinematic / app-store / changelog]
 - Creative direction: [freeform phrase, inferred or user-provided]
 - Interpretation: [how tone affects pacing, writing, visual energy, and restraint]
 - Angle: [one paragraph from brag-plan.md]
@@ -70,10 +81,14 @@ Scene summary:
 - Audio files: copy the chosen music and any Hyperframes-selected SFX into `<output-dir>/composition/assets/`
 
 ## Hyperframes Instructions
-Load the composition-building Hyperframes domain skills — `hyperframes-core` (composition contract + `data-*` timing), `hyperframes-animation` (motion), `hyperframes-creative` (design spec, beats, audio-reactive), `hyperframes-keyframes` (seek-safe keyframes), and `hyperframes-cli` (lint/check/render). /brag is its own workflow: do not enter the `hyperframes` entry-point intent interview and do not route into its generic promo / launch-video workflow. Prefer native Hyperframes conventions over anything in `/brag`.
+Load the composition-building Hyperframes domain skills — `hyperframes-core` (composition contract + `data-*` timing), `hyperframes-animation` (motion), `hyperframes-creative` (design spec, beats, audio-reactive), `hyperframes-keyframes` (seek-safe keyframes), and `hyperframes-cli` (lint/check/render). /brag is its own workflow: do not enter the `hyperframes` entry-point intent interview and do not route into its generic promo / launch-video workflow — nor, in PR mode, into `pr-to-video`. Prefer native Hyperframes conventions over anything in `/brag`.
 
 Requirements:
 - Show at least one real UI, copy, or visual element from the source project.
+- **In PR mode:** show the before state and the after state, framed identically so only
+  the changed thing moves. Use the real strings listed under PR Source Material. Claim
+  nothing beyond what the diff does — no invented metrics or timings. If the PR is open,
+  mark it (`#42 · in review`) in the outro.
 - Keep all text readable in the final render.
 - Keep the video within 15-25 seconds.
 - Include the planned music/SFX layer unless audio was explicitly disabled or documented as intentionally silent.
@@ -184,7 +199,7 @@ If SFX are enabled, also pass `<skill-dir>/assets/sfx/sfx-analysis.md` as select
 
 After `<output-dir>/brag-plan.md`, `<output-dir>/composition-brief.md`, and selected audio assets exist:
 
-1. Load the Hyperframes domain skills (`hyperframes-core`, `hyperframes-animation`, `hyperframes-creative`, `hyperframes-keyframes`, `hyperframes-cli`) to create or update `<output-dir>/composition/`. /brag is its own workflow — do not enter the `hyperframes` entry-point intent interview or route into its generic promo / launch-video workflow.
+1. Load the Hyperframes domain skills (`hyperframes-core`, `hyperframes-animation`, `hyperframes-creative`, `hyperframes-keyframes`, `hyperframes-cli`) to create or update `<output-dir>/composition/`. /brag is its own workflow — do not enter the `hyperframes` entry-point intent interview, its generic promo / launch-video workflow, or `pr-to-video`.
 2. Pass Hyperframes the composition brief, the brag plan, and the source files it should reference.
 3. Let Hyperframes choose the implementation details.
 4. Run Hyperframes check (the single gate before render).
@@ -206,5 +221,6 @@ Before moving to delivery, verify:
 - [ ] At least 1 major tween is beat-locked to a strong cue (a `strongCue`, or the highest-`strength` beat from `hyperframes beats`) within ±0.15s, marked `// beat-locked` (or natural timing was chosen for readability).
 - [ ] Sequential events (cards, stats, list items) snap to consecutive `beats[]` timestamps (±0.10s), marked `// beat-grid` (or natural timing was chosen for readability).
 - [ ] The composition shows at least one real UI, copy, or visual element from the project.
+- [ ] PR mode only: both the before state and the after state appear, and every on-screen claim is traceable to the diff.
 - [ ] Total duration is 15-25 seconds.
 - [ ] Hyperframes check passes, or any blocker is documented for the user.
