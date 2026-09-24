@@ -85,6 +85,7 @@ Requirements:
 - When music is present and the treatment is not `none`, consider Hyperframes audio-reactive workflow: extract audio data and use RMS/frequency bands for subtle, brand-specific motion. Good targets are glow, depth, background warmth, card presence, title emphasis, or other existing visual elements. Avoid waveform/equalizer visuals, musical-note graphics, generic particle systems, strobing, or heavy pulsing.
 - Use local assets for audio and any required runtime/media dependencies when possible.
 - Run `hyperframes check` before render — it is brag's single gate.
+- Keep creation and rendering local. Remote or publishing workflows require a separate explicit user request.
 ```
 
 The brief is the boundary: if a detail belongs to product positioning, copy, tone, source material, or selection of moments, `/brag` should specify it. If a detail belongs to composition implementation, Hyperframes should decide it.
@@ -189,6 +190,7 @@ After `<output-dir>/brag-plan.md`, `<output-dir>/composition-brief.md`, and sele
 3. Let Hyperframes choose the implementation details.
 4. Run Hyperframes check (the single gate before render).
 5. Render to `<output-dir>/brag.mp4`.
+6. Keep creation and rendering local. Remote or publishing workflows require a separate explicit user request.
 
 Do not manually copy stale composition snippets from this skill into the output. The point of delegating is to benefit from the latest Hyperframes guidance.
 
