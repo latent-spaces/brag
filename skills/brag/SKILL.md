@@ -155,7 +155,7 @@ Always allow a freeform creative direction to refine or override the preset.
 
 These apply to every brag video regardless of tone.
 
-**Short.** 15–25 seconds. Not one second more without a reason.
+**Short.** 15–25 seconds. Not one second more without a reason. This holds whether or not narration is on; narration does not extend the window.
 
 **Readable.** Keep the pace high through motion and cuts, never by flashing text. Every line a viewer must read holds long enough to read it (short label ~0.8s settled; a sentence ~0.3s per word). Fast-in, then hold — never fast-in, then gone.
 
