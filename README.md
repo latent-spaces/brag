@@ -92,6 +92,13 @@ Voiceover is off by default. Enable it explicitly with:
 
 Narration uses Kokoro through Hyperframes when enabled.
 
+Videos are 15-25 seconds by default. For a longer film, ask for sections — one
+per tone, rendered separately and joined into a single cut:
+
+```text
+/brag --sections 5 --tone "deadpan, polished, polished, cinematic, app-store"
+```
+
 You get a `brag-output/` folder with the plan, a composition brief, share copy, and the rendered `brag.mp4`.
 
 ## How it works

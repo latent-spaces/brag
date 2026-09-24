@@ -35,6 +35,7 @@ The user may invoke with natural language or flags:
 /brag --tone chaotic
 /brag --tone polished --format vertical
 /brag this. Make it feel like a ridiculous startup launch.
+/brag --sections 5 --tone "deadpan, polished, polished, cinematic, app-store"
 ```
 
 Parse these options:
@@ -48,6 +49,7 @@ Parse these options:
 | `--no-sfx` | flag | sfx on |
 | `--title` | string | inferred from project |
 | `--voice` | flag | narration off |
+| `--sections` | count | off (single composition) |
 
 Voice is opt-in. If `--voice` is present, use Kokoro via Hyperframes and do
 not add any provider-selection logic. The voice workflow is intentionally
@@ -56,6 +58,28 @@ single-provider.
 Tone can be a preset (`default`, `polished`, `yc-parody`, `chaotic`, `deadpan`, `cinematic`, `app-store`) or a creative direction such as "fake Series A launch from 2016", "museum exhibit", or "overproduced mobile game ad".
 
 When the user gives freeform tone direction, map it to the nearest preset for pacing and structure, but preserve the user's direction in the plan and composition brief.
+
+`--tone` also accepts a comma-separated list, one tone per section. It is only
+valid alongside `--sections`, and the list length must equal the section count.
+A single tone with `--sections` applies that tone to every section.
+
+## Long-form dispatch
+
+`/brag` is short by default. Switch to the long-form pipeline only when the
+user asks for a longer video, or passes `--sections`, or passes a `--duration`
+over 25 seconds. Never choose it yourself.
+
+With `--duration` but no `--sections`, plan `ceil(duration / 12)` sections,
+clamped to 4-6.
+
+When it is switched on, **read [references/long-form.md](references/long-form.md)
+before Step 1** and follow it alongside the four steps below. It changes what
+each step produces: the plan gains a section table, the composition step writes
+one composition per section instead of one for the whole film, and delivery
+renders each section and joins them.
+
+Everything else — the rubric, the gates, the creative laws — is unchanged and
+applies inside every section.
 
 ## Narration guidance
 
@@ -107,6 +131,10 @@ When music is selected, include a compact `Music cue guidance` section: read the
 
 **Gate:** `<output-dir>/brag-plan.md` exists with a full storyboard. Scene durations sum to 15–25 seconds.
 
+**Long-form gate:** the plan carries a section table — directory, tone, and a
+whole-frame length per section — and each section's scene durations sum to that
+section's length.
+
 ---
 
 ## Step 3: Hand off to Hyperframes
@@ -121,6 +149,10 @@ Write the composition brief and use Hyperframes to create the video implementati
 
 **Gate:** `npx hyperframes check` passes with zero errors inside `<output-dir>/composition/` (the single browser gate before render — see hyperframes-cli for what it audits).
 
+**Long-form gate:** the compositions live in `<output-dir>/clips/<nn>-<name>/`
+instead, and `npx hyperframes check` passes with zero errors in every one of
+them. One section with an error is a failed gate for the whole film.
+
 ---
 
 ## Step 4: Validate, render, and deliver
@@ -130,6 +162,10 @@ Write the composition brief and use Hyperframes to create the video implementati
 Validate, preview, render to `<output-dir>/brag.mp4`, pick the best poster frame into `<output-dir>/brag.jpg`, bake that poster as the video's frame 0 so it's the idle thumbnail everywhere, and write `<output-dir>/share-copy.txt`.
 
 **Gate:** `<output-dir>/brag.mp4` exists. A best-frame poster `<output-dir>/brag.jpg` is picked (not an arbitrary frame) and baked as frame 0 of `brag.mp4`. Share copy is written.
+
+**Long-form gate:** every section is rendered to `<output-dir>/renders/`, and
+`scripts/join-sections.mjs` joined them without a parity refusal. The poster is
+baked into the joined film, not into a section.
 
 ---
 
@@ -158,6 +194,11 @@ Always allow a freeform creative direction to refine or override the preset.
 These apply to every brag video regardless of tone.
 
 **Short.** 15–25 seconds. Not one second more without a reason.
+
+The one sanctioned reason is a user asking for a longer video. That is the
+long-form pipeline in [references/long-form.md](references/long-form.md): a
+sectioned film, one tone per section, each section held to the same laws. It is
+not a licence to let a single composition drift past 25 seconds.
 
 **Readable.** Keep the pace high through motion and cuts, never by flashing text. Every line a viewer must read holds long enough to read it (short label ~0.8s settled; a sentence ~0.3s per word). Fast-in, then hold — never fast-in, then gone.
 

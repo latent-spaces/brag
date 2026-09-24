@@ -16,6 +16,16 @@ Create a short launch-style brag video for [App Name].
 - Format: [landscape / vertical / square] — [width]x[height]
 - Duration: [15-25 seconds]
 
+Sectioned variant — use these lines instead when the long-form pipeline is on
+(see [long-form.md](long-form.md)):
+
+- Section directories: `brag-output/clips/<nn>-<name>/`
+- Section renders: `brag-output/renders/<nn>.mp4`
+- Joined film: `brag-output/brag.mp4`
+- Format: [landscape / vertical / square] — [width]x[height]
+- Section lengths: [whole-frame seconds per section, and the total]
+- Music slice per section: [the `data-media-start` offset for each]
+
 ## Source Material
 - Project root: [path]
 - Primary files read: [index.html, styles.css, README, etc.]
@@ -28,6 +38,7 @@ Create a short launch-style brag video for [App Name].
 
 ## Creative Direction
 - Tone preset: [default / polished / yc-parody / chaotic / deadpan / cinematic / app-store]
+  (sectioned: one preset per section, in order, and why the order moves that way)
 - Creative direction: [freeform phrase, inferred or user-provided]
 - Interpretation: [how tone affects pacing, writing, visual energy, and restraint]
 - Angle: [one paragraph from brag-plan.md]
