@@ -8,7 +8,7 @@
   const V = SS.V;
   const T = {
     node: 4.95, mark: 5.5, slide: 6.0, letters: 6.02, tagIn: 6.34, tagOut: 7.68,
-    toHub: 7.64, hub: 7.78, h1: 7.86, brokers: 8.22, lines: 8.36, h1out: 9.86, h2: 9.96,
+    toHub: 7.64, hub: 7.78, h1: 7.86, brokers: 8.22, lines: 8.36, h1out: 9.86, h2: 10.12,
     pulses: 9.98, rows: 10.1, exit: 11.08, end: 11.5,
   };
   const LH = SS.pick(176, 150); // lockup height
@@ -167,7 +167,7 @@
 
     // ---------- headlines
     SS.set(R.h1.el, { x: 540, y: (HEAD.y1 + HEAD.y2) / 2 });
-    SS.words(R.h1, t, { inT: T.h1, st: 0.05, outT: T.h1out, outSt: 0.025 });
+    SS.words(R.h1, t, { inT: T.h1, st: 0.05, outT: T.h1out - 0.06, outSt: 0.015, outDur: 0.3 });
     SS.set(R.h2.el, { x: 540, y: (HEAD.y1 + HEAD.y2) / 2 });
     SS.words(R.h2, t, { inT: T.h2, st: 0.07, outT: T.exit - 0.1, outSt: 0.02, outDur: 0.32 });
   }

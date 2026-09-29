@@ -18,7 +18,7 @@
       s.root = stage.lastElementChild;
     });
     const grain = SS.el('div', 'layer', stage);
-    Object.assign(grain.style, { backgroundImage: `url(${SS.grain(256, 256, 9)})`, pointerEvents: 'none', mixBlendMode: 'multiply', opacity: 0.55 });
+    Object.assign(grain.style, { backgroundImage: `url(${SS.grain(256, 256, 9)})`, pointerEvents: 'none', opacity: 0.5 });
     SS.renderFrame = (t) => {
       for (const s of SS.scenes) {
         const on = t >= s.a && t <= s.b;

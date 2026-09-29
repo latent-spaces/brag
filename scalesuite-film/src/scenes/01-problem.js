@@ -17,14 +17,14 @@
   // ---------------------------------------------------------------- layout tables (world coords)
   const LAY = SS.pick(
     {
-      head: { size: 112, y1: 298, y2: 420, y3: 542, sizeB: 118, yA: 300, yB: 424, maxW: 930 },
+      head: { size: 112, y1: 298, y2: 420, y3: 542, sizeB: 118, yA: 296, yB: 446, maxW: 930 },
       unit(i) { const c = i % 2, r = (i / 2) | 0; return { x: c ? 788 : 292, y: 704 + r * 168 }; },
       card: { w: 452, h: 100 }, chipOff: { x: 58, y: 84 }, chipLabel: 'Campagne Google Ads', chipSize: 22,
       focus0: { x: 292, y: 704, s: 1.45, ax: 540, ay: 980 }, focus1: { x: 540, y: 1040, s: 1, ax: 540, ay: 1040 },
       tagBox: { x0: 120, x1: 960, y0: 640, y1: 1480 }, tagSize: 19,
     },
     {
-      head: { size: 96, y1: 146, y2: 248, y3: 350, sizeB: 104, yA: 150, yB: 260, maxW: 960 },
+      head: { size: 96, y1: 146, y2: 248, y3: 350, sizeB: 104, yA: 146, yB: 276, maxW: 960 },
       unit(i) { const c = i % 5, r = (i / 5) | 0; return { x: 540 + (c - 2) * 198, y: 628 + r * 330 }; },
       card: { w: 184, h: 184 }, chipOff: { x: 0, y: 136 }, chipLabel: 'Campagne', chipSize: 20,
       focus0: { x: 144, y: 628, s: 1.4, ax: 540, ay: 760 }, focus1: { x: 540, y: 790, s: 1, ax: 540, ay: 790 },
@@ -209,7 +209,7 @@
     const left = SS.CX - total / 2;
 
     // S1 → S2: "10" exits, "courtiers." travels to line B, "Plus de" rises
-    const kMove = p(t, T.toS2, T.toS2 + 0.6, E.inOut);
+    const kMove = p(t, T.toS2 + 0.14, T.toS2 + 0.74, E.inOut);
     const odoOut = p(t, T.toS2, T.toS2 + 0.4, E.in);
     R.odoInner.style.transform = `translateY(${(-odoOut * SS.HIDE).toFixed(2)}%)`;
     SS.set(R.odoWrap, { x: left, y: H.y1, ax: 0, o: odoOut >= 1 ? 0 : 1 });
@@ -226,11 +226,11 @@
 
     SS.set(R.h2.el, { x: SS.CX, y: H.y2 });
     SS.set(R.h3.el, { x: SS.CX, y: H.y3 });
-    SS.words(R.h2, t, { inT: T.h2, outT: T.toS2 - 0.04, st: 0.06 });
-    SS.words(R.h3, t, { inT: T.h2 + 0.14, outT: T.toS2 - 0.02, st: 0.07 });
+    SS.words(R.h2, t, { inT: T.h2, outT: T.toS2 - 0.14, st: 0.06, outSt: 0.02, outDur: 0.28 });
+    SS.words(R.h3, t, { inT: T.h2 + 0.14, outT: T.toS2 - 0.12, st: 0.07, outSt: 0.02, outDur: 0.28 });
     const pa = pullH(SS.CX, H.yA);
     SS.set(R.hA.el, { x: pa.x, y: pa.y, s: pa.s, o: pa.o, blur: pa.blur });
-    SS.words(R.hA, t, { inT: T.toS2 + 0.2, st: 0.07 });
+    SS.words(R.hA, t, { inT: T.toS2 + 0.56, st: 0.07 });
     const pb = pullH(SS.CX, H.yB);
     SS.set(R.nB2.el, { x: pb.x, y: pb.y, s: pb.s, o: pb.o, blur: pb.blur });
     SS.words(R.nB2, t, { inT: T.noun2 + 0.16, outT: T.noun3 });
