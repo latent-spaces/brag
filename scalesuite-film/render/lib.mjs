@@ -26,13 +26,13 @@ export function serve() {
   });
 }
 
-export async function openFilm(browser, base, format, scale = 1) {
+export async function openFilm(browser, base, format, scale = 1, version = 2) {
   const H = format === 'feed' ? 1350 : 1920;
   const ctx = await browser.newContext({ viewport: { width: 1080, height: H }, deviceScaleFactor: scale });
   const page = await ctx.newPage();
   page.on('pageerror', (e) => console.error('[page error]', e.message));
   page.on('console', (m) => { if (m.type() === 'error') console.error('[console]', m.text()); });
-  await page.goto(`${base}/index.html?format=${format}`);
+  await page.goto(`${base}/index.html?format=${format}&v=${version}`);
   await page.waitForFunction(() => window.SS && (window.SS.ready || window.SS.error), null, { timeout: 60000 });
   const err = await page.evaluate(() => window.SS.error);
   if (err) throw new Error(err);

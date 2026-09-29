@@ -6,7 +6,7 @@
   const SS = window.SS;
   const { p, E, lerp, clamp } = SS;
   const V = SS.V;
-  const T = { expand: 14.5, full: 15.05, card: 15.0, w: [15.16, 16.02, 16.8], steps: [15.3, 16.16, 16.94, 17.22], sub: 15.7, fade: 17.8, shrink: 17.92, bar: 18.3, end: 18.36 };
+  const T = { expand: 14.5, full: 15.05, card: 15.0, w: [15.16, 16.02, 16.8], steps: [15.3, 16.16, 16.94, 17.22], sub: 15.02, fade: 17.8, shrink: 17.92, bar: 18.3, end: 18.36 };
   const SEARCH = SS.pick({ x: 540, y: 640, w: 900, h: 112 }, { x: 540, y: 396, w: 900, h: 96 });
   SS.SEARCH = SEARCH;
   const MAIN = SS.pick({ x: 540, y: 1100, w: 820, h: 560, row: 84, title: 33, label: 31 }, { x: 540, y: 868, w: 800, h: 470, row: 66, title: 30, label: 27 });

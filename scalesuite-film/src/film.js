@@ -2,8 +2,9 @@
    ?format=vertical|feed  ?t=12.3 (static frame)  ?play (real-time preview in a browser) */
 (function () {
   const SS = window.SS;
-  SS.DURATION = 27.5;
-  SS.POSTER_T = 2.3; // settled hook frame, baked in as frame 0 for thumbnails
+  // Film clock (V2 by default, see timemap.js) → scenes' animation clock.
+  SS.DURATION = Math.round(SS.FILM_DURATION * 1000) / 1000;
+  SS.POSTER_T = SS.toFilm(2.2); // settled hook frame, baked in as frame 0 for thumbnails
 
   async function boot() {
     const stage = document.getElementById('stage');
@@ -19,7 +20,8 @@
     });
     const grain = SS.el('div', 'layer', stage);
     Object.assign(grain.style, { backgroundImage: `url(${SS.grain(256, 256, 9)})`, pointerEvents: 'none', opacity: 0.5 });
-    SS.renderFrame = (t) => {
+    SS.renderFrame = (tFilm) => {
+      const t = SS.toAnim(tFilm);
       for (const s of SS.scenes) {
         const on = t >= s.a && t <= s.b;
         if (s.root) s.root.style.display = on ? '' : 'none';

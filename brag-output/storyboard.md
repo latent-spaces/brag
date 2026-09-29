@@ -101,3 +101,27 @@ resolves on the tonic and rings out. Target −15 LUFS integrated, −1.5 dBTP.
 
 The settled hook frame ("10 courtiers." + "10 campagnes Google Ads ?" + full grid) is exported as
 `scalesuite-preview.jpg` and baked in as frame 0 of both masters for platform thumbnails.
+
+## V2: retimed, voiceover-ready (33.45 s)
+
+V2 keeps every V1 animation, transition and layout. The only change is **reading holds**, defined in
+`scalesuite-film/src/timemap.js`. The film clock eases to a near-stop, and back, only at moments where a
+composition is already settled, so animation velocity is unchanged. Measured on the masters: the
+fastest 40 and 150 frames have identical motion in V1 and V2, total motion is the same, and V2 adds
+about 5 s of calm reading time.
+
+| Beat | V1 start | V2 start | Hold added |
+|---|---|---|---|
+| Hook: "10 courtiers. / 10 campagnes Google Ads ?" | 0.0 | 0.0 | +0.45 s |
+| Complexity: courtiers → campagnes → gestion | 2.4 | 2.9 | +0.3 s per phrase |
+| ScaleSuite reveal + tagline | 5.0 | 6.3 | +0.55 s |
+| Centralized team | 7.6 | 9.5 | +0.15 / +0.55 s |
+| Centralisé. Mais personnalisé. | 11.1 | 13.7 | +0.55 s |
+| Créées. Suivies. Optimisées. | 14.5 | 17.7 | +0.2 / +0.2 / +0.4 s |
+| Lead routing | 18.0 | 21.9 | +0.75 s on "Le bon courtier le reçoit." |
+| Thesis | 21.3 | 26.0 | +0.75 s |
+| CTA | 23.9 | 29.4 | +0.5 s (final frame static ≈1.9 s) |
+
+Two timing-only adjustments were made so that no hold freezes a half-revealed line: "Plus de" enters
+0.25 s faster (the noun swap waits for it), and the dark scene's subline arrives with the card.
+The voiceover timing is in `voiceover-timing-v2.md`.

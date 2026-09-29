@@ -8,7 +8,7 @@
   const V = SS.V;
 
   const T = {
-    chips: 1.1, h2: 1.12, toS2: 2.42, noun2: 3.28, noun3: 4.08, tags0: 2.55, tags1: 4.35,
+    chips: 1.1, h2: 1.12, toS2: 2.42, noun2: 3.36, noun3: 4.08, tags0: 2.55, tags1: 4.35,
     collapse: 4.98, end: 5.62,
   };
   const C = SS.pick({ x: 540, y: 1000 }, { x: 540, y: 760 }); // convergence node (shared with S3)
@@ -230,7 +230,7 @@
     SS.words(R.h3, t, { inT: T.h2 + 0.14, outT: T.toS2 - 0.12, st: 0.07, outSt: 0.02, outDur: 0.28 });
     const pa = pullH(SS.CX, H.yA);
     SS.set(R.hA.el, { x: pa.x, y: pa.y, s: pa.s, o: pa.o, blur: pa.blur });
-    SS.words(R.hA, t, { inT: T.toS2 + 0.56, st: 0.07 });
+    SS.words(R.hA, t, { inT: T.toS2 + 0.56, st: 0.07, dur: 0.5 });
     const pb = pullH(SS.CX, H.yB);
     SS.set(R.nB2.el, { x: pb.x, y: pb.y, s: pb.s, o: pb.o, blur: pb.blur });
     SS.words(R.nB2, t, { inT: T.noun2 + 0.16, outT: T.noun3 });
