@@ -4,7 +4,7 @@
 
 [![the /brag launch site — you built it, now brag](docs/assets/hero.png)](https://latent-spaces.github.io/brag/)
 
-`/brag` is a Claude Code skill that turns the project you created into a short, shareable launch video — music, motion, and share copy included. One command, powered by [Hyperframes](https://hyperframes.heygen.com/).
+`/brag` is an agent skill that turns the project you created into a short, shareable launch video — music, motion, and share copy included. One command, powered by [Hyperframes](https://hyperframes.heygen.com/).
 
 The looping video on the [launch site](https://latent-spaces.github.io/brag/) was made by `/brag` on this very repo. 
 
@@ -26,9 +26,25 @@ On Opus 5.5, `/brag` switches to `/brag-slim` automatically. Run `/brag --full` 
 npx skills add https://github.com/latent-spaces/brag --skill brag-slim
 ```
 
-Already have the `/brag` plugin? `/brag-slim` is included from version 0.4.0. Run `claude plugin update brag` to get it.
+Already have the Claude Code `/brag` plugin? `/brag-slim` is included from version 0.4.0. Run `claude plugin update brag` to get it.
 
 ## Install /brag
+
+**Codex:**
+
+```bash
+codex plugin marketplace add latent-spaces/brag
+codex plugin add brag@brag
+```
+
+To update it later:
+
+```bash
+codex plugin marketplace upgrade brag
+codex plugin add brag@brag
+```
+
+**Claude Code:**
 
 ```bash
 /plugin marketplace add latent-spaces/brag
@@ -111,7 +127,9 @@ You get a `brag-output/` folder with the plan, a composition brief, share copy, 
 - `skills/brag-slim/` — `/brag-slim`, the single-file skill for Claude Opus 5.5
 - `examples/` — fake product sites used as a benchmark suite
 - `docs/` — the launch site (GitHub Pages)
-- `.claude-plugin/` — plugin manifest + marketplace catalog
+- `plugin.json` — portable Agent Plugins manifest
+- `.codex-plugin/` — Codex compatibility manifest
+- `.claude-plugin/` — Claude Code manifest + shared marketplace catalog (also recognized by Codex)
 - `.claude/skills/brag/` — symlink → `skills/brag/` (Claude Code discovery)
 - `.agents/skills/brag/` — symlink → `skills/brag/` (Codex CLI + opencode discovery)
 - `.opencode/skills/brag/` — symlink → `skills/brag/` (opencode discovery)
