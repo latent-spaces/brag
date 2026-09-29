@@ -1,0 +1,71 @@
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: block;
+  src: url(../assets/fonts/Inter-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: block;
+  src: url(../assets/fonts/Inter-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  --off: #F7FBFA;
+  --mint: #E8F9F7;
+  --turq: #2BBFB3;
+  --turq-text: #14A89B;
+  --green: #1D9E75;
+  --ink: #1A1A1A;
+  --ink2: #2C2C2A;
+  --soft: #5E6B69;
+  --faint: #9AA7A4;
+  --shadow: 0 1px 2px rgba(18, 44, 40, .06), 0 14px 34px -14px rgba(18, 74, 66, .26), 0 0 0 1px rgba(26, 26, 26, .045);
+}
+
+html, body { margin: 0; padding: 0; background: var(--off); overflow: hidden; }
+#stage {
+  position: relative; width: 1080px; overflow: hidden; background: var(--off);
+  font-family: 'Inter', system-ui, sans-serif; color: var(--ink);
+  -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
+  font-feature-settings: 'cv11' 1, 'ss03' 1;
+}
+.layer { position: absolute; inset: 0; overflow: hidden; }
+.abs { position: absolute; left: 0; top: 0; will-change: transform, opacity; }
+svg.lines { position: absolute; left: 0; top: 0; overflow: visible; }
+
+/* masked kinetic words */
+.txt .ln { display: block; }
+.m { display: inline-block; overflow: hidden; vertical-align: top; padding: .16em .06em .22em; margin: -.16em -.06em -.22em; }
+.m > .w { display: inline-block; will-change: transform; }
+
+/* odometer */
+.odo { display: inline-flex; font-feature-settings: 'tnum' 1; vertical-align: top; }
+.odo-win { display: inline-block; overflow: hidden; height: 1.12em; padding: 0 .01em; }
+.odo-col { display: flex; flex-direction: column; will-change: transform; }
+.odo-d { display: block; height: 1.12em; line-height: 1.12em; }
+
+/* cards & chips */
+.card { background: #fff; border-radius: 26px; box-shadow: var(--shadow); }
+.chip {
+  display: inline-flex; align-items: center; gap: .45em; white-space: nowrap;
+  background: #fff; border-radius: 999px; padding: .5em .95em .5em .75em;
+  font-weight: 650; letter-spacing: -.012em; color: var(--ink2);
+  box-shadow: 0 1px 2px rgba(18, 44, 40, .07), 0 8px 18px -10px rgba(18, 74, 66, .3), 0 0 0 1px rgba(26, 26, 26, .06);
+}
+.chip.mint { background: var(--mint); box-shadow: 0 0 0 1.5px rgba(43, 191, 179, .45); color: #0F6F66; }
+.chip.dark { background: var(--ink); color: #fff; box-shadow: 0 10px 26px -10px rgba(0, 0, 0, .45); }
+.chip svg, .ico svg { width: 1.15em; height: 1.15em; display: block; flex: none; }
+.chk { display: inline-block; flex: none; }
+.chk svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.avatar svg { width: 100%; height: 100%; display: block; }
+.node {
+  width: 20px; height: 20px; border-radius: 50%; background: var(--green);
+  box-shadow: 0 0 0 6px rgba(43, 191, 179, .18);
+}
+.skel { background: #E6EEEC; border-radius: 8px; }
