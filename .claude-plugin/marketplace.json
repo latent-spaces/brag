@@ -1,6 +1,6 @@
 {
   "name": "brag",
-  "description": "You built it. Now brag. Turn the project you just shipped into a short, shareable launch video with one command.",
+  "description": "You built it. Now brag. Turn the project you just shipped, or the footage you just shot, into a short, shareable video with one command.",
   "owner": {
     "name": "Shunit Haviv Hakimi",
     "email": "shunithaviv@gmail.com",
@@ -10,7 +10,7 @@
     {
       "name": "brag",
       "source": "./",
-      "description": "Turn the current project website into a short, polished, shareable launch video using HyperFrames."
+      "description": "Turn the current project website into a short, polished launch video using HyperFrames, or a folder of real photos and videos into a promo with /promo."
     }
   ]
 }

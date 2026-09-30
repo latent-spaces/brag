@@ -1,7 +1,7 @@
 {
   "name": "brag",
-  "description": "Turn the current project into a short, polished, shareable launch video using HyperFrames.",
-  "version": "0.4.0",
+  "description": "Turn the current project, or a folder of real photos and videos, into a short, polished, shareable video: launch videos with HyperFrames, promos from real footage with /promo.",
+  "version": "0.5.0",
   "author": {
     "name": "Shunit Haviv Hakimi",
     "email": "shunithaviv@gmail.com"
@@ -9,5 +9,13 @@
   "license": "MIT",
   "homepage": "https://github.com/latent-spaces/brag",
   "repository": "https://github.com/latent-spaces/brag",
-  "keywords": ["video", "launch", "hyperframes", "skill"]
+  "keywords": [
+    "video",
+    "launch",
+    "hyperframes",
+    "skill",
+    "promo",
+    "video-editing",
+    "footage"
+  ]
 }

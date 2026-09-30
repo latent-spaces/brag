@@ -28,6 +28,33 @@ npx skills add https://github.com/latent-spaces/brag --skill brag-slim
 
 Already have the `/brag` plugin? `/brag-slim` is included from version 0.4.0. Run `claude plugin update brag` to get it.
 
+## New: `/promo`
+
+**Shot it instead of coding it? Brag anyway.**
+
+`/promo` edits real footage. Point it at a folder of photos and videos (plus an optional brief) and it cuts a short promo with music, on-screen text in any language, a poster and a caption.
+
+- **Reads phone media as it comes.** HEIC photos, rotated portrait clips, HDR video, Display P3 colour, odd camcorder formats. It looks at contact sheets rather than every file, so a big folder stays cheap.
+- **Cuts like an editor.** It picks the sharpest, steadiest moments, avoids cuts inside a clip, cuts on the music's beats, and gives every person in the footage a moment when you ask.
+- **Words you can stand behind.** Text comes only from your brief, the footage or your own website. No invented prices, stats or testimonials, and third-party logos are kept out of frame.
+- **Any language.** It handles right-to-left and joined scripts (Persian, Arabic), keeps numbers and URLs readable inside them, and turns off letter-spacing.
+- **One timeline, every format.** Vertical by default, and landscape or square from the same plan.
+- **Optional AI fill.** With [gpt-image-bridge](https://github.com/oakplank/gpt-image-bridge) and a logged-in `codex`, it can generate clearly illustrative plates (say, a route map behind a services card), graded to sit with the footage and labelled in the caption.
+
+```text
+/promo ~/Desktop/opening-night
+/promo ~/media/cafe --tone premium --lang fa
+/promo . --format landscape --music ./track.mp3 --no-ai
+```
+
+**Install just `/promo`:**
+
+```bash
+npx skills add https://github.com/latent-spaces/brag --skill promo
+```
+
+Inside the `/brag` plugin, `/promo` uses brag's bundled music. A standalone install uses a track you give it.
+
 ## Install /brag
 
 ```bash
@@ -35,7 +62,7 @@ Already have the `/brag` plugin? `/brag-slim` is included from version 0.4.0. Ru
 /plugin install brag@brag
 ```
 
-Then run `/brag` inside any project. The plugin includes `/brag-slim` too.
+Then run `/brag` inside any project. The plugin includes `/brag-slim` and `/promo` too.
 
 **Any other agent** — one command via the [`skills`](https://github.com/vercel-labs/skills) CLI (Cursor, Codex, Copilot, Gemini CLI, opencode, and more):
 
@@ -105,16 +132,21 @@ You get a `brag-output/` folder with the plan, a composition brief, share copy, 
 - FFmpeg on `PATH`
 - Hyperframes CLI — `npx hyperframes` (check it with `npx hyperframes doctor`)
 
+`/promo` needs FFmpeg with zscale, ImageMagick 6 or 7, Python 3, Node.js 22+ and a Chromium (it installs `playwright-core` per run). Optional: [gpt-image-bridge](https://github.com/oakplank/gpt-image-bridge) and the `codex` CLI for AI fill images.
+
 ## What's in this repo
 
 - `skills/brag/` — the skill, references, and bundled music + SFX
 - `skills/brag-slim/` — `/brag-slim`, the single-file skill for Claude Opus 5.5
+- `skills/promo/` — `/promo`: footage tools, capture script and render kit for promos from real footage
+- `tests/promo/` — `/promo` self-checks (`python3 tests/promo/test_footage.py`, `bash tests/promo/test_capture.sh`, `bash tests/promo/test_kit.sh`)
 - `examples/` — fake product sites used as a benchmark suite
 - `docs/` — the launch site (GitHub Pages)
 - `.claude-plugin/` — plugin manifest + marketplace catalog
 - `.claude/skills/brag/` — symlink → `skills/brag/` (Claude Code discovery)
 - `.agents/skills/brag/` — symlink → `skills/brag/` (Codex CLI + opencode discovery)
 - `.opencode/skills/brag/` — symlink → `skills/brag/` (opencode discovery)
+- `.claude/skills/promo/`, `.agents/skills/promo/`, `.opencode/skills/promo/` — the same discovery symlinks for `/promo`
 
 ## Credits
 

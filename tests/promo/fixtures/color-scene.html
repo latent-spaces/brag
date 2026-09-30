@@ -1,0 +1,12 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html, body { margin: 0; width: 320px; height: 568px; }</style>
+<body>
+<script>
+  // frame i paints rgb(i*8, 0, 255 - i*8), so any frame can be checked by its color
+  window.render = async (t) => {
+    const i = Math.round(t * 30);
+    document.body.style.background = `rgb(${i * 8}, 0, ${255 - i * 8})`;
+  };
+  window.ready = (async () => { await window.render(0); return { fps: 30, duration: 1, width: 320, height: 568 }; })();
+</script>

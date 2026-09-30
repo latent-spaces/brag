@@ -2,3 +2,10 @@
 .agents/skills/brag -text
 .claude/skills/brag -text
 .opencode/skills/brag -text
+.agents/skills/promo -text
+.claude/skills/promo -text
+.opencode/skills/promo -text
+skills/promo/assets/music -text
+skills/promo/scripts/analyze_music_cues.py -text
+skills/promo/scripts/pyproject.toml -text
+skills/promo/scripts/uv.lock -text

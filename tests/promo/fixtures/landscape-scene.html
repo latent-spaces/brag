@@ -1,0 +1,10 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>html, body { margin: 0; width: 1920px; height: 1080px; }</style>
+<body>
+<script>
+  // a page that lays itself out at load: green only if it loaded at its own size
+  const loadedWidth = window.innerWidth;
+  window.render = async () => { document.body.style.background = loadedWidth === 1920 ? "rgb(0,200,0)" : "rgb(200,0,0)"; };
+  window.ready = (async () => { await window.render(0); return { fps: 30, duration: 0.2, width: 1920, height: 1080 }; })();
+</script>
