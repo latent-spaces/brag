@@ -92,6 +92,8 @@ Write the music and sound effects as one piece: effects in the same key and the 
 
 Build it with whatever works on this machine. If you draw the video in a browser, make every frame a pure function of time and wait for fonts and images to load before capturing each one.
 
+Frame capture is usually the slowest step, so set it up for speed before the full render. Headless Chromium often rasterizes on the CPU: read the WebGL renderer string, and if it says SwiftShader, relaunch on the GPU (on Windows, `--use-angle=d3d11 --force_high_performance_gpu`; elsewhere, the platform's ANGLE GPU backend) and confirm the string changed. Render contiguous chunks of the timeline in parallel browsers, pipe each captured frame straight into the video tool instead of writing images to disk, and run the final encode after capture finishes — a hardware encoder sharing the GPU with rasterization can cut throughput by more than half.
+
 Before the full render, look at stills from every scene *and* from mid-transition, and fix overflow, collisions, and low contrast. A plain crossfade between two busy layouts makes a muddy double exposure; stagger it (old content out, then new content in) or dip through the background. Then render `brag.mp4`.
 
 ## 4. Deliver
