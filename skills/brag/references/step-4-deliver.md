@@ -43,6 +43,30 @@ For final delivery:
 npx hyperframes render --quality high --output ../brag.mp4
 ```
 
+### Sectioned films
+
+When the long-form pipeline is on (see [long-form.md](long-form.md)), render
+each section to its own file, then join them.
+
+```bash
+for d in <output-dir>/clips/*/; do
+  (cd "$d" && npx hyperframes render --quality high \
+     --output "../../renders/$(basename "$d" | cut -d- -f1).mp4")
+done
+
+node skills/brag/scripts/join-sections.mjs \
+  --dir <output-dir>/renders \
+  --out <output-dir>/brag.mp4
+```
+
+The helper checks every section for matching codec, resolution, pixel format,
+frame rate and audio parameters before it joins. A stream copy over mismatched
+inputs produces a broken file without reporting an error, so never replace the
+helper with a hand-written `ffmpeg -f concat` call.
+
+Everything below this point — the poster, the frame-0 bake, the share copy —
+runs on the joined `brag.mp4`, exactly as for a single-composition brag.
+
 ## Pick the poster frame
 
 The poster is the still shown before the video plays — the first thing anyone sees when it's idle or unplayed. Don't leave it to the raw first frame or an arbitrary timestamp; those land on fades, mid-transitions, blank intro backgrounds, or half-rendered text.
