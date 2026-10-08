@@ -225,7 +225,7 @@
       boxShadow: '0 2px 4px rgba(18,44,40,.08), 0 50px 90px -40px rgba(18,74,66,.45), 0 0 0 2px #DCE6E4, inset 0 0 0 2px #fff' });
     phone.innerHTML = `<div style="position:absolute;inset:18px;border-radius:96px;background:linear-gradient(170deg,#F1FCFA 0%,#DDF5F1 60%,#CBEFEA 100%);overflow:hidden">
         <div style="position:absolute;left:50%;top:26px;width:150px;height:40px;margin-left:-75px;border-radius:20px;background:#D3DEDC"></div>
-        <div class="lk" style="position:absolute;left:0;right:0;top:110px;text-align:center;font-size:34px;font-weight:600;color:${SS.C.soft}">mardi 14 octobre</div>
+        <div class="lk" style="position:absolute;left:0;right:0;top:110px;text-align:center;font-size:34px;font-weight:600;color:${SS.C.soft}">mardi 13 octobre</div>
         <div class="lk" style="position:absolute;left:0;right:0;top:150px;text-align:center;font-size:170px;font-weight:300;letter-spacing:-.04em;color:${SS.C.ink2};line-height:1.1">10:24</div></div>`;
     SS.place(phone, 540, PH.top + PH.h / 2);
     const note = SS.el('div', 'a3', shakeBox);

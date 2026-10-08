@@ -131,11 +131,11 @@
     // card badges: appear with the card's first task, bump on every new one
     SS.hook.cards.forEach((c) => {
       const n = c.spawns.filter((s) => s <= t).length;
+      c.badge.textContent = String(Math.max(n, 1)); // also while hidden: the state depends on t only
       if (!n) { c.badge.style.transform = 'scale(0)'; return; }
       const appear = gsap.parseEase('back.out(2.2)')(SS.clamp01((t - c.spawns[0]) / 0.3));
       const last = c.spawns[n - 1];
       const bump = n > 1 ? Math.sin(Math.PI * SS.clamp01((t - last) / 0.2)) * 0.22 : 0;
-      c.badge.textContent = String(n);
       c.badge.style.transform = `scale(${(appear * (1 + bump)).toFixed(4)})`;
     });
     // speed blur while everything is pulled into the node

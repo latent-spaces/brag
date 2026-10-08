@@ -8,7 +8,11 @@ read-only and adds its own files with a `-v3` suffix.
 ./build-v3.sh preview          # whole film: 540×960 30 fps preview with sound + contact sheet (one row per scene)
 END=8.5 ./build-v3.sh preview  # 0–8.5 s only (the scenes 1–3 review)
 ./build-v3.sh final            # 1080×1920 60 fps master (frame 0 = poster), poster JPEG, audio stems
+node render/check-v3.mjs determinism   # same frame whatever the seek history (must print OK)
+node render/check-v3.mjs motion 31     # no isolated frame-to-frame jump (must print OK)
 ```
+
+The full production guide (process, rules, components) is the project skill `.claude/skills/scalesuite-video/SKILL.md`.
 
 Outputs (in `../brag-output`): `scalesuite-social-9x16-v3.mp4`, `previews/scalesuite-preview-9x16-30fps-v3.mp4`,
 `scalesuite-contact-sheet-v3.jpg`, `scalesuite-preview-v3.jpg`, `audio-v3/` (music + bed/sfx stems for
