@@ -1,0 +1,239 @@
+{
+  "meta": {
+    "name": "ScaleSuite social film — Design DNA (V2 identity, V3 legibility and motion)",
+    "description": "Extracted from the V2 masters and source (scalesuite-film/src, brag-output/scalesuite-social-9x16-v2.mp4). Colour, type family, shapes, motifs and mood are V2's and stay fixed for V3. Two deliberate V3 changes: the UI type scale is raised for phone legibility (UI text floor 30 px on the 1080 canvas, UI blocks at least 760 px = 70 % of frame width), and the motion system gains a small overshoot on hero elements plus motivated transitions (no scene-level dissolves).",
+    "source_references": [
+      "brag-output/scalesuite-social-9x16-v2.mp4 (frames at 2.3 s, 11.3 s, 25.0 s measured with design-dna/scripts/measure-colors.mjs)",
+      "scalesuite-film/src/core.js, styles.css, scenes/*.js (V2 tokens and motion code)",
+      "brag-output/storyboard.md (V2 visual system)"
+    ],
+    "created_at": "2026-10-08"
+  },
+  "design_system": {
+    "color": {
+      "palette_type": "analogous (mint / turquoise / green) on off-white, with near-black ink",
+      "primary": { "hex": "#2BBFB3", "role": "Brand turquoise: routing lines, nodes, rings, active outlines, CTA gradient start" },
+      "secondary": { "hex": "#1D9E75", "role": "ScaleSuite green: nodes, avatars, success checks, 'Active' status, CTA gradient end" },
+      "accent": { "hex": "#1BA79A", "role": "Accent word colour in headlines (rendered #14A89B turquoise text), measured on the V2 hook frame" },
+      "neutral": {
+        "scale": ["#FFFFFF", "#F7FBFA", "#E8F9F7", "#D5F3EF", "#E6EEEC", "#9AA7A4", "#5E6B69", "#2C2C2A", "#1A1A1A"],
+        "usage": "#F7FBFA off-white base and #E8F9F7 mint panel carry ~90 % of every frame; #FFFFFF is the card surface; #E6EEEC skeleton bars; #5E6B69 secondary UI text; #1A1A1A (measured #1B1C1C) is all headline and primary UI text."
+      },
+      "semantic": {
+        "success": "#1D9E75",
+        "warning": "#E8A33D",
+        "error": "#E5484D",
+        "info": "#1F5FAD"
+      },
+      "surface": {
+        "background": "#F6FAF9",
+        "card": "#FFFFFF",
+        "elevated": "#FFFFFF with turquoise 3 px halo ring (rgba(43,191,179,.35) glow) when active"
+      },
+      "contrast_strategy": "dark-on-light dominant; one accent word per headline in turquoise; dark ink (#1A1A1A) reserved for one hero object per act (V2: LEAD VENDEUR pill)",
+      "measurement": { "k": 8, "sampling": { "method": "deterministic_stratified", "max_pixels": 160000, "sampled_pixels": 160000 } },
+      "measured_palette": [
+        { "hex": "#f6faf9", "coverage": 0.4518, "role": "background" },
+        { "hex": "#e6f3f1", "coverage": 0.45, "role": "unassigned" },
+        { "hex": "#1b1c1c", "coverage": 0.0316, "role": "text" },
+        { "hex": "#c4dedb", "coverage": 0.027, "role": "unassigned" },
+        { "hex": "#1ba79a", "coverage": 0.0132, "role": "accent" },
+        { "hex": "#20846d", "coverage": 0.0112, "role": "unassigned" },
+        { "hex": "#8fb5b0", "coverage": 0.0092, "role": "unassigned" },
+        { "hex": "#64716f", "coverage": 0.006, "role": "unassigned" }
+      ]
+    },
+    "typography": {
+      "type_scale": {
+        "display": { "size": "150px", "weight": "800", "line_height": "1.0", "tracking": "-0.045em" },
+        "heading_1": { "size": "124px", "weight": "800", "line_height": "1.04", "tracking": "-0.04em" },
+        "heading_2": { "size": "100px", "weight": "800", "line_height": "1.08", "tracking": "-0.04em" },
+        "heading_3": { "size": "64px", "weight": "760", "line_height": "1.1", "tracking": "-0.025em" },
+        "body": { "size": "40px", "weight": "680", "line_height": "1.2", "tracking": "-0.015em" },
+        "body_small": { "size": "32px", "weight": "600", "line_height": "1.25", "tracking": "-0.01em" },
+        "caption": { "size": "30px", "weight": "600", "line_height": "1.25", "tracking": "-0.005em" },
+        "overline": { "size": "28px", "weight": "700", "line_height": "1.2", "tracking": "0.06em" }
+      },
+      "font_families": {
+        "heading": "Inter (variable, self-hosted from scalesuite-film/assets/fonts)",
+        "body": "Inter",
+        "mono": "Inter with tabular figures (tnum) for counters"
+      },
+      "font_style_notes": "Neo-grotesk, heavy 800 headlines with tight negative tracking, sentence case, 1–4 words per line, masked word-by-word rise. V2 UI text ran 19–29 px, which reads as 7–10 pt on a phone; V3 floor is 30 px (≈11 pt) and primary UI labels are 40 px (≈14 pt)."
+    },
+    "spacing": {
+      "base_unit": "8px",
+      "scale": ["8px", "16px", "24px", "32px", "48px", "64px", "96px", "128px"],
+      "content_density": "comfortable (spacious in calm beats, deliberately crowded in the chaos beat)",
+      "section_rhythm": "Headline block in the top third (y 200–560 on 1920), product block below (y 600–1500); 9:16 safe areas keep critical copy out of y > 1500 and of the right rail x > 940 between y 850–1550."
+    },
+    "layout": {
+      "grid_system": "single centred column on a 1080 × 1920 canvas, 60 px side margins",
+      "max_content_width": "900px (UI blocks 760–900 px wide = 70–83 % of frame)",
+      "columns": "1 (cards), 2 (broker grid), 3 (metric tiles)",
+      "gutter": "24px",
+      "breakpoints": ["1080x1920 (9:16 master)", "1080x1350 (4:5 recomposed)"],
+      "alignment_tendency": "centered"
+    },
+    "shape": {
+      "border_radius": { "small": "14px", "medium": "26px", "large": "36px", "pill": "999px" },
+      "border_usage": "none on cards (shadow + 1 px 4.5 % ink ring); 1.5 px turquoise ring on mint chips; 3 px turquoise halo for the active element",
+      "divider_style": "2 px #EDF3F2 hairline inside cards; 4 px turquoise rule with green end nodes for the thesis divider"
+    },
+    "elevation": {
+      "shadow_style": "soft diffused, mint-tinted",
+      "levels": {
+        "low": "0 1px 2px rgba(18,44,40,.07), 0 8px 18px -10px rgba(18,74,66,.30), 0 0 0 1px rgba(26,26,26,.06)",
+        "medium": "0 1px 2px rgba(18,44,40,.06), 0 14px 34px -14px rgba(18,74,66,.26), 0 0 0 1px rgba(26,26,26,.045)",
+        "high": "0 2px 4px rgba(18,44,40,.08), 0 40px 80px -30px rgba(18,74,66,.40), 0 0 0 1px rgba(26,26,26,.05)"
+      },
+      "depth_cues": "shadows, overlapping layers, camera scale (near objects larger and slightly blurred during fast moves)"
+    },
+    "iconography": {
+      "style": "simple filled/rounded-stroke glyphs drawn inline (person avatar in mint disc, target, search, pin, CRM card, lock, arrow, check circle)",
+      "stroke_weight": "2.1–2.6 on a 24 grid",
+      "size_scale": ["32px", "48px", "64px", "88px"],
+      "preferred_set": "custom inline SVG (SS.icon in scalesuite-film/src/core.js)"
+    },
+    "motion": {
+      "easing": "signature cubic-bezier(0.16, 1, 0.3, 1) for entrances; cubic-bezier(0.65, 0, 0.35, 1) for camera and on-screen moves; cubic-bezier(0.7, 0, 0.84, 0) for exits; back-out with 6–12 % overshoot reserved for hero elements (V3)",
+      "duration_scale": { "micro": "180ms", "normal": "320ms", "macro": "650ms" },
+      "entrance_pattern": "masked vertical rise for words; scale 0.9→1 + 24 px rise for cards; stroke draw for lines and checks",
+      "exit_pattern": "objects are pulled into the next scene's object (node, header, divider) with ease-in and speed blur; never a scene-level dissolve",
+      "philosophy": "cinematic, object-continuous: every scene starts from an object left by the previous one"
+    },
+    "components": {
+      "button_style": "pill, turquoise→green 135° gradient, white 760-weight label + arrow, deep green shadow, sheen sweep",
+      "input_style": "white pill search bar with soft shadow, grey search glyph, turquoise caret",
+      "card_style": "white, 26–36 px radius, mint-tinted diffused shadow, 1 px ink ring at 4.5 %",
+      "navigation_pattern": "none (film); dashboard header row with logo + label",
+      "modal_style": "none; the dark ink pill/notification is the only inverted surface",
+      "list_style": "rows with avatar, name, mint type chip, territory, green status dot + 'Active'; alternating #F6FBFA / #FFFFFF",
+      "component_notes": "Brokers are always 'Courtier 01…10' with the mint-disc person avatar. Campaign chips are mint pills with a green target icon. Landing-page thumbnails keep the same agency colours across every broker."
+    }
+  },
+  "design_style": {
+    "aesthetic": {
+      "mood": ["calm", "precise", "confident", "fresh", "reassuring"],
+      "visual_metaphor": "many tangled routes collapsing into one clean routing line and one node",
+      "era_influence": "2020s product-film editorial (Linear / Stripe launch films) on a pale mint field",
+      "genre": "B2B SaaS social acquisition film",
+      "personality_traits": ["organised", "quietly confident", "helpful", "local (Québec)"],
+      "adjectives": ["clean", "airy", "systematic", "mint", "kinetic"]
+    },
+    "visual_language": {
+      "complexity": "moderate",
+      "ornamentation": "subtle accents (routing lines, nodes, halos, grain)",
+      "whitespace_usage": "generous except in the deliberate chaos beat",
+      "visual_weight_distribution": "top-heavy headline, product mass in the centre band",
+      "focal_strategy": "single hero element per beat, others dimmed to 35–40 %",
+      "contrast_level": "high for type, low for surfaces",
+      "texture_usage": "static fine grain over soft gradients (anti-banding)"
+    },
+    "composition": {
+      "hierarchy_method": "scale contrast + one accent-coloured word",
+      "balance_type": "symmetric",
+      "flow_direction": "top-down (headline → product → result), routes run vertically on 9:16",
+      "grouping_strategy": "cards and rows on a strict centred grid; connections shown as drawn lines",
+      "negative_space_role": "signals relief and control after the chaos beat"
+    },
+    "imagery": {
+      "photo_treatment": "none (no photos, faces or real names)",
+      "illustration_style": "flat UI recreations, simplified and enlarged",
+      "graphic_elements": ["routing line (3 px turquoise, drawn)", "green node with mint halo", "mint panel bloom", "check circles", "dot grid"],
+      "pattern_usage": "dot grid of campaign nodes in the thesis beat",
+      "image_shape": "rounded rectangles and circles"
+    },
+    "interaction_feel": {
+      "feedback_style": "check draws, ripple on tap, ring pulse on arrival",
+      "hover_behavior": "n/a (film); taps shown as ripple + 2 % press",
+      "transition_personality": "smooth glide with a decisive settle",
+      "loading_style": "skeleton bars that resolve into real content",
+      "microinteraction_density": "high in product beats, near zero in the relief beat"
+    },
+    "brand_voice_in_ui": {
+      "tone": "direct, plain Québec French, no superlatives",
+      "formality": "vous, professional but warm",
+      "cta_style": "direct imperative ('Demander une démo')",
+      "empty_state_approach": "n/a",
+      "error_tone": "n/a; problems are shown as volume, not as alarms"
+    }
+  },
+  "visual_effects": {
+    "overview": {
+      "effect_intensity": "subtle-accent",
+      "performance_tier": "medium",
+      "fallback_strategy": "static snapshot (poster frame baked in as frame 0)",
+      "primary_technology": "HTML/CSS/SVG rendered frame-by-frame (pure function of time) with Playwright"
+    },
+    "background_effects": {
+      "type": "gradient-animation",
+      "description": "two large radial mint/green light blobs drifting slowly on the off-white base; a mint panel blooms from the brand node",
+      "technology": "CSS radial gradients positioned per frame",
+      "params": { "color_palette": ["#F7FBFA", "#E8F9F7", "rgba(43,191,179,.13)", "rgba(29,158,117,.10)"], "speed": "very slow (0.2–0.3 rad/s)", "density": "2 blobs", "opacity": "10–13 %", "blend_mode": "normal" }
+    },
+    "particle_systems": {
+      "enabled": false,
+      "type": "custom",
+      "description": "not used",
+      "technology": "none",
+      "params": { "count": "0", "shape": "n/a", "size_range": "n/a", "movement_pattern": "n/a", "color_behavior": "n/a", "interaction": "none", "spawn_area": "n/a" }
+    },
+    "3d_elements": {
+      "enabled": false,
+      "type": "abstract-geometry",
+      "description": "only mild CSS perspective tilt on cards; no 3D scene",
+      "technology": "CSS transforms",
+      "params": { "renderer": "n/a", "lighting": "n/a", "camera": "2D camera (translate/scale/rotate of a world layer)", "materials": "n/a", "geometry": "n/a", "post_processing": ["speed blur on fast moves"], "interaction_model": "none" }
+    },
+    "shader_effects": {
+      "enabled": false,
+      "type": "custom-GLSL",
+      "description": "not used",
+      "technology": "none",
+      "params": { "uniforms": "n/a", "vertex_manipulation": "n/a", "fragment_output": "n/a", "noise_type": "n/a", "distortion": "n/a" }
+    },
+    "scroll_effects": {
+      "parallax": { "enabled": false, "layers": "0", "depth_range": "n/a", "speed_curve": "n/a" },
+      "scroll_triggered_animations": { "enabled": false, "trigger_points": "n/a", "animation_type": "n/a", "scrub_behavior": "n/a" },
+      "scroll_morphing": { "enabled": false, "description": "time-driven film, no scroll" }
+    },
+    "text_effects": {
+      "type": "split-letter-animate",
+      "description": "words rise inside overflow masks; odometer digit roll for counts; per-letter wordmark rise; typing for search queries and form fields",
+      "technology": "DOM spans transformed per frame",
+      "params": { "split_strategy": "by-word (by-char for wordmark and typing)", "animation_per_unit": "translateY 150 % → 0 inside mask", "stagger": "50–70 ms", "effect_style": "masked kinetic type" }
+    },
+    "cursor_effects": {
+      "enabled": false,
+      "type": "none",
+      "description": "taps are shown as ripples, no cursor",
+      "params": { "shape": "n/a", "size": "n/a", "blend_mode": "n/a", "trail": "n/a", "interaction_zone": "n/a" }
+    },
+    "image_effects": {
+      "type": "none",
+      "description": "no imagery",
+      "technology": "none",
+      "params": { "filter_pipeline": "n/a", "hover_transform": "n/a", "reveal_animation": "n/a", "distortion_type": "n/a" }
+    },
+    "glassmorphism_neumorphism": {
+      "enabled": false,
+      "style": "none",
+      "params": { "blur_radius": "n/a", "transparency": "n/a", "border_treatment": "n/a", "shadow_type": "n/a", "light_source_angle": "n/a" }
+    },
+    "canvas_drawings": {
+      "enabled": false,
+      "type": "none",
+      "description": "grain texture only (pre-rendered canvas data URL)",
+      "technology": "Canvas 2D (static)",
+      "params": { "draw_method": "n/a", "animation_loop": "n/a", "color_scheme": "n/a", "responsiveness": "n/a", "interaction": "n/a" }
+    },
+    "svg_animations": {
+      "enabled": true,
+      "type": "path-draw",
+      "description": "routing lines drawn by stroke-dashoffset carrying a light dot; check marks drawn; logo mark revealed by a diagonal wipe with a sheen pass",
+      "params": { "animation_method": "per-frame attribute updates", "path_morphing": "no", "stroke_animation": "dashoffset draw with ease-out", "filter_effects": "none" }
+    },
+    "composite_notes": "Everything is a pure function of time rendered at 60 fps. Motion blur is faked with a speed-scaled CSS blur on fast-moving objects. V3 adds a world camera (one transform on a world layer) so transitions are pushes, pans and zoom-throughs rather than dissolves."
+  }
+}
