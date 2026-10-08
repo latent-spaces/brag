@@ -6,7 +6,7 @@
 (function () {
   const SS = window.SS;
   const T = { node: 5.26, impact: 5.53, breath: 5.85, bloom: 5.92, toMark: 6.2, mark: 6.36, slide: 6.64, letters: 6.66,
-    tag: 6.98, sheen: 7.22, tagOut: 7.84, dock: 7.94, header: 8.3, end: 8.7 };
+    tag: 6.98, sheen: 7.22, tagOut: 7.84, dock: 7.94, header: 8.18, end: 8.5 };
   const LH = 176, LY = 900;
   const LW = (LH * SS.LOGO.w) / SS.LOGO.h;
   const markOff = -LW / 2 + 58 * (LH / SS.LOGO.h); // mark centre relative to the lockup centre
@@ -87,7 +87,7 @@
     const cut = DASH.w - (36 + LW * hs + 26);
     gsap.set(head, { clipPath: `inset(10px ${cut}px 10px 14px round 30px)` });
     SS.tl.set(head, { autoAlpha: 1 }, T.header);
-    SS.tl.fromTo(head, { clipPath: `inset(10px ${cut}px 10px 14px round 30px)` }, { clipPath: 'inset(0px 0px 0px 0px round 34px)', duration: 0.36, ease: SS.EZ.out }, T.header);
+    SS.tl.fromTo(head, { clipPath: `inset(10px ${cut}px 10px 14px round 30px)` }, { clipPath: 'inset(0px 0px 0px 0px round 34px)', duration: 0.32, ease: SS.EZ.out }, T.header);
     SS.cue(T.header, 'header');
 
     R = { layer, dash, head, logo, P };

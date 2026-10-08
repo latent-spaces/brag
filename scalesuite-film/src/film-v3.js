@@ -23,10 +23,12 @@
 
     SS.renderFrame = (t) => {
       SS.tl.seek(t, true); // deterministic: tween values depend on t only
-      for (const s of SS.scenes) {
-        (s.ranges || []).forEach(([el, a, b]) => { el.style.display = t >= a && t <= b ? '' : 'none'; });
-        if (s.render && t >= s.a && t <= s.b) s.render(t);
-      }
+      // a layer is shown when t falls in any of its ranges (several scenes may share one layer)
+      const vis = new Map();
+      for (const s of SS.scenes) (s.ranges || []).forEach(([el, a, b]) => vis.set(el, vis.get(el) || (t >= a && t <= b)));
+      vis.forEach((on, el) => { el.style.display = on ? '' : 'none'; });
+      for (const s of SS.scenes) if (s.render && t >= s.a && t <= s.b) s.render(t);
+      SS.procs.forEach((fn) => fn(t));
       SS.applyCam(t);
     };
     const q = new URLSearchParams(location.search);

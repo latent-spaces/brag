@@ -145,3 +145,31 @@ comme pour la V2.
 2. Aperçu en basse résolution (540 × 960, 30 fps) des **scènes 1 à 3** (0 à 8,5 s), avec un premier
    jet de la musique sur ce segment.
 3. Scènes 4 à 10, puis master en 1080 × 1920 à 60 fps.
+
+---
+
+## Réalisation : écarts par rapport au plan validé
+
+Le récit, l'ordre des scènes et les durées sont ceux du plan. Les ajustements faits en production :
+
+- **Animation** : une timeline GSAP 3.13 en pause, avancée avec `seek()` à chaque image capturée.
+  L'état de chaque image est vérifié identique, quel que soit l'ordre de rendu (voir
+  `scalesuite-film/README-v3.md`).
+- **Accroche** : le comptage de 1 à 10 se fait en 0,7 s (validé).
+- **Scène 5** : le bouton « Lancer la campagne » se rétracte lui-même en pastille « ● Active ». Le
+  changement de statut a ainsi lieu dans le cadre, au lieu de l'en-tête de la carte, qui n'est pas
+  visible à ce moment.
+- **Couleurs d'agence** : la page de destination et la miniature sont en bleu (`#2F5D8C`, « vos
+  couleurs », distinct du vert ScaleSuite). La barre d'en-tête sombre de la V2 disparaît, puisque
+  le contraste sombre est réservé au jeton du lead.
+- **Scène 8** : le jeton se pose sur la ligne de Courtier 03, côté statut, pour que le nom reste
+  lisible. La route continue ensuite jusqu'au téléphone, situé plus bas dans le monde, au lieu d'un
+  zoom à travers l'avatar. Le jeton se déplie en notification et devient sa pastille « LEAD
+  VENDEUR ». La route se rétracte dans le téléphone pour ne pas traverser le titre.
+- **Musique** : refaite autour d'une signature de quatre notes (do-fa-mi-la). Elle est éclatée dans
+  le chaos, jouée proprement au soulagement, fait office de son de notification au climax et se
+  résout sous le logo. Le groove néo-soul est swingué, sans kick « corporate ».
+- **Livrables** : `scalesuite-social-9x16-v3.mp4` (1080 × 1920, 60 fps, image 0 = affiche),
+  `previews/scalesuite-preview-9x16-30fps-v3.mp4`, `scalesuite-contact-sheet-v3.jpg`,
+  `scalesuite-preview-v3.jpg`, `audio-v3/` (musique et pistes pour la voix) et
+  `voiceover-timing-v3.md`.

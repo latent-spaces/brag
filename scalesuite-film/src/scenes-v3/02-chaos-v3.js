@@ -155,7 +155,7 @@
     R.shakeBox.style.transform = `translate(${(k.ox * 0.4).toFixed(2)}px,${(k.oy * 0.4).toFixed(2)}px)`;
   }
 
-  const scene = { name: 'chaos', a: -1, b: T.end, render, ranges: [] };
+  const scene = { name: 'chaos', a: -1, b: 99, render, ranges: [] };
   scene.build = (stage) => { build(stage); scene.ranges = [[R.layer, 2.2, T.end]]; };
   SS.scenes.push(scene);
 })();

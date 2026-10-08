@@ -5,11 +5,18 @@ The V2 sources and outputs are untouched. V3 loads `src/core.js`, `src/logo.js` 
 read-only and adds its own files with a `-v3` suffix.
 
 ```
-./build-v3.sh preview    # scenes 1–3 (0–8.5 s): 540×960 30 fps preview with sound + contact sheet
+./build-v3.sh preview          # whole film: 540×960 30 fps preview with sound + contact sheet (one row per scene)
+END=8.5 ./build-v3.sh preview  # 0–8.5 s only (the scenes 1–3 review)
+./build-v3.sh final            # 1080×1920 60 fps master (frame 0 = poster), poster JPEG, audio stems
 ```
 
-Outputs: `../brag-output/previews/scalesuite-preview-9x16-30fps-v3-s1-3.mp4`,
-`../brag-output/scalesuite-contact-sheet-v3-s1-3.jpg` (intermediates in `../brag-output/work-v3`).
+Outputs (in `../brag-output`): `scalesuite-social-9x16-v3.mp4`, `previews/scalesuite-preview-9x16-30fps-v3.mp4`,
+`scalesuite-contact-sheet-v3.jpg`, `scalesuite-preview-v3.jpg`, `audio-v3/` (music + bed/sfx stems for
+`audio/mix_vo.py`, see `voiceover-timing-v3.md`). Intermediates go to `../brag-output/work-v3`.
+
+Scenes: `src/scenes-v3/01-hook` (S1), `02-chaos` (S2), `03-relief` (S3), `04-structure` (S4),
+`05-campaign` (S5–S7, one world: campaign card + optimisation panel), `06-lead` (S8, its own world and
+camera), `07-finale` (S9–S10).
 
 ## How it renders
 
