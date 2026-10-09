@@ -94,6 +94,17 @@ Build it with whatever works on this machine. If you draw the video in a browser
 
 Before the full render, look at stills from every scene *and* from mid-transition, and fix overflow, collisions, and low contrast. A plain crossfade between two busy layouts makes a muddy double exposure; stagger it (old content out, then new content in) or dip through the background. Then render `brag.mp4`.
 
+## Production notes
+
+Small things that decide whether the render looks premium or cheap:
+
+- **Transitions.** A dip all the way to a blank background reads as flicker, not polish. Prefer a short push/overlap wipe (8–12 frames, slight ease, thin seam optional) or a staggered out-then-in with no fully empty frame. Check mid-transition stills for blank flashes and muddy double exposures.
+- **Type.** Use real typefaces, not system defaults — an ExtraBold/Bold/Regular trio for headlines/eyebrows/body plus a mono for code carries the whole video. If rendering with PIL, CFF-based `.otf` files often fail to load: prefer TTF or variable fonts and confirm glyphs in stills before the full render.
+- **Translucency.** When compositing procedural graphics, translucent shapes (glows, shimmers, trails) drawn directly onto an RGBA layer can *replace* pixels instead of blending, leaving dark bars or halos where they overlap cards. Draw them on a temporary transparent layer and alpha-composite it over the scene, then check stills where effects overlap cards.
+- **Grain tax.** Per-frame film grain defeats H.264 temporal prediction — a 30s 1080p render can balloon past 100MB. Keep grain subtle (±4 or less at half res) or light-denoise at encode time, then pull stills *out of the final encode* to confirm text stayed sharp.
+- **Verify the encode, not just the frames.** Confirm duration, streams, file size, and that frame 0 is the poster before delivering.
+- **Licensed music.** If the user supplies a commercial track, use it — but warn them it will likely draw a copyright claim or mute on public posts.
+
 ## 4. Deliver
 
 - **Poster:** pull the strongest *settled* frame (text fully in, not mid-transition) to `brag.jpg`, and bake it in as frame 0 of `brag.mp4` so every platform's thumbnail shows it. Replace frame 0 rather than adding a frame, so the duration and audio sync stay the same.
