@@ -36,6 +36,35 @@ npx skills add https://github.com/latent-spaces/brag --skill brag-slim
 
 Already have the Claude Code `/brag` plugin? `/brag-slim` is included from version 0.4.0. Run `claude plugin update brag` to get it.
 
+## New: `/brag-stems`
+
+**The /brag video, plus everything post-production needs.**
+
+`/brag-stems` runs `/brag`, then drops a post-production kit into `brag-output/stems/`:
+
+- **Stems:** `dialogue.wav`, `music.wav` and `sfx.wav`. Clean and unprocessed (no limiter, compression or normalization), 48 kHz / 24-bit, full length, all starting at 0:00, so they line up when dropped onto any timeline.
+- **Two-track mix:** `mix.wav`, the audio exactly as baked into `brag.mp4`.
+- **Transcript:** a timecoded narration script (`transcript.txt`, HH:MM:SS:FF), plus `.srt` and `.vtt` captions and `.json` with line, sentence and word timings.
+- **Teleprompter:** `teleprompter.mp4`, a 1920×1080 read-along for voice talent. It shows a running timecode, a reading guide, each line's in-point, word-by-word highlighting and the original narration as a guide track.
+
+```text
+/brag-stems --full --voice --format vertical
+```
+
+Already made a video? Run it on the folder:
+
+```text
+/brag-stems --only brag-output
+```
+
+Swap in a human voice, remix the music, caption the video, or recut it in Premiere or Resolve without starting over.
+
+**Install just `/brag-stems`** (it runs on top of `/brag`, so install both):
+
+```bash
+npx skills add https://github.com/latent-spaces/brag --skill brag --skill brag-stems
+```
+
 ## Install /brag
 
 **Codex:**
@@ -75,6 +104,7 @@ Add `-g` to install globally (available in every project); drop it to scope to t
 ```bash
 rsync -a --exclude '.DS_Store' skills/brag/ ~/.claude/skills/brag/
 rsync -a --exclude '.DS_Store' skills/brag-slim/ ~/.claude/skills/brag-slim/  # optional: the /brag-slim command
+rsync -a --exclude '.DS_Store' skills/brag-stems/ ~/.claude/skills/brag-stems/  # optional: the /brag-stems command
 ```
 
 Restart Claude Code after copying.
@@ -133,6 +163,7 @@ You get a `brag-output/` folder with the plan, a composition brief, share copy, 
 
 - `skills/brag/` — the skill, references, and bundled music + SFX
 - `skills/brag-slim/` — `/brag-slim`, the single-file skill for Claude Opus 5.5
+- `skills/brag-stems/` — `/brag-stems`, the post-production kit: stems, two-track mix, timecoded transcript and teleprompter
 - `examples/` — fake product sites used as a benchmark suite
 - `docs/` — the launch site (GitHub Pages)
 - `plugin.json` — portable Agent Plugins manifest
