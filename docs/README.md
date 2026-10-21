@@ -35,7 +35,7 @@ The gallery videos ship committed, in two sets. The /brag-slim set is `examples/
    cd docs/examples/<slug>
    ffmpeg -y -i brag.mp4 -i brag.jpg \
      -filter_complex "[0:v][1:v]overlay=0:0:enable='eq(n,0)'[v]" \
-     -map "[v]" -map 0:a? -c:v libx264 -crf 18 -preset slow -pix_fmt yuv420p \
+     -map "[v]" -map "0:a?" -c:v libx264 -crf 18 -preset slow -pix_fmt yuv420p \
      -c:a copy -movflags +faststart brag.poster.mp4 && mv brag.poster.mp4 brag.mp4
    ```
 2. Add a card in `index.html` pointing at those paths.
