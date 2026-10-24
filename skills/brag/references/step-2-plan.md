@@ -115,6 +115,12 @@ But adapt it. These are the right scene counts for each tone:
 
 Scene durations must sum to 15-25 seconds. Count them.
 
+**Sectioned plans.** When the long-form pipeline is on (see
+[long-form.md](long-form.md)), add a section table above the storyboard —
+directory, tone, and a whole-frame length per section — and write the storyboard
+per section. Each section's scenes sum to that section's length, not to 15-25
+seconds.
+
 - Under 15 seconds: too thin, add a scene or lengthen holds.
 - Over 25 seconds: cut a scene or tighten timing.
 - 18-22 seconds is the sweet spot for most brag videos.
