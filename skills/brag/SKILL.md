@@ -129,7 +129,7 @@ Write the composition brief and use Hyperframes to create the video implementati
 
 Validate, preview, render to `<output-dir>/brag.mp4`, pick the best poster frame into `<output-dir>/brag.jpg`, bake that poster as the video's frame 0 so it's the idle thumbnail everywhere, and write `<output-dir>/share-copy.txt`.
 
-**Gate:** `<output-dir>/brag.mp4` exists. A best-frame poster `<output-dir>/brag.jpg` is picked (not an arbitrary frame) and baked as frame 0 of `brag.mp4`. Share copy is written.
+**Gate:** `<output-dir>/brag.mp4` exists. A best-frame poster `<output-dir>/brag.jpg` is picked (not an arbitrary frame) and baked as frame 0 of `brag.mp4`, replacing that frame: a frame decoded from the middle of a camera move matches the render at the same index better than its neighbours. Share copy is written.
 
 ---
 
