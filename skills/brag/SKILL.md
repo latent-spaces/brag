@@ -163,7 +163,7 @@ These apply to every brag video regardless of tone.
 
 **Specific.** The video must feel like it was made for this exact project, not any project.
 
-**Show the thing.** At least one scene must display actual UI, copy, or a key visual from the product. No abstract filler.
+**Show the thing.** At least one scene must display actual UI, copy, or a key visual from the product. No abstract filler. If the product displays data about people (messages, contacts, followers, customer, health or finance records), show the real interface with obviously placeholder records, never rows from the project's database, fixtures or exports: the video is made to be shared, and those people never agreed to be in it.
 
 **No generic SaaS language.** "Streamline your workflow" is banned. Use the project's actual copy and claims.
 
