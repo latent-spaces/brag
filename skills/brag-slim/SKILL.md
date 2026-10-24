@@ -73,6 +73,7 @@ If the user points at one part — a new version, a new feature, one angle — m
 - **Make it alive.** Things that appear one by one, simulated clicks, swipes, and typing beat static slides.
 - **Funny earns its place.** Humor comes from the project's own absurdity, not from trying.
 - **Every frame postable.** Any frozen frame should be worth sharing.
+- **Clear of the platform's own UI.** Reels, TikTok and Shorts draw their username, caption, audio line and buttons over a vertical video. In `vertical`, keep anything meant to be read between about 13% and 80% of the height (y 250–1536 at 1080×1920) and out of the right 140px of the lower half. Check one still with those bands drawn over it before the full render.
 
 ## Tones
 
