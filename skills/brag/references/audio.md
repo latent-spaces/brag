@@ -277,8 +277,23 @@ The preset and `analyze_music_cues.py` share the rich schema:
 
 - `duration`, `tempo`
 - `beats`: beat-grid points with `time` and normalized `intensity`
-- `strongCues`: highest-value landing moments with `time`, `intensity`, and `kind` (`strong_beat` / `onset_peak`)
+- `strongCues`: up to 64 highest-value landing moments across the full track, ordered by time, with `time`, `intensity`, and `kind` (`strong_beat` / `onset_peak`)
+- `windowStrongCues` (new analyses; optional in existing presets): eligible strong cues in the requested planning window, ordered by descending intensity and limited by `--top-cues` (default 10). This is the same list shown in the Markdown's "Strong Cues In Window" section; "Reveal Candidates" uses its first five entries.
 - `scoring`: feature and normalization metadata
+
+For a selected excerpt, run the analyzer with `--window-start <seconds>` and
+`--window-duration <seconds>` (defaults: 0 and 25). It selects `windowStrongCues`
+from all deduplicated candidates with intensity at least 0.45 before the global
+top-64 cap can discard them. Window bounds include both endpoints, with the end
+clipped to the track duration. Times remain absolute track seconds. Deduplication
+and scoring stay track-wide so changing the window does not change cue timestamps,
+kinds, or features.
+
+The schema remains version 1 with an additive field. The full `beats` grid and
+global `strongCues` selection are unchanged; prioritizing window cues inside
+`strongCues` would change that existing full-track contract. When reading an older
+preset without `windowStrongCues`, filter `strongCues` to the desired window as
+before. If it has no useful cues there, rerun the analyzer for that window.
 
 `hyperframes beats` is the simpler floor: a plain beat grid with a per-beat strength, no strong-cue array.
 
