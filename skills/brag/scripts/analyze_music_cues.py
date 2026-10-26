@@ -204,13 +204,18 @@ def analyze_track(
             }
         )
 
-    strong_cues = [
+    eligible_cues = [
         cue
         for cue in _dedupe_cues(cue_candidates)
         if cue["intensity"] >= 0.45
     ]
-    strongest = sorted(strong_cues, key=lambda cue: cue["intensity"], reverse=True)[:64]
+    strongest = sorted(eligible_cues, key=lambda cue: cue["intensity"], reverse=True)[:64]
     strong_cues = sorted(strongest, key=lambda cue: cue["time"])
+    # Keep global selections stable, but rank window cues before the global cap.
+    window_cues = [
+        cue for cue in eligible_cues if window_start <= cue["time"] <= window_end
+    ]
+    top_window_cues = sorted(window_cues, key=lambda cue: cue["intensity"], reverse=True)[:top_cues]
 
     data = {
         "schemaVersion": 1,
@@ -236,15 +241,12 @@ def analyze_track(
         },
         "beats": beats,
         "strongCues": strong_cues,
+        "windowStrongCues": top_window_cues,
     }
 
     window_beats = [
         beat for beat in beats if window_start <= beat["time"] <= window_end
     ]
-    window_cues = [
-        cue for cue in strong_cues if window_start <= cue["time"] <= window_end
-    ]
-    top_window_cues = sorted(window_cues, key=lambda cue: cue["intensity"], reverse=True)[:top_cues]
     reveal_candidates = top_window_cues[: min(5, len(top_window_cues))]
 
     markdown = "\n".join(

@@ -152,7 +152,7 @@ If extraction is unavailable (no helper, or ffmpeg missing), note it in the brie
 
 ## Beat sync (when a cue source is available)
 
-Get a cue source first (see `audio.md` → "Beat and cue sources"): a bundled preset, `analyze_music_cues.py` on any track (needs Python; run via `uv`), or `npx hyperframes beats` (no Python; needs Hyperframes ≥ 0.6.99). The rich sources (preset / `analyze_music_cues.py`) give two arrays; `hyperframes beats` gives one.
+Get a cue source first (see `audio.md` → "Beat and cue sources"): a bundled preset, `analyze_music_cues.py` on any track (needs Python; run via `uv`), or `npx hyperframes beats` (no Python; needs Hyperframes ≥ 0.6.99). The rich sources provide a beat grid and strong cues; new analyses also include `windowStrongCues` for the requested planning window. `hyperframes beats` gives one beat array.
 
 - **`strongCues`** — high-intensity beats (drops, swells, accents). Use for **major moments**: scene transitions, hero reveals, match payoff, logo landing. Lock 1–3 per video. With `hyperframes beats` (no `strongCues`), take the highest-`strength` beats instead.
 - **`beats`** — the full beat grid. Use to **snap small sequential events** into the music's pulse: cards arriving one by one, stats popping in, sequenced SFX hits.
@@ -161,7 +161,7 @@ Get a cue source first (see `audio.md` → "Beat and cue sources"): a bundled pr
 
 **Major moments (strong cues):**
 1. Load the cue source: the preset/analysis JSON (`strongCues` + `beats`), or the beat-grid JSON that `hyperframes beats` writes (a plain beat list; see the current hyperframes-cli skill for its location).
-2. Pick 1–3 strong timestamps near a planned major visual moment — `strongCues`, or the highest-`strength` beats.
+2. Pick 1–3 strong timestamps near a planned major visual moment. Prefer `windowStrongCues` when its `analysis.windowStart`/`windowEnd` matches the excerpt; otherwise filter `strongCues` to the excerpt, or use the highest-`strength` beats. An empty window list means no eligible cues were selected there; see `audio.md` to reanalyze another window.
 3. Shift the reveal's start time to land within ±0.15s of the cue.
 4. Mark it: `// beat-locked: 5.80s`
 
