@@ -23,6 +23,8 @@ Write the deliverables to `brag-output/` in the current directory (timestamped `
 
 First decide what the input is, then gather material from it. Only the source changes; everything from the questions below onward is the same for every input.
 
+`/brag-slim` makes short (≈20s) launch videos. If the request is for platform app-review evidence (such as OAuth verification requiring uncut end-to-end recordings of live domains and consent screens) or a re-edit of existing footage, say so before planning: those requirements conflict with the creative laws (short duration, hook-first shape, and animated rebuilds).
+
 | Input | How to recognize it | Where the material comes from |
 |---|---|---|
 | Project | No input given, and the current directory is a project | The code |

@@ -91,7 +91,7 @@ Generate the timestamp at the start of the run (`YYYY-MM-DD-HHmmss`) and use it 
 
 **Read:** [references/step-1-inspect.md](references/step-1-inspect.md)
 
-Scan the project directory and extract the information needed to plan the brag video.
+Scan the project directory and extract the information needed to plan the brag video. Confirm the request is a launch video; if it is review evidence or a re-edit of existing footage, say so before planning.
 
 **Gate:** You can answer all 9 questions in the brag planning rubric.
 

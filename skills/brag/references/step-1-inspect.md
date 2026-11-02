@@ -2,6 +2,10 @@
 
 Read the project directory to understand what you're bragging about.
 
+## Purpose check
+
+`/brag` makes short (15–25s) shareable launch videos. If the request is for platform app-review evidence (e.g. proving OAuth and consent flows on a live domain for an app reviewer) or a re-edit of existing long-form footage, stop and state this before planning. Those use cases require uncut real recordings or source timeline alignment, which directly conflict with `/brag`'s creative laws (15–25s duration cap, hook-first shape, and animated UI rebuilds).
+
 ## What to look for
 
 Read these in priority order:
