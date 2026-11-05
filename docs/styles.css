@@ -187,6 +187,17 @@ button { font: inherit; cursor: pointer; }
 .install .copy:hover,
 .install .copy:focus-visible { opacity: 1; background: oklch(38% 0.08 var(--hue)); outline: none; }
 .install .copy[data-state="copied"] { background: oklch(58% 0.18 145); color: oklch(15% 0.05 145); }
+.install .copy-fallback {
+  grid-column: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  color: inherit;
+  background: var(--hero-ink);
+  border: 1px solid oklch(48% 0.06 var(--hue));
+  border-radius: var(--radius-sm);
+  font: inherit;
+}
 
 .install-stack {
   display: grid;
