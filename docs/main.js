@@ -1,3 +1,5 @@
+import { heroMutePresentation } from "./hero-controls.js";
+
 (() => {
   // Hero playback and mute controls
   const heroVid = document.getElementById('hero-vid');
@@ -16,9 +18,10 @@
     };
 
     const syncMuteControl = () => {
-      heroMute.setAttribute('aria-pressed', heroVid.muted ? 'true' : 'false');
-      heroMute.setAttribute('aria-label', heroVid.muted ? 'unmute brag video' : 'mute brag video');
-      if (heroMuteLabel) heroMuteLabel.textContent = 'tap for sound';
+      const presentation = heroMutePresentation(heroVid.muted);
+      heroMute.setAttribute('aria-pressed', presentation.pressed);
+      heroMute.setAttribute('aria-label', presentation.label);
+      if (heroMuteLabel) heroMuteLabel.textContent = presentation.hint;
     };
 
     const applyMotionPreference = () => {
