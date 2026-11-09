@@ -1134,3 +1134,6 @@ button { font: inherit; cursor: pointer; }
   .hero-mute[aria-pressed="false"] .hero-mute-label::after { font-size: 10px; letter-spacing: 0.04em; }
   .hero-control svg { width: 14px; height: 14px; }
 }
+
+/* Links that sit on a painted background and should keep its text color. */
+a.link-inherit { color: inherit; }
