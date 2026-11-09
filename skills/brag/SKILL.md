@@ -49,6 +49,8 @@ Parse these options:
 | `--title` | string | inferred from project |
 | `--voice` | flag | narration off |
 
+Pixel size at 30fps: landscape is 1920×1080, vertical is 1080×1920, square is 1080×1080. These are the same frames `/brag-slim` uses.
+
 Voice is opt-in. If `--voice` is present, use Kokoro via Hyperframes and do
 not add any provider-selection logic. The voice workflow is intentionally
 single-provider.
