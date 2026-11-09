@@ -34,6 +34,8 @@ On Opus 5.5, `/brag` switches to `/brag-slim` automatically. Run `/brag --full` 
 npx skills add https://github.com/latent-spaces/brag --skill brag-slim
 ```
 
+([browse /brag-slim on skills.sh](https://www.skills.sh/latent-spaces/brag/brag-slim))
+
 Already have the Claude Code `/brag` plugin? `/brag-slim` is included from version 0.4.0. Run `claude plugin update brag` to get it.
 
 ## Install /brag
@@ -51,6 +53,8 @@ To update it later:
 codex plugin marketplace upgrade brag
 codex plugin add brag@brag
 ```
+
+The Codex plugin includes `/brag-slim` as well as `/brag`.
 
 **Claude Code:**
 
@@ -138,9 +142,12 @@ You get a `brag-output/` folder with the plan, a composition brief, share copy, 
 - `plugin.json` — portable Agent Plugins manifest
 - `.codex-plugin/` — Codex compatibility manifest
 - `.claude-plugin/` — Claude Code manifest + shared marketplace catalog (also recognized by Codex)
-- `.claude/skills/brag/` — symlink → `skills/brag/` (Claude Code discovery)
-- `.agents/skills/brag/` — symlink → `skills/brag/` (Codex CLI + opencode discovery)
-- `.opencode/skills/brag/` — symlink → `skills/brag/` (opencode discovery)
+- `.claude/skills/brag/` — symlink → `skills/brag/` (Claude Code)
+- `.claude/skills/brag-slim/` — symlink → `skills/brag-slim/`
+- `.agents/skills/brag/` — symlink → `skills/brag/` (Codex CLI and Antigravity)
+- `.agents/skills/brag-slim/` — symlink → `skills/brag-slim/`
+- `.opencode/skills/brag/` — symlink → `skills/brag/` (opencode)
+- `.opencode/skills/brag-slim/` — symlink → `skills/brag-slim/`
 
 ## Credits
 
