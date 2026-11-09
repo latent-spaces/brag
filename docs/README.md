@@ -4,18 +4,23 @@ Static single-page launch site for `/brag`. Plain HTML/CSS/JS, no framework, no 
 
 ## Local preview
 
+From the repository root:
+
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8000 -d docs
 open http://localhost:8000
 ```
 
 ## Sanity check
 
+From the repository root:
+
 ```bash
-node ../scripts/check-docs.mjs
+node scripts/check-docs.mjs
+node scripts/check-brag-slim.mjs
 ```
 
-This verifies local docs links and media paths.
+The docs check verifies local links and media paths. The slim check verifies that `skills/brag/slim.md` still matches `skills/brag-slim/SKILL.md`.
 
 ## Deploy (GitHub Pages)
 
