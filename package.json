@@ -1,0 +1,16 @@
+{
+  "name": "brag",
+  "private": true,
+  "version": "0.5.0",
+  "description": "Sanity checks for the /brag repository.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check": "node scripts/check-docs.mjs && node scripts/check-brag-slim.mjs",
+    "check:docs": "node scripts/check-docs.mjs",
+    "check:brag-slim": "node scripts/check-brag-slim.mjs"
+  }
+}
