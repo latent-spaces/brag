@@ -1,4 +1,7 @@
 # Symlinks — never subject to text/EOL normalization
 .agents/skills/brag -text
+.agents/skills/brag-slim -text
 .claude/skills/brag -text
+.claude/skills/brag-slim -text
 .opencode/skills/brag -text
+.opencode/skills/brag-slim -text
