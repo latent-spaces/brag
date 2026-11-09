@@ -87,6 +87,8 @@ Read `sfx-analysis.md` before choosing files — it lists safer picks by use cas
 
 32 CC0 single keypress WAV files (`keypress-001.wav` through `keypress-032.wav`). Each is a distinct key sound at a slightly different velocity and character. Use these for per-character typing animations — randomize across the set so repeated characters don't sound robotic.
 
+These wavs are not entries in `sfx-analysis.json`. That file covers the 228 `.ogg` files in `casino/`, `impact/`, `interface/`, and `ui/`. Pick keypresses by filename.
+
 **Source:** [Keyboard Soundpack #1](https://opengameart.org/content/keyboard-soundpack-1-typing-and-single-keystrokes) by unicae_games — CC0
 
 ### `interface/` — UI sounds
