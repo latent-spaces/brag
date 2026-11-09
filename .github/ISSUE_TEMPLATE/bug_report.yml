@@ -1,0 +1,32 @@
+name: Bug report
+description: Something in /brag, /brag-slim, or the launch site is wrong
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you asked for, and what the skill or the site did instead.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: input
+    id: command
+    attributes:
+      label: How you invoked it
+      placeholder: /brag --tone polished
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where
+      options:
+        - /brag
+        - /brag-slim
+        - Launch site
+        - Install
+    validations:
+      required: true
