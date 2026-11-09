@@ -27,7 +27,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-html { color-scheme: light dark; }
+html { color-scheme: light; }
 body {
   font-family: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
   font-feature-settings: "ss01", "ss03", "cv11";
