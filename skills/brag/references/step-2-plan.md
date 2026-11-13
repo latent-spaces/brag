@@ -46,7 +46,7 @@ landing-page-only, write "none — landing-page only" and rely on Key moments in
 - Interpretation: [one sentence on how this affects pacing, writing, visual energy, and restraint]
 
 ## Format: [landscape / vertical / square] — [width]x[height]
-## Duration: [target seconds — 50s default, or the exact value passed via --duration]
+## Duration: [target seconds — 60s default, or the exact value passed via --duration]
 
 ## Visual identity (from the project)
 - Background: [exact color value]
@@ -113,23 +113,23 @@ But adapt it. These are the right scene counts for each tone:
 | `cinematic` | 4-5 | Wide shots. Big type. Dramatic reveals. |
 | `app-store` | 4-6 | Feature cards. Clean reveals. No mess. |
 
-The scene counts above are a baseline pacing character (how quickly each tone cuts, how long it holds), calibrated for a short 15-25s edit. At the 50s default, scale scene count up while keeping that same pacing character — a `polished` 50s video still uses fewer, longer-held scenes than a `chaotic` one, just more of them than a 15-25s `polished` edit would (roughly double, not the same 3-4 scenes stretched to fill the extra time).
+The scene counts above are a baseline pacing character (how quickly each tone cuts, how long it holds), calibrated for a short 15-25s edit. At the 60s default, scale scene count up while keeping that same pacing character — a `polished` 60s video still uses fewer, longer-held scenes than a `chaotic` one, just more of them than a 15-25s `polished` edit would (roughly triple, not the same 3-4 scenes stretched to fill the extra time).
 
 ## Duration guidance
 
 Scene durations must sum to the target duration. Count them.
 
-**Default (no explicit `--duration`):** target 50 seconds.
+**Default (no explicit `--duration`):** target 60 seconds.
 
-Fitting 50 seconds well means more scenes and more real highlights at the same brisk per-scene pace the tone table above suggests — not 3-4 scenes stretched into long holds. Scale the storyboard:
+Fitting 60 seconds well means more scenes and more real highlights at the same brisk per-scene pace the tone table above suggests — not 3-4 scenes stretched into long holds. Scale the storyboard:
 
-- Add more scenes / more highlights (more of the product's actual moments, not filler) so scene count grows to fill 50s at a similar per-scene pace — as a rough guide, keep most scenes in the same 2-6s range the tone table above suggests.
-- Every scene still earns its place: no scene exists just to pad the runtime. If the product doesn't have enough real material to justify 50 seconds, say so in the plan and use the strongest honest length rather than forcing filler.
+- Add more scenes / more highlights (more of the product's actual moments, not filler) so scene count grows to fill 60s at a similar per-scene pace — as a rough guide, keep most scenes in the same 2-6s range the tone table above suggests.
+- Every scene still earns its place: no scene exists just to pad the runtime. If the product doesn't have enough real material to justify 60 seconds, say so in the plan and use the strongest honest length rather than forcing filler.
 - The reading-time floors and creative laws below still apply.
-- Under ~45 seconds: likely too thin for the target — add a scene or a genuine highlight, not padding.
-- Over ~55 seconds: cut a scene or tighten timing.
+- Under ~55 seconds: likely too thin for the target — add a scene or a genuine highlight, not padding.
+- Over ~65 seconds: cut a scene or tighten timing.
 
-**Explicit `--duration` (e.g. `--duration 20` or `--duration 90`):** hit that exact target instead of the 50s default, using the same scaling principle — scene count should scale roughly with duration, not the holds. Do not just stretch or shrink the same handful of scenes.
+**Explicit `--duration` (e.g. `--duration 20` or `--duration 90`):** hit that exact target instead of the 60s default, using the same scaling principle — scene count should scale roughly with duration, not the holds. Do not just stretch or shrink the same handful of scenes.
 
 ## Reading time (keep the pace, not at text's expense)
 
