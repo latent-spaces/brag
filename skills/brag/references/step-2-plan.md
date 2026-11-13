@@ -46,7 +46,7 @@ landing-page-only, write "none — landing-page only" and rely on Key moments in
 - Interpretation: [one sentence on how this affects pacing, writing, visual energy, and restraint]
 
 ## Format: [landscape / vertical / square] — [width]x[height]
-## Duration: [target seconds]
+## Duration: [target seconds — 60s default, or the exact value passed via --duration]
 
 ## Visual identity (from the project)
 - Background: [exact color value]
@@ -74,6 +74,7 @@ landing-page-only, write "none — landing-page only" and rely on Key moments in
 ### Scene 1 — [name] — [duration]s
 [What's on screen. What text appears. What product material must be referenced.]
 Sequential/interaction: [yes — describe what appears one by one or what interaction is simulated, e.g. "3 stat cards arrive one by one" or "cursor clicks the match button"; or none]
+Narration line (--voice only): [what the presenter says while this scene is on screen — explains what this screen/feature is for, the action being taken and why, or the benefit it gives the user; never a restatement of visible text; omit this field entirely when voice is disabled]
 Audio intent: [what the sound should do emotionally]
 Audio-coupled idea: [typed text, beat-aligned reveal, counter ticks, card-by-card sequence, simulated tap/swipe/type — or none]
 Music: [mood, or "none" only if disabled / missing / intentionally silent]
@@ -82,6 +83,7 @@ Transition mood: [clean / hard / dramatic / soft / chaotic] → Scene 2
 ### Scene 2 — [name] — [duration]s
 [...]
 Sequential/interaction: [yes — describe it; or none]
+Narration line (--voice only): [...]
 Audio intent: [what the sound should do emotionally]
 Audio-coupled idea: [type or none]
 Transition mood: [mood] → Scene 3
@@ -111,13 +113,23 @@ But adapt it. These are the right scene counts for each tone:
 | `cinematic` | 4-5 | Wide shots. Big type. Dramatic reveals. |
 | `app-store` | 4-6 | Feature cards. Clean reveals. No mess. |
 
+The scene counts above are a baseline pacing character (how quickly each tone cuts, how long it holds), calibrated for a short 15-25s edit. At the 60s default, scale scene count up while keeping that same pacing character — a `polished` 60s video still uses fewer, longer-held scenes than a `chaotic` one, just more of them than a 15-25s `polished` edit would (roughly triple, not the same 3-4 scenes stretched to fill the extra time).
+
 ## Duration guidance
 
-Scene durations must sum to 15-25 seconds. Count them.
+Scene durations must sum to the target duration. Count them.
 
-- Under 15 seconds: too thin, add a scene or lengthen holds.
-- Over 25 seconds: cut a scene or tighten timing.
-- 18-22 seconds is the sweet spot for most brag videos.
+**Default (no explicit `--duration`):** target 60 seconds.
+
+Fitting 60 seconds well means more scenes and more real highlights at the same brisk per-scene pace the tone table above suggests — not 3-4 scenes stretched into long holds. Scale the storyboard:
+
+- Add more scenes / more highlights (more of the product's actual moments, not filler) so scene count grows to fill 60s at a similar per-scene pace — as a rough guide, keep most scenes in the same 2-6s range the tone table above suggests.
+- Every scene still earns its place: no scene exists just to pad the runtime. If the product doesn't have enough real material to justify 60 seconds, say so in the plan and use the strongest honest length rather than forcing filler.
+- The reading-time floors and creative laws below still apply.
+- Under ~55 seconds: likely too thin for the target — add a scene or a genuine highlight, not padding.
+- Over ~65 seconds: cut a scene or tighten timing.
+
+**Explicit `--duration` (e.g. `--duration 20` or `--duration 90`):** hit that exact target instead of the 60s default, using the same scaling principle — scene count should scale roughly with duration, not the holds. Do not just stretch or shrink the same handful of scenes.
 
 ## Reading time (keep the pace, not at text's expense)
 
@@ -208,6 +220,32 @@ Beat/cue sync is available for any track now (see `audio.md` → "Beat and cue s
 See `audio.md` for the cue sources, JSON schema, and beat-sync tolerances.
 
 If SFX are enabled, note likely sound opportunities but leave exact filenames to Hyperframes. Hyperframes should use the skill's `sfx-analysis.md` during composition.
+
+## Narration script (only when `--voice` is enabled)
+
+See "Narration guidance" in `SKILL.md` for the ground rules — this section
+is how those rules translate into the plan.
+
+Write narration as part of the storyboard, not as a separate freeform
+paragraph. For each scene, fill in that scene's `Narration line` field (see
+the Storyboard structure above) so that it:
+
+- Names or explains what's on screen in that scene using the project's own
+  terms — not a restatement of visible on-screen text.
+- For the hook/opening scene: states what the project is and the problem it
+  solves, so the video works as a self-contained introduction.
+- For a scene simulating a user action: says what the user is doing and why.
+- For a scene demonstrating a feature: says what it does for the user, not
+  just its name.
+- For any scene with a long hold and no new visual information: uses the
+  extra time for a detail not already visible (a use case, a bit of context,
+  a benefit), instead of repeating itself.
+
+After the storyboard, add a `## Voiceover script` section that concatenates
+the narration lines in scene order, one per line, so it can be handed
+directly to the TTS step in `references/step-3-compose.md`. Keep each
+scene's line separate (don't merge them into one paragraph) so Hyperframes
+can generate and time each scene's clip independently.
 
 ## Handoff posture
 

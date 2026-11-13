@@ -14,7 +14,7 @@ Create a short launch-style brag video for [App Name].
 - Composition directory: `<output-dir>/composition/`
 - Rendered video: `<output-dir>/brag.mp4`
 - Format: [landscape / vertical / square] — [width]x[height]
-- Duration: [15-25 seconds]
+- Duration: [60 seconds by default, or the exact value passed via --duration]
 
 ## Source Material
 - Project root: [path]
@@ -75,11 +75,11 @@ Load the composition-building Hyperframes skills — `hyperframes` (composition 
 Requirements:
 - Show at least one real UI, copy, or visual element from the source project.
 - Keep all text readable in the final render.
-- Keep the video within 15-25 seconds.
+- Keep the video within the target duration — 60 seconds by default, or the exact value passed via `--duration`.
 - Include the planned music/SFX layer unless audio was explicitly disabled or documented as intentionally silent.
 - Treat `/brag` audio notes as guidance, not a fixed cue sheet. Choose SFX after the visual animation exists.
 - Treat music cue metadata as optional timing hints. Hyperframes decides exact animation timing and should ignore cues that hurt readability, scene pacing, or the product story.
-- Major reveals may move toward nearby strong cues within about 0.15s. Smaller entrances may align to nearby beat points within about 0.10s. Use only 1-3 strong cue locks in a 15-25s video unless the edit clearly benefits from more.
+- Major reveals may move toward nearby strong cues within about 0.15s. Smaller entrances may align to nearby beat points within about 0.10s. Use roughly 1-3 strong cue locks per 15-25s of runtime, scaled proportionally to the target duration (60s by default) unless the edit clearly benefits from more.
 - Use SFX to support motion and interaction: card sounds for card-like reveals, short announcement cues for major payoffs, key/click sounds for text or user actions, and restraint when the edit is already busy.
 - Honor planned music treatment such as fade-outs, ducking, beat-aligned reveals, or letting a final SFX ring over the music, using the best Hyperframes-supported implementation.
 - When music is present and the treatment is not `none`, consider Hyperframes audio-reactive workflow: extract audio data and use RMS/frequency bands for subtle, brand-specific motion. Good targets are glow, depth, background warmth, card presence, title emphasis, or other existing visual elements. Avoid waveform/equalizer visuals, musical-note graphics, generic particle systems, strobing, or heavy pulsing.
@@ -117,26 +117,51 @@ When voice is disabled, do not write a voiceover script, generate narration,
 transcribe audio, duck music, add a voice track, or merge narration into the
 video. The normal video export must remain entirely voice-agnostic.
 
-When voice is enabled, write the narration lines into `brag-plan.md` under a
-`## Voiceover script` section, then generate the audio through Kokoro:
+When voice is enabled, narration must be context-aware and synced scene by
+scene — see "Narration guidance" in `SKILL.md` and "Narration script" in
+`references/step-2-plan.md` for what each line must say. Write the narration
+lines into `brag-plan.md` under a `## Voiceover script` section (one line per
+scene), then generate the audio **per scene**, not as one continuous block,
+so each scene's on-screen timing can be driven directly by its own line:
 
 ```bash
-npx hyperframes tts "<narration text or path to script>" \
+npx hyperframes tts "<scene 1 narration line>" \
   --voice af_heart \
-  --output <output-dir>/composition/assets/voiceover.wav
+  --output <output-dir>/composition/assets/voiceover-scene-1.wav
+
+npx hyperframes tts "<scene 2 narration line>" \
+  --voice af_heart \
+  --output <output-dir>/composition/assets/voiceover-scene-2.wav
 ```
+
+(repeat per scene that has a narration line; a scene with no line keeps its
+planned duration and gets no clip)
 
 If the user wants a different Kokoro voice, run `npx hyperframes tts --list`
 to see the available options. By default, use the command above to generate
 narration.
 
-Wire it into the composition on its own track. Music ducks to 0.12–0.15 for the duration of the voiceover, then returns to its normal level:
+Wire each scene's clip onto the same narration track, one after another,
+each `data-start` equal to that scene's start time (the sum of the
+preceding scenes' `data-duration` values, pads included). Music
+ducks to 0.12–0.15 for the duration of the voiceover, then returns to its
+normal level:
 
 ```html
-<audio id="vo" data-start="0" data-track-index="3" data-volume="1" src="assets/voiceover.wav"></audio>
+<audio id="vo-1" data-start="0" data-track-index="3" data-volume="1" src="assets/voiceover-scene-1.wav"></audio>
+<audio id="vo-2" data-start="4.8" data-track-index="3" data-volume="1" src="assets/voiceover-scene-2.wav"></audio>
 ```
 
-The 15-25 second window holds whether or not narration is on. Write the narration script to fit that window. Within the window, scene durations flex to match the generated audio rather than being fixed in advance: check the WAV duration after generation and adjust `data-duration` values accordingly. If the rendered narration overruns the window, cut the script and regenerate; do not stretch the video past 25 seconds to fit it.
+The target duration (60 seconds by default, or the exact value passed via
+`--duration`) holds whether or not narration is on. Write the narration
+script to fit it. Within that target, scene durations flex to match each
+scene's own generated clip rather than being fixed in advance: check each
+WAV's duration after generation and set that scene's `data-duration` to it
+plus a small pad (e.g. 0.3-0.6s, so the line never gets cut off). Let each
+scene's narration set its own pace, so the visual and the voice change
+together instead of drifting apart over a long video. If the narration
+overruns the target, cut the script and regenerate; do not stretch the
+video past the target to fit it.
 
 ---
 
@@ -209,7 +234,7 @@ Before moving to delivery, verify:
 - [ ] Sequential events (cards, stats, list items) snap to consecutive `beats[]` timestamps (±0.10s), marked `// beat-grid` (or natural timing was chosen for readability).
 - [ ] The composition shows at least one real UI, copy, or visual element from the project.
 - [ ] Every factual claim on screen is grounded in the project (see below).
-- [ ] Total duration is 15-25 seconds.
+- [ ] Total duration matches the target — 60 seconds by default, or the exact value passed via `--duration`.
 - [ ] Hyperframes check passes, or any blocker is documented for the user.
 
 ### Grounding factual claims
