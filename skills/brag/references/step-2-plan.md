@@ -74,6 +74,7 @@ landing-page-only, write "none — landing-page only" and rely on Key moments in
 ### Scene 1 — [name] — [duration]s
 [What's on screen. What text appears. What product material must be referenced.]
 Sequential/interaction: [yes — describe what appears one by one or what interaction is simulated, e.g. "3 stat cards arrive one by one" or "cursor clicks the match button"; or none]
+Narration line (--voice only): [what the presenter says while this scene is on screen — explains what this screen/feature is for, the action being taken and why, or the benefit it gives the user; never a restatement of visible text; omit this field entirely when voice is disabled]
 Audio intent: [what the sound should do emotionally]
 Audio-coupled idea: [typed text, beat-aligned reveal, counter ticks, card-by-card sequence, simulated tap/swipe/type — or none]
 Music: [mood, or "none" only if disabled / missing / intentionally silent]
@@ -82,6 +83,7 @@ Transition mood: [clean / hard / dramatic / soft / chaotic] → Scene 2
 ### Scene 2 — [name] — [duration]s
 [...]
 Sequential/interaction: [yes — describe it; or none]
+Narration line (--voice only): [...]
 Audio intent: [what the sound should do emotionally]
 Audio-coupled idea: [type or none]
 Transition mood: [mood] → Scene 3
@@ -218,6 +220,32 @@ Beat/cue sync is available for any track now (see `audio.md` → "Beat and cue s
 See `audio.md` for the cue sources, JSON schema, and beat-sync tolerances.
 
 If SFX are enabled, note likely sound opportunities but leave exact filenames to Hyperframes. Hyperframes should use the skill's `sfx-analysis.md` during composition.
+
+## Narration script (only when `--voice` is enabled)
+
+See "Narration guidance" in `SKILL.md` for the ground rules — this section
+is how those rules translate into the plan.
+
+Write narration as part of the storyboard, not as a separate freeform
+paragraph. For each scene, fill in that scene's `Narration line` field (see
+the Storyboard structure above) so that it:
+
+- Names or explains what's on screen in that scene using the project's own
+  terms — not a restatement of visible on-screen text.
+- For the hook/opening scene: states what the project is and the problem it
+  solves, so the video works as a self-contained introduction.
+- For a scene simulating a user action: says what the user is doing and why.
+- For a scene demonstrating a feature: says what it does for the user, not
+  just its name.
+- For any scene with a long hold and no new visual information: uses the
+  extra time for a detail not already visible (a use case, a bit of context,
+  a benefit), instead of repeating itself.
+
+After the storyboard, add a `## Voiceover script` section that concatenates
+the narration lines in scene order, one per line, so it can be handed
+directly to the TTS step in `references/step-3-compose.md`. Keep each
+scene's line separate (don't merge them into one paragraph) so Hyperframes
+can generate and time each scene's clip independently.
 
 ## Handoff posture
 

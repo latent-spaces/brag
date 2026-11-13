@@ -117,26 +117,51 @@ When voice is disabled, do not write a voiceover script, generate narration,
 transcribe audio, duck music, add a voice track, or merge narration into the
 video. The normal video export must remain entirely voice-agnostic.
 
-When voice is enabled, write the narration lines into `brag-plan.md` under a
-`## Voiceover script` section, then generate the audio through Kokoro:
+When voice is enabled, narration must be context-aware and synced scene by
+scene — see "Narration guidance" in `SKILL.md` and "Narration script" in
+`references/step-2-plan.md` for what each line must say. Write the narration
+lines into `brag-plan.md` under a `## Voiceover script` section (one line per
+scene), then generate the audio **per scene**, not as one continuous block,
+so each scene's on-screen timing can be driven directly by its own line:
 
 ```bash
-npx hyperframes tts "<narration text or path to script>" \
+npx hyperframes tts "<scene 1 narration line>" \
   --voice af_heart \
-  --output <output-dir>/composition/assets/voiceover.wav
+  --output <output-dir>/composition/assets/voiceover-scene-1.wav
+
+npx hyperframes tts "<scene 2 narration line>" \
+  --voice af_heart \
+  --output <output-dir>/composition/assets/voiceover-scene-2.wav
 ```
+
+(repeat per scene that has a narration line; a scene with no line keeps its
+planned duration and gets no clip)
 
 If the user wants a different Kokoro voice, run `npx hyperframes tts --list`
 to see the available options. By default, use the command above to generate
 narration.
 
-Wire it into the composition on its own track. Music ducks to 0.12–0.15 for the duration of the voiceover, then returns to its normal level:
+Wire each scene's clip onto the same narration track, one after another,
+each `data-start` equal to that scene's start time (the sum of the
+preceding scenes' `data-duration` values, pads included). Music
+ducks to 0.12–0.15 for the duration of the voiceover, then returns to its
+normal level:
 
 ```html
-<audio id="vo" data-start="0" data-track-index="3" data-volume="1" src="assets/voiceover.wav"></audio>
+<audio id="vo-1" data-start="0" data-track-index="3" data-volume="1" src="assets/voiceover-scene-1.wav"></audio>
+<audio id="vo-2" data-start="4.8" data-track-index="3" data-volume="1" src="assets/voiceover-scene-2.wav"></audio>
 ```
 
-The 15-25 second window holds whether or not narration is on. Write the narration script to fit that window. Within the window, scene durations flex to match the generated audio rather than being fixed in advance: check the WAV duration after generation and adjust `data-duration` values accordingly. If the rendered narration overruns the window, cut the script and regenerate; do not stretch the video past 25 seconds to fit it.
+The target duration (50 seconds by default, or the exact value passed via
+`--duration`) holds whether or not narration is on. Write the narration
+script to fit it. Within that target, scene durations flex to match each
+scene's own generated clip rather than being fixed in advance: check each
+WAV's duration after generation and set that scene's `data-duration` to it
+plus a small pad (e.g. 0.3-0.6s, so the line never gets cut off). Let each
+scene's narration set its own pace, so the visual and the voice change
+together instead of drifting apart over a long video. If the narration
+overruns the target, cut the script and regenerate; do not stretch the
+video past the target to fit it.
 
 ---
 

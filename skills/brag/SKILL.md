@@ -59,11 +59,43 @@ When the user gives freeform tone direction, map it to the nearest preset for pa
 
 ## Narration guidance
 
-When `--voice` is enabled, write narration that complements the visuals, does
-not simply read visible text, matches scene pacing, sounds natural and
-conversational, and moves smoothly between scenes. Keep the script concise and
-specific to the product so the voice feels like part of the edit rather than a
-separate narration track.
+When `--voice` is enabled, narration is not a generic voiceover — it is a
+context-aware presenter walking the viewer through this specific project.
+Write it so someone who has never seen the project can understand what it
+does and why it matters just from listening.
+
+Ground rules:
+
+- **Open with the project.** The first narration line (over the hook/reveal)
+  states what the project is and what problem it solves — not a generic
+  "welcome" line. The viewer should know what they're watching within the
+  first sentence.
+- **Narrate what's actually on screen.** As each new screen, scene, or
+  feature appears, explain what that screen is for — tied to the specific
+  scene content from `brag-plan.md`, not a paraphrase of the visible copy.
+- **Explain actions, not just show them.** When the storyboard simulates a
+  user action (click, swipe, type, toggle), narrate what the user is doing
+  and why — the intent behind the action, not just a description of the
+  motion.
+- **State the benefit, not just the feature.** When a feature is
+  demonstrated, briefly say what it does for the user — the "so that"
+  behind it — not just its name.
+- **No filler.** Never say "Here we can see...", "As you can see...", "In
+  this video we will...", or restate what's visually obvious. If a scene
+  holds for a few seconds without new visual information, use that time to
+  add a detail that isn't already on screen (a use case, a benefit, a bit of
+  context) rather than repeating the label.
+- **Sync to the storyboard, scene by scene.** Narration must be written per
+  scene, matched to that scene's duration and content — see "Narration
+  script" in `references/step-2-plan.md`. Do not write one freeform block
+  and hope it lines up.
+- **Sound like a person presenting, not an ad.** Natural, professional,
+  conversational language — like someone demoing their own project to a
+  colleague. Short, confident sentences. No generic SaaS language (this
+  rule applies to narration too, not just on-screen copy).
+
+Keep the script concise and specific to the product so the voice feels like
+part of the edit rather than a separate narration track.
 
 ---
 
