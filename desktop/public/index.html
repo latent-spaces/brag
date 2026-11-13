@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f6f3" media="(prefers-color-scheme: light)">
+<title>brag desktop</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ffb347'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%231a1200'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="topbar">
+  <button type="button" id="menu" class="ghost icon" aria-label="Open menu" aria-controls="side" aria-expanded="false">☰</button>
+  <span class="brand">/brag <small>desktop</small></span>
+</header>
+<div class="scrim" id="scrim" hidden></div>
+
+<aside id="side" aria-label="Sidebar">
+  <div class="brand">/brag <small>desktop</small></div>
+  <button type="button" id="new" class="primary wide">+ New Brag</button>
+  <nav aria-labelledby="hist-h">
+    <h2 class="label" id="hist-h">History</h2>
+    <ul id="history" aria-busy="true"><li class="skel" aria-hidden="true"><i></i></li><li class="skel" aria-hidden="true"><i></i></li><li class="skel" aria-hidden="true"><i></i></li></ul>
+  </nav>
+  <ul id="health" class="health" aria-label="System status"></ul>
+</aside>
+
+<main id="main" tabindex="-1">
+  <section id="setup" hidden></section>
+
+  <section id="form-view" aria-labelledby="form-h">
+    <h1 id="form-h" tabindex="-1">You built it. Now brag.</h1>
+
+    <details class="presets" id="presets" open>
+      <summary><span class="label">Start from a preset</span><span id="preset-sum" class="muted"></span></summary>
+      <div class="chips" id="preset-filters" role="group" aria-label="Filter presets by category"></div>
+      <ul class="pgrid" id="preset-grid" aria-busy="true">
+        <li class="skel-card" aria-hidden="true"></li><li class="skel-card" aria-hidden="true"></li><li class="skel-card" aria-hidden="true"></li>
+        <li class="skel-card" aria-hidden="true"></li><li class="skel-card" aria-hidden="true"></li><li class="skel-card" aria-hidden="true"></li>
+      </ul>
+      <p class="hint">A preset fills in tone, format, length and audio, and gives the agent a tuned beat-by-beat structure. Everything stays editable. Three previews are real <code>/brag</code> samples; the rest are storyboards of the structure.</p>
+    </details>
+
+    <div id="preset-chip" class="pchip" hidden>
+      <span><strong>Preset:</strong> <span id="preset-chip-name"></span> <span id="preset-custom" class="muted" hidden>(customized)</span></span>
+      <span class="row"><button type="button" class="ghost small" id="preset-preview">Preview</button><button type="button" class="ghost small" id="preset-clear">Clear</button></span>
+    </div>
+
+    <form id="form" novalidate>
+      <label for="projectDir">Project folder
+        <span class="row">
+          <input id="projectDir" name="projectDir" placeholder="/home/you/CODE/my-project…" required list="recents" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="form-error">
+          <datalist id="recents"></datalist>
+          <button type="button" id="pick">Browse…</button>
+        </span>
+      </label>
+
+      <fieldset class="tones" id="tone-set">
+        <legend>Tone</legend>
+        <input type="hidden" id="tone" name="tone" value="">
+        <div class="tonegrid">
+          <label class="tone"><input type="radio" name="tone-r" value="" checked><span class="tbody"><strong>Auto</strong><small>Inferred from your project</small></span></label>
+          <label class="tone"><input type="radio" name="tone-r" value="default"><span class="tbody"><strong>Default</strong><small>Playful, clean, postable</small></span></label>
+          <label class="tone"><input type="radio" name="tone-r" value="polished"><span class="tbody"><strong>Polished</strong><small>Serious and elegant</small></span></label>
+          <label class="tone"><input type="radio" name="tone-r" value="yc-parody"><span class="tbody"><strong>YC parody</strong><small>Deadpan startup energy</small></span></label>
+          <label class="tone"><input type="radio" name="tone-r" value="chaotic"><span class="tbody"><strong>Chaotic</strong><small>Fast, loud, over the top</small></span></label>
+          <label class="tone"><input type="radio" name="tone-r" value="deadpan"><span class="tbody"><strong>Deadpan</strong><small>Calm, dry, understated</small></span></label>
+          <label class="tone"><input type="radio" name="tone-r" value="cinematic"><span class="tbody"><strong>Cinematic</strong><small>Dramatic, trailer-scale</small></span></label>
+          <label class="tone"><input type="radio" name="tone-r" value="app-store"><span class="tbody"><strong>App Store</strong><small>Smooth feature cards</small></span></label>
+        </div>
+      </fieldset>
+
+      <div class="grid">
+        <label for="format">Format
+          <select id="format" name="format"><option>landscape</option><option>vertical</option><option>square</option></select>
+        </label>
+        <label for="duration">Duration (seconds)
+          <input id="duration" name="duration" type="number" inputmode="numeric" min="10" max="40" placeholder="Auto, 15–25…">
+        </label>
+      </div>
+
+      <label for="extra">Custom tone or creative direction
+        <input id="extra" name="extra" placeholder='e.g. "Fake Series A launch from 2016"…'>
+      </label>
+      <label for="title">Title
+        <input id="title" name="title" placeholder="Inferred from the project…">
+      </label>
+
+      <fieldset class="opts">
+        <legend>Audio</legend>
+        <label class="opt"><input type="checkbox" id="noMusic"><span>No music</span></label>
+        <label class="opt"><input type="checkbox" id="noSfx"><span>No sound effects</span></label>
+        <label class="opt"><input type="checkbox" id="voice"><span>Voiceover <em>Narrates the video with Kokoro</em></span></label>
+      </fieldset>
+
+      <details class="adv" id="adv">
+        <summary>Advanced</summary>
+        <div class="advbody">
+          <label for="model">Model
+            <select id="model" name="model"><option value="">Claude Code default</option><option>opus</option><option>sonnet</option></select>
+          </label>
+          <label class="opt"><input type="checkbox" id="full"><span>Full workflow <em>Classic Hyperframes pipeline instead of brag-slim</em></span></label>
+          <label class="opt warn"><input type="checkbox" id="autoApprove"><span>Auto-approve everything <em>Skips all permission checks for this run</em></span></label>
+        </div>
+      </details>
+
+      <p class="hint">Runs through your signed-in Claude Code subscription. The agent may run <code>npx</code> (downloads Hyperframes from npm) and <code>ffmpeg</code>, and writes to <code>brag-output/</code> in the project. <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> to generate.</p>
+      <p id="form-error" class="notice err" role="alert" hidden></p>
+      <button class="primary" id="go" type="submit">Generate Brag Video</button>
+    </form>
+  </section>
+
+  <section id="run-view" aria-labelledby="run-title" hidden>
+    <header class="runhead">
+      <div class="runtitle">
+        <h1 id="run-title" tabindex="-1"></h1>
+        <p class="runmeta">
+          <span id="run-status" class="pill"></span>
+          <span id="elapsed" class="muted"></span>
+          <span id="run-info" class="muted ell"></span>
+        </p>
+      </div>
+      <div class="actions"><button type="button" id="cancel" class="danger" hidden>Cancel run</button> <button type="button" id="delete" class="ghost" hidden>Delete</button></div>
+    </header>
+
+    <ol id="steps" class="steps" aria-label="Progress">
+      <li data-k="plan" data-state="todo"><span class="ico" aria-hidden="true"></span>Plan<span class="sr"> (pending)</span></li>
+      <li data-k="brief" data-state="todo"><span class="ico" aria-hidden="true"></span>Compose<span class="sr"> (pending)</span></li>
+      <li data-k="video" data-state="todo"><span class="ico" aria-hidden="true"></span>Render<span class="sr"> (pending)</span></li>
+      <li data-k="poster" data-state="todo"><span class="ico" aria-hidden="true"></span>Poster<span class="sr"> (pending)</span></li>
+      <li data-k="copy" data-state="todo"><span class="ico" aria-hidden="true"></span>Share copy<span class="sr"> (pending)</span></li>
+    </ol>
+
+    <div id="result" hidden>
+      <video id="video" controls preload="metadata" playsinline aria-label="Generated brag video"></video>
+      <div class="side">
+        <h2 class="label">Share copy</h2>
+        <pre id="copy"></pre>
+        <div class="row wrap"><button type="button" id="copy-btn">Copy Text</button><button type="button" id="open-dir">Open Folder</button><button type="button" id="open-plan" class="ghost">Open Plan</button></div>
+        <h2 class="label">Files</h2>
+        <p id="files" class="muted"></p>
+      </div>
+    </div>
+
+    <details id="denials" class="notice" hidden></details>
+    <p id="error" class="notice err" role="alert" hidden></p>
+
+    <div class="loghead">
+      <h2 class="label" id="log-h">Agent log</h2>
+      <button type="button" id="jump" class="ghost small" hidden>Jump to latest ↓</button>
+    </div>
+    <div id="log" role="log" aria-live="off" aria-labelledby="log-h" tabindex="0"></div>
+
+    <form id="followup" class="row" hidden>
+      <label class="sr" for="msg">Follow-up message</label>
+      <input id="msg" placeholder="Refine it: re-roll scene 3, try a deadpan tone, make it shorter…" autocomplete="off">
+      <button class="primary" type="submit">Send</button>
+    </form>
+  </section>
+</main>
+
+<div id="toasts" aria-live="polite" aria-atomic="false"></div>
+<div id="announce" class="sr" role="status" aria-live="polite"></div>
+
+<dialog id="browser" aria-labelledby="browser-h">
+  <h2 id="browser-h" class="dlg-title">Choose a project folder</h2>
+  <div class="row">
+    <input id="bpath" readonly aria-label="Current folder" tabindex="-1">
+    <button type="button" id="bup">Up</button>
+  </div>
+  <ul id="blist" aria-label="Folders"></ul>
+  <div class="row end"><button type="button" id="bcancel" class="ghost">Cancel</button><button type="button" id="bok" class="primary">Choose This Folder</button></div>
+</dialog>
+
+<dialog id="preset-dlg" class="big" aria-labelledby="pd-title">
+  <header class="pd-head">
+    <div>
+      <span class="pd-cat" id="pd-cat"></span>
+      <h2 id="pd-title" class="dlg-title"></h2>
+      <p id="pd-tag" class="muted"></p>
+    </div>
+    <button type="button" class="ghost icon" id="pd-close" aria-label="Close preview">✕</button>
+  </header>
+  <div class="pd-body">
+    <div class="pd-left">
+      <div class="seg2" id="pd-mode" role="group" aria-label="Preview type" hidden>
+        <button type="button" data-mode="sample" aria-pressed="true">Sample video</button>
+        <button type="button" data-mode="story" aria-pressed="false">Storyboard</button>
+      </div>
+      <div id="pd-stage"></div>
+      <p id="pd-caption" class="hint"></p>
+    </div>
+    <div class="pd-right">
+      <ul class="facts" id="pd-facts"></ul>
+      <h3 class="label">What to expect</h3>
+      <ul class="plist" id="pd-expect"></ul>
+      <h3 class="label">Beat by beat</h3>
+      <ol class="beatlist" id="pd-beats"></ol>
+      <h3 class="label">Works best when</h3>
+      <p id="pd-needs" class="pd-p"></p>
+      <p id="pd-best" class="pd-p muted"></p>
+    </div>
+  </div>
+  <footer class="pd-foot">
+    <button type="button" id="pd-cancel" class="ghost">Cancel</button>
+    <button type="button" id="pd-use" class="primary">Use This Preset</button>
+  </footer>
+</dialog>
+
+<dialog id="confirm" aria-labelledby="confirm-h" aria-describedby="confirm-b">
+  <h2 id="confirm-h" class="dlg-title"></h2>
+  <p id="confirm-b"></p>
+  <div class="row end"><button type="button" id="confirm-no" class="ghost">Cancel</button><button type="button" id="confirm-yes" class="primary">Continue</button></div>
+</dialog>
+<script src="app.js"></script>
+</body>
+</html>

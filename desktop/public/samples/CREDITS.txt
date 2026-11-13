@@ -1,0 +1,6 @@
+Sample videos in this folder are real outputs of the /brag skill (https://github.com/latent-spaces/brag, MIT)
+made for fictional demo products: Horse Tinder, Taxi for Taxis, Fish Flight School.
+Re-encoded to 720p for this app.
+
+Music: "Happy Beats / Business Moves" by Sascha Ende (https://ende.app/en), licensed CC BY 4.0.
+Sound effects: Kenney (https://kenney.nl/), CC0.

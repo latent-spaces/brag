@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Launch the brag-desktop server (if not running) and open it in its own app window.
+set -euo pipefail
+DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)"
+PORT="${BRAG_PORT:-4178}"
+URL="http://localhost:$PORT"
+
+if ! curl -fs "$URL/api/status" >/dev/null 2>&1; then
+  mkdir -p "${XDG_STATE_HOME:-$HOME/.local/state}/brag-desktop"
+  nohup node "$DIR/server.js" >"${XDG_STATE_HOME:-$HOME/.local/state}/brag-desktop/server.log" 2>&1 &
+  for _ in $(seq 1 50); do curl -fs "$URL/api/status" >/dev/null 2>&1 && break; sleep 0.1; done
+fi
+
+for b in google-chrome-stable google-chrome chromium chromium-browser brave-browser microsoft-edge; do
+  if command -v "$b" >/dev/null 2>&1; then
+    exec "$b" --app="$URL" --class=brag-desktop --user-data-dir="${XDG_DATA_HOME:-$HOME/.local/share}/brag-desktop/browser-profile" --no-first-run --no-default-browser-check
+  fi
+done
+exec xdg-open "$URL"
