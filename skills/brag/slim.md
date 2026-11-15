@@ -34,7 +34,7 @@ If the input matches no type, or there's no input and the current directory isn'
 
 Read the code: the main page, styles (exact colors and fonts), README, routes and key components. The best material is the product **in use** — find its 2–3 beats: entry → key action → result.
 
-You have the source, so use it directly: import or render the project's real components, stylesheets, fonts, images and animations in the video instead of rebuilding them.
+You have the source, so use it directly: import or render the project's real components, stylesheets, fonts, images and animations in the video instead of rebuilding them. If the components can't render outside their app (server components that need a database, router hooks), keep the real design system anyway: compile the project's own stylesheet with its own build tool, with the video's markup as the only content source, and mirror the components' markup with their class lists copied from the source. Rebuild visuals by hand only when neither works.
 
 Don't read build output (`dist/`, `.next/`, `build/`), lock files, test files, `.git/`, env and secret files (`.env`, `.env.*`), key and credential material (`.pem`, `.key`, `id_rsa`, service-account JSON, anything under `secrets/` or `credentials/`), local config that commonly holds tokens, or anything `.gitignore` excludes for those reasons.
 
@@ -53,6 +53,8 @@ Get the site as a visitor sees it. Many sites build their page with JavaScript, 
 Before planning, answer: What is it (one sentence)? Who is it for, and what does it do for them? What sets it apart? What's the most impressive or funniest claim? What's the visual hook? What real UI or flow should be shown? What tone fits? What's the one-line share caption?
 
 Everything gathered here can end up in a public video. Never carry secrets, API keys, tokens, internal hostnames or URLs, real customer or user names, email addresses, or other personal data into the plan, the video, or the share copy. If the real UI shows such data, swap in plausible fictional stand-ins and say so in the plan.
+
+Also check the tools the build will need: a video encoder (ffmpeg), a headless browser and, for a project, its own build tool. If one is missing, ask before fetching it, and offer a fetch that leaves both the system and the project untouched (`uv run --with imageio-ffmpeg`, `npx -y <tool>@<the project's version>`, an installed browser driver with the system browser) ahead of a system install or a new project dependency. Say what you fetched when you deliver.
 
 ## 2. Plan
 
