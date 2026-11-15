@@ -12,7 +12,7 @@ Secondary audience: curious onlookers who hit the page from a link in a tweet. T
 
 ## Product Purpose
 
-This site is the launchpad for `/brag` — a Claude Code skill that turns a project website into a short, polished, shareable launch video using Hyperframes. The site exists to:
+This site is the launchpad for `/brag` — an agent skill that turns a project website into a short, polished, shareable launch video. `/brag` uses Hyperframes; `/brag-slim` builds the video without it. [letsbrag.app](https://letsbrag.app) runs the same job for someone who pastes a link. The site exists to:
 
 1. Show the output (real brag videos for real example projects), not describe it.
 2. Make the install command impossible to miss.
