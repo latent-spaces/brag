@@ -1,6 +1,6 @@
 {
   "name": "brag",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Turn the current project into a short, polished, shareable launch video. Ships /brag (Hyperframes) and /brag-slim.",
   "author": {
     "name": "Shunit Haviv Hakimi",
