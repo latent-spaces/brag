@@ -92,6 +92,8 @@ Transition mood: [mood] → Scene 3
 **Audio summary:** [one sentence describing the full audio arc]
 ```
 
+Use 1920×1080 for landscape, 1080×1920 for vertical, and 1080×1080 for square, at 30fps, unless the user asks for another size.
+
 ## Planning the scenes
 
 The default pattern is:
