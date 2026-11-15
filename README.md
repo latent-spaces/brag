@@ -142,11 +142,11 @@ You get a `brag-output/` folder with the plan, a composition brief, share copy, 
 - `plugin.json` — portable Agent Plugins manifest
 - `.codex-plugin/` — Codex compatibility manifest
 - `.claude-plugin/` — Claude Code manifest + shared marketplace catalog (also recognized by Codex)
-- `.claude/skills/brag/` — symlink → `skills/brag/` (Claude Code)
+- `.claude/skills/brag/` — symlink → `skills/brag/` (Claude Code discovery)
 - `.claude/skills/brag-slim/` — symlink → `skills/brag-slim/`
-- `.agents/skills/brag/` — symlink → `skills/brag/` (Codex CLI and Antigravity)
+- `.agents/skills/brag/` — symlink → `skills/brag/` (Codex CLI + opencode discovery)
 - `.agents/skills/brag-slim/` — symlink → `skills/brag-slim/`
-- `.opencode/skills/brag/` — symlink → `skills/brag/` (opencode)
+- `.opencode/skills/brag/` — symlink → `skills/brag/` (opencode discovery)
 - `.opencode/skills/brag-slim/` — symlink → `skills/brag-slim/`
 
 ## Credits
