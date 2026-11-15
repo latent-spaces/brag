@@ -113,7 +113,9 @@ But adapt it. These are the right scene counts for each tone:
 
 ## Duration guidance
 
-Scene durations must sum to 15-25 seconds. Count them.
+If the user passed `--duration`, scene durations must sum to that many seconds. Write the number in the plan. Do not also force the 15–25 window.
+
+If the user did not pass `--duration`, scene durations must sum to 15-25 seconds. Count them.
 
 - Under 15 seconds: too thin, add a scene or lengthen holds.
 - Over 25 seconds: cut a scene or tighten timing.
