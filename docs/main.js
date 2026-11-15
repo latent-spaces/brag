@@ -103,11 +103,18 @@
         // last resort: select the command so the user can copy it manually
         const pre = btn.closest('.install');
         if (pre) {
-          const range = document.createRange();
-          range.selectNodeContents(pre.querySelector('code'));
-          const sel = window.getSelection();
-          sel.removeAllRanges();
-          sel.addRange(range);
+          let manualCopy = pre.querySelector('.copy-fallback');
+          if (!manualCopy) {
+            manualCopy = document.createElement('textarea');
+            manualCopy.className = 'copy-fallback';
+            manualCopy.readOnly = true;
+            manualCopy.setAttribute('aria-label', 'Install command to copy manually');
+            pre.appendChild(manualCopy);
+          }
+          manualCopy.value = text;
+          manualCopy.focus();
+          manualCopy.select();
+          manualCopy.setSelectionRange(0, text.length);
         }
       }
     });
