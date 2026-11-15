@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "brag",
   "version": "0.5.0",
-  "description": "Turn the current project into a short, polished, shareable launch video using Hyperframes.",
+  "description": "Turn the current project into a short, polished, shareable launch video. Ships /brag (Hyperframes) and /brag-slim.",
   "author": {
     "name": "Shunit Haviv Hakimi",
     "email": "shunithaviv@gmail.com",
@@ -11,5 +11,5 @@
   "homepage": "https://latent-spaces.github.io/brag/",
   "repository": "https://github.com/latent-spaces/brag",
   "license": "MIT",
-  "keywords": ["video", "launch", "hyperframes", "skill"]
+  "keywords": ["video", "launch", "hyperframes", "brag-slim", "skill"]
 }

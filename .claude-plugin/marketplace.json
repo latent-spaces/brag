@@ -10,7 +10,7 @@
     {
       "name": "brag",
       "source": "./",
-      "description": "Turn the current project website into a short, polished, shareable launch video using HyperFrames."
+      "description": "Turn the current project website into a short, polished, shareable launch video. Includes /brag and /brag-slim."
     }
   ]
 }

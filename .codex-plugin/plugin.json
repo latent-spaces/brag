@@ -1,7 +1,7 @@
 {
   "name": "brag",
   "version": "0.5.0",
-  "description": "Turn the current project into a short, polished, shareable launch video using Hyperframes.",
+  "description": "Turn the current project into a short, polished, shareable launch video. Ships /brag (Hyperframes) and /brag-slim.",
   "author": {
     "name": "Shunit Haviv Hakimi",
     "email": "shunithaviv@gmail.com",
@@ -10,12 +10,12 @@
   "homepage": "https://latent-spaces.github.io/brag/",
   "repository": "https://github.com/latent-spaces/brag",
   "license": "MIT",
-  "keywords": ["video", "launch", "hyperframes", "skill"],
+  "keywords": ["video", "launch", "hyperframes", "brag-slim", "skill"],
   "skills": "./skills/",
   "interface": {
     "displayName": "brag",
     "shortDescription": "Turn your project into a polished launch video.",
-    "longDescription": "Create a short, shareable launch video from the current project, complete with a tailored story, motion, music, sound effects, poster frame, and share copy.",
+    "longDescription": "Create a short, shareable launch video from the current project, complete with a tailored story, motion, music, sound effects, poster frame, and share copy. Includes /brag-slim for a run that builds the video directly.",
     "developerName": "Latent Spaces",
     "category": "Productivity",
     "capabilities": ["Read", "Write", "Execute"],

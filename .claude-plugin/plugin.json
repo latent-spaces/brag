@@ -1,6 +1,6 @@
 {
   "name": "brag",
-  "description": "Turn the current project into a short, polished, shareable launch video using HyperFrames.",
+  "description": "Turn the current project into a short, polished, shareable launch video. Ships /brag (Hyperframes) and /brag-slim.",
   "version": "0.5.0",
   "author": {
     "name": "Shunit Haviv Hakimi",
@@ -9,5 +9,5 @@
   "license": "MIT",
   "homepage": "https://github.com/latent-spaces/brag",
   "repository": "https://github.com/latent-spaces/brag",
-  "keywords": ["video", "launch", "hyperframes", "skill"]
+  "keywords": ["video", "launch", "hyperframes", "brag-slim", "skill"]
 }
