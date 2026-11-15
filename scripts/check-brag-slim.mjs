@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// /brag bundles a copy of /brag-slim (skills/brag/slim.md) so its Opus 5.5 hand-off
+// /brag bundles a copy of /brag-slim (skills/brag/slim.md) so its model hand-off
 // works no matter how /brag was installed. The two files must stay identical.
 
 import { readFile } from "node:fs/promises";

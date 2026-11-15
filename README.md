@@ -18,15 +18,15 @@ The skill stays free and open source. Install it below and run it yourself anyti
 
 ## New: `/brag-slim`
 
-**The same /brag, rebuilt lean for Opus 5.5.**
+**The same /brag, rebuilt lean for Opus 5.5, Sonnet 5.5 and Fable 5.2.**
 
 A smooth launch video, designed for your specific project, with its own soundtrack and share copy.
 
 No Hyperframes, no bundled assets, same creative rules.
 
-Just tell Opus 5.5: *let's /brag about this.*
+Just tell Claude: *let's /brag about this.*
 
-On Opus 5.5, `/brag` switches to `/brag-slim` automatically. Run `/brag --full` to keep the classic Hyperframes workflow.
+On Opus 5.5, Sonnet 5.5 or Fable 5.2, `/brag` switches to `/brag-slim` automatically. Run `/brag --full` to keep the classic Hyperframes workflow.
 
 **Install just `/brag-slim`:**
 
@@ -136,7 +136,7 @@ You get a `brag-output/` folder with the plan, a composition brief, share copy, 
 ## What's in this repo
 
 - `skills/brag/` — the skill, references, and bundled music + SFX
-- `skills/brag-slim/` — `/brag-slim`, the single-file skill for Claude Opus 5.5
+- `skills/brag-slim/` — `/brag-slim`, the single-file skill for Claude Opus 5.5, Sonnet 5.5 and Fable 5.2
 - `examples/` — fake product sites used as a benchmark suite
 - `docs/` — the launch site (GitHub Pages)
 - `plugin.json` — portable Agent Plugins manifest
