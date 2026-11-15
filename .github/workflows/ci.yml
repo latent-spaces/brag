@@ -3,8 +3,10 @@ name: CI
 on:
   push:
     branches: [main]
+    paths: [skills/brag-slim/**, skills/brag/slim.md, docs/**, scripts/**, .github/workflows/**]
   pull_request:
     branches: [main]
+    paths: [skills/brag-slim/**, skills/brag/slim.md, docs/**, scripts/**, .github/workflows/**]
 
 permissions:
   contents: read
