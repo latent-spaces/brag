@@ -278,22 +278,10 @@ The preset and `analyze_music_cues.py` share the rich schema:
 - `duration`, `tempo`
 - `beats`: beat-grid points with `time` and normalized `intensity`
 - `strongCues`: up to 64 highest-value landing moments across the full track, ordered by time, with `time`, `intensity`, and `kind` (`strong_beat` / `onset_peak`)
-- `windowStrongCues` (new analyses; optional in existing presets): eligible strong cues in the requested planning window, ordered by descending intensity and limited by `--top-cues` (default 10). This is the same list shown in the Markdown's "Strong Cues In Window" section; "Reveal Candidates" uses its first five entries.
+- `windowStrongCues` (newer analyses only): the strongest cues inside the requested window, strongest first, up to `--top-cues` (default 10). The Markdown's "Strong Cues In Window" shows the same list.
 - `scoring`: feature and normalization metadata
 
-For a selected excerpt, run the analyzer with `--window-start <seconds>` and
-`--window-duration <seconds>` (defaults: 0 and 25). It selects `windowStrongCues`
-from all deduplicated candidates with intensity at least 0.45 before the global
-top-64 cap can discard them. Window bounds include both endpoints, with the end
-clipped to the track duration. Times remain absolute track seconds. Deduplication
-and scoring stay track-wide so changing the window does not change cue timestamps,
-kinds, or features.
-
-The schema remains version 1 with an additive field. The full `beats` grid and
-global `strongCues` selection are unchanged; prioritizing window cues inside
-`strongCues` would change that existing full-track contract. When reading an older
-preset without `windowStrongCues`, filter `strongCues` to the desired window as
-before. If it has no useful cues there, rerun the analyzer for that window.
+For a section of the track, pass `--window-start` and `--window-duration` (defaults 0 and 25). `windowStrongCues` then lists that section's strongest cues, picked before the 64-cue cap. Older presets don't have it: filter `strongCues` to the window, and rerun the analyzer if that leaves nothing useful.
 
 `hyperframes beats` is the simpler floor: a plain beat grid with a per-beat strength, no strong-cue array.
 

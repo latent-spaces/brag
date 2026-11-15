@@ -114,6 +114,14 @@ def _format_cue(cue: dict[str, Any]) -> str:
     return f"{cue['time']:.2f}s ({cue['intensity']:.2f}, {cue['kind']})"
 
 
+def _pick_cues(eligible_cues, window_start, window_end, top_cues):
+    """Track-wide top 64 by time, and the window's own top cues picked before that cap."""
+    by_intensity = sorted(eligible_cues, key=lambda cue: cue["intensity"], reverse=True)
+    strong_cues = sorted(by_intensity[:64], key=lambda cue: cue["time"])
+    in_window = [c for c in by_intensity if window_start <= c["time"] <= window_end]
+    return strong_cues, in_window[:top_cues]
+
+
 def analyze_track(
     input_path: Path,
     window_start: float,
@@ -209,13 +217,7 @@ def analyze_track(
         for cue in _dedupe_cues(cue_candidates)
         if cue["intensity"] >= 0.45
     ]
-    strongest = sorted(eligible_cues, key=lambda cue: cue["intensity"], reverse=True)[:64]
-    strong_cues = sorted(strongest, key=lambda cue: cue["time"])
-    # Keep global selections stable, but rank window cues before the global cap.
-    window_cues = [
-        cue for cue in eligible_cues if window_start <= cue["time"] <= window_end
-    ]
-    top_window_cues = sorted(window_cues, key=lambda cue: cue["intensity"], reverse=True)[:top_cues]
+    strong_cues, top_window_cues = _pick_cues(eligible_cues, window_start, window_end, top_cues)
 
     data = {
         "schemaVersion": 1,
