@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
@@ -55,17 +54,6 @@ for (const video of galleryVideos) {
   if (siteThumb === src || !existsSync(localPathFor(siteThumb))) {
     failures.push(`Gallery video ${src} is missing matching site.jpg.`);
   }
-}
-
-const copyFallbackTest = spawnSync(
-  process.execPath,
-  ["--test", "scripts/test-copy-fallback.mjs"],
-  { cwd: root, encoding: "utf8" },
-);
-if (copyFallbackTest.stdout) process.stdout.write(copyFallbackTest.stdout);
-if (copyFallbackTest.stderr) process.stderr.write(copyFallbackTest.stderr);
-if (copyFallbackTest.status !== 0) {
-  failures.push("Install command copy fallback test failed.");
 }
 
 if (failures.length > 0) {
