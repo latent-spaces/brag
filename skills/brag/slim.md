@@ -26,6 +26,7 @@ First decide what the input is, then gather material from it. Only the source ch
 | Input | How to recognize it | Where the material comes from |
 |---|---|---|
 | Project | No input given, and the current directory is a project | The code |
+| Native app | A project whose UI runs only on a device: a Flutter, Xcode, Android or React Native app | The code, plus the running app filmed in a simulator or emulator |
 | Website | An `http(s)://` URL, or a bare domain like `example.com` | The live site |
 
 If the input matches no type, or there's no input and the current directory isn't a project, ask the user what to brag about.
@@ -37,6 +38,16 @@ Read the code: the main page, styles (exact colors and fonts), README, routes an
 You have the source, so use it directly: import or render the project's real components, stylesheets, fonts, images and animations in the video instead of rebuilding them. If the components can't render outside their app (server components that need a database, router hooks), keep the real design system anyway: compile the project's own stylesheet with its own build tool, with the video's markup as the only content source, and mirror the components' markup with their class lists copied from the source. Rebuild visuals by hand only when neither works.
 
 Don't read build output (`dist/`, `.next/`, `build/`), lock files, test files, `.git/`, env and secret files (`.env`, `.env.*`), key and credential material (`.pem`, `.key`, `id_rsa`, service-account JSON, anything under `secrets/` or `credentials/`), local config that commonly holds tokens, or anything `.gitignore` excludes for those reasons.
+
+### Native app
+
+Read the code as for a project: copy, exact colors, fonts, the logo. The UI only runs on a device, so film the real app instead of rebuilding it.
+
+- **Run it** in a simulator or emulator, on a local backend if it has one, seeded with fictional accounts, posts and photos written for the video.
+- **Clear the shot:** no system dialog may land on a take. Answer the permission prompts before recording, or switch them off with a build flag for the recording, and set a fixed location if the app uses one.
+- **Drive it from a script:** a UI or integration test, or the platform's device input commands, so every take can be re-shot the same way after a seed or copy change. Hand-driven host mouse and pinch gestures make takes unrepeatable and can stall the simulator.
+- **Record** the screen (`xcrun simctl io <device> recordVideo --codec h264`, `adb shell screenrecord`), and find each beat's in and out points from where the picture actually moves (ffmpeg frame-difference stats), not by eye.
+- **Compose:** extract each clip to numbered stills in `work/` and pick the still from the frame's time, so every frame stays a pure function of time. Speed clips up or reverse them there, and build the text, logo and transitions around them from the app's real design.
 
 ### Website
 
@@ -54,7 +65,7 @@ Before planning, answer: What is it (one sentence)? Who is it for, and what does
 
 Everything gathered here can end up in a public video. Never carry secrets, API keys, tokens, internal hostnames or URLs, real customer or user names, email addresses, or other personal data into the plan, the video, or the share copy. If the real UI shows such data, swap in plausible fictional stand-ins and say so in the plan.
 
-Also check the tools the build will need: a video encoder (ffmpeg), a headless browser and, for a project, its own build tool. If one is missing, ask before fetching it, and offer a fetch that leaves both the system and the project untouched (`uv run --with imageio-ffmpeg`, `npx -y <tool>@<the project's version>`, an installed browser driver with the system browser) ahead of a system install or a new project dependency. Say what you fetched when you deliver.
+Also check the tools the build will need: a video encoder (ffmpeg), a headless browser and, for a project, its own build tool; for a native app, also its simulator or emulator. If one is missing, ask before fetching it, and offer a fetch that leaves both the system and the project untouched (`uv run --with imageio-ffmpeg`, `npx -y <tool>@<the project's version>`, an installed browser driver with the system browser) ahead of a system install or a new project dependency. Say what you fetched when you deliver.
 
 ## 2. Plan
 
